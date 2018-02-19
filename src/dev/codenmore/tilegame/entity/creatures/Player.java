@@ -25,7 +25,7 @@ public class Player extends Creature{
 	private Animation animALeft;
 	private Animation animARight;
 	
-	private int ammunition=0;
+	private int ammunition=10;
 	
 	private boolean rangedToggled=false;
 	
@@ -125,19 +125,20 @@ public class Player extends Creature{
 			}
 			
 		}
-		else {
+		else if (ammunition > 0){
 			if (handler.getKeyManager().aRight)
-				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x + 100 ,(int) (y), 
+				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x + 50 ,(int) (y), 
 						DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 0  ));
 			if (handler.getKeyManager().aDown)
-				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x  ,(int) (y + 100), 
+				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x  ,(int) (y + 70), 
 						DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 1  ));
 			if (handler.getKeyManager().aLeft)
-				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x - 100 ,(int) (y), 
+				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x - 50 ,(int) (y), 
 						DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 2 ));
 			if (handler.getKeyManager().aUp)
-				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x ,(int) (y - 100), 
+				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x ,(int) (y - 50), 
 						DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 3  ));
+			ammunition -= 1;
 		}
 		attackTimer = 0;
 		Rectangle ar= new Rectangle(0,0,0,0);

@@ -75,7 +75,7 @@ public class Zombie extends Creature {
 		if(b==5||b==3)
 			handler.getWorld().getItemManager().addItem(Item.heartItem.createNew((int) (x + Utils.generateRandomInt(200)-100),(int) ( y + Utils.generateRandomInt(200)-100 + bounds.height+100)));
 		
-		if(c==5||c==3|| c==4 || c==2)
+		if(c==5||c==3|| c==4 || c==2 || c==1)
 			handler.getWorld().getItemManager().addItem(Item.arrowItem.createNew((int) (x + Utils.generateRandomInt(200)-100),(int) ( y + Utils.generateRandomInt(200)-100 + bounds.height+100)));
 	}
 	

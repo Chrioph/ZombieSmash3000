@@ -47,7 +47,6 @@ public class World {
 		entityManager.addEntity(new Zombie(handler, 500, 170 ));
 		entityManager.addEntity(new Zombie(handler, 1000, 1900 ));
 		
-		entityManager.addEntity(new Arrow(handler, 700, 500, 64, 64, 0));
 		
 		
 		itemManager = new ItemManager ( handler);
