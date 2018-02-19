@@ -1,8 +1,12 @@
 package dev.codenmore.tilegame;
 
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.Properties;
 
 
 import dev.codenmore.tilegame.display.Display;
@@ -26,6 +30,8 @@ public class Game implements Runnable{
 	public String title;
 	private BufferStrategy bs;	
 	private Graphics g;
+	private Properties properties;
+	private double scale;
 	
 	//States
 	public State gameState;
@@ -51,7 +57,9 @@ public class Game implements Runnable{
 	}
 	
 	public void init() {
-		display=new Display(title,width,height);
+		// load properties
+		Settings.init();
+		display=new Display(title,Settings.getResolutionX(),Settings.getResolutionY());
 		display.getFrame().addKeyListener(keyManager);
 		display.getFrame().addMouseListener(mouseManager);
 		display.getFrame().addMouseMotionListener(mouseManager);
@@ -78,7 +86,11 @@ public class Game implements Runnable{
 			display.getCanvas().createBufferStrategy(3);
 			return;
 		}
-		g = bs.getDrawGraphics();
+		Graphics graphics = bs.getDrawGraphics();
+		Graphics2D g = (Graphics2D) graphics;
+
+		g.scale(Settings.getScaleX(), Settings.getScaleY());
+
 		//clear screen
 		g.clearRect(0, 0, width, height);
 		//draw here
@@ -169,6 +181,10 @@ public class Game implements Runnable{
 	{
 		this.width = width;
 		this.height = height;
+
+		Settings.setResolutionX(width);
+		Settings.setResolutionY(height);
+		Settings.save();
 		display.resize(width, height);
 	}
 	
