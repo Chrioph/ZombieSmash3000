@@ -25,7 +25,7 @@ public class Player extends Creature{
 	private Animation animALeft;
 	private Animation animARight;
 	
-	private int ammunition=10;
+	private int ammunition=100;
 	
 	private boolean rangedToggled=false;
 	
@@ -96,10 +96,11 @@ public class Player extends Creature{
 			return;
 		if(inventory.isActive())
 			return;
+		Rectangle ar =new Rectangle();
 		if(rangedToggled==false) {
 			Rectangle cb = getCollisionBounds(0,0);
 			
-			Rectangle ar =new Rectangle();
+			
 			int arSize = 50;
 			ar.width = arSize;
 			ar.height= arSize;
@@ -125,23 +126,37 @@ public class Player extends Creature{
 			}
 			
 		}
-		else if (ammunition > 0){
-			if (handler.getKeyManager().aRight)
-				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x + 50 ,(int) (y), 
-						DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 0  ));
-			if (handler.getKeyManager().aDown)
-				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x  ,(int) (y + 70), 
-						DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 1  ));
-			if (handler.getKeyManager().aLeft)
-				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x - 50 ,(int) (y), 
-						DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 2 ));
-			if (handler.getKeyManager().aUp)
-				handler.getWorld().getEntityManager().addProjectile(new Arrow(handler,(int) x ,(int) (y - 50), 
-						DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 3  ));
-			ammunition -= 1;
+		else 
+			if(ammunition > 0){
+				if (handler.getKeyManager().aRight) {
+					Arrow a= new Arrow(handler,(int) x+40 ,(int) (y), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 0  );
+					handler.getWorld().getEntityManager().addProjectile(a);
+					ammunition -= 1;
+					ar=a.getBounds();
+				}
+				if (handler.getKeyManager().aDown) {
+					Arrow a= new Arrow(handler,(int) x ,(int) (y + 64), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 1  );
+					handler.getWorld().getEntityManager().addProjectile(a);
+					ammunition -= 1;
+					ar=a.getBounds();
+				}
+				if (handler.getKeyManager().aLeft) {
+					Arrow a= new Arrow(handler,(int) x-40 ,(int) (y), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 2  );
+					handler.getWorld().getEntityManager().addProjectile(a);
+					ammunition -= 1;
+					ar=a.getBounds();
+				}
+				if (handler.getKeyManager().aUp) {
+					Arrow a= new Arrow(handler,(int) x ,(int) (y - 49), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 3  );
+					handler.getWorld().getEntityManager().addProjectile(a);
+					ammunition -= 1;
+					ar=a.getBounds();
+					
+				}
+				
+				
 		}
 		attackTimer = 0;
-		Rectangle ar= new Rectangle(0,0,0,0);
 		for (Entity e : handler.getWorld().getEntityManager().getEntities()) {
 			if (e.equals(this))
 				continue;

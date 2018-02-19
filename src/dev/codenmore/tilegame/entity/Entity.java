@@ -60,9 +60,21 @@ public abstract class Entity {
 	public boolean isPlayer() {
 		return false;
 	}
+	
+	
 
 	public Rectangle getCollisionBounds(float xOffset, float yOffset) {
 		return new Rectangle ((int) (x+bounds.x + xOffset),(int) (y +bounds.y + yOffset), bounds.width, bounds.height );
+	}
+
+	
+	
+	public Rectangle getBounds() {
+		return bounds;
+	}
+
+	public void setBounds(Rectangle bounds) {
+		this.bounds = bounds;
 	}
 
 	public float getX() {

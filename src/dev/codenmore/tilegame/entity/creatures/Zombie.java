@@ -32,7 +32,7 @@ public class Zombie extends Creature {
 	public Zombie(Handler handler , float x, float y) {
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
 		this.speed= 1.5f;
-		health =7;
+		health =5;
 		damage=3;
 		bounds.x=20;
 		bounds.y =28;
@@ -140,6 +140,7 @@ public class Zombie extends Creature {
 	
 	public void render(Graphics g) {
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		
 	}
 	
 	private BufferedImage getCurrentAnimationFrame() {
