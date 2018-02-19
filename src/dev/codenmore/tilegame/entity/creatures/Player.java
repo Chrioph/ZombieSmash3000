@@ -25,7 +25,7 @@ public class Player extends Creature{
 	private Animation animALeft;
 	private Animation animARight;
 	
-	private int ammunition=100;
+	private int ammunition=5;
 	
 	private boolean rangedToggled=false;
 	
