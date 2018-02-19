@@ -1,0 +1,38 @@
+package dev.codenmore.tilegame.entity.statics;
+
+import java.awt.Graphics;
+import java.util.Random;
+
+import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.gfx.Assets;
+import dev.codenmore.tilegame.items.Item;
+import dev.codenmore.tilegame.tiles.Tile;
+import dev.codenmore.tilegame.utils.Utils;
+
+public class Rock extends StaticEntity{
+	
+	
+	public Rock ( Handler handler, float x , float y) {
+		super(handler,x,y,Tile.TILEWIDTH,Tile.TILEHEIGHT);
+		
+		bounds.x=16;
+		bounds.y = 64;
+		bounds.width=width-24;
+		bounds.height =32;
+	}
+	
+	public void tick() {
+		
+	}
+	
+	public void die() {
+		
+		for(int i=0;i<Utils.generateRandomInt(2)+1;i++) {
+			handler.getWorld().getItemManager().addItem(Item.rockItem.createNew((int) (x + Utils.generateRandomInt(200)-100),(int) ( y + Utils.generateRandomInt(200)-100 + bounds.height+100)));
+		}
+	}
+	
+	public void render(Graphics g) {
+		g.drawImage(Assets.rock, (int) (x-handler.getGameCamera().getxOffset()) ,(int) (y-handler.getGameCamera().getyOffset()), width, height, null);
+	}
+}
