@@ -26,7 +26,12 @@ public abstract class UIObject {
 		this.height=height;
 		bounds=new Rectangle((int) x, (int)y, width, height);
 	}
-	
+
+	public void updateBounds()
+	{
+		this.bounds = new Rectangle((int) x, (int) y, width, height);
+	}
+
 	public abstract void tick();
 	
 	public abstract void render(Graphics g);
