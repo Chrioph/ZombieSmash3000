@@ -164,6 +164,13 @@ public class Game implements Runnable{
 		}
 		 
 	}
+
+	public void resizeDisplay(int width, int height)
+	{
+		this.width = width;
+		this.height = height;
+		display.resize(width, height);
+	}
 	
 }
 	

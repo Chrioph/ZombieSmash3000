@@ -44,4 +44,11 @@ public class Display {
 	public JFrame getFrame() {
 		return frame;
 	}
+
+	public void resize(int width, int height)
+	{
+		this.width = width;
+		this.height = height;
+		frame.setSize(width, height);
+	}
 }
