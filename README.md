@@ -7,3 +7,4 @@ TODO
 4. Next Level/Weltenübergang 
 5. Random World
 6. Save files
+7. Item Spawns optimieren (Nicht auf Steinen) 
