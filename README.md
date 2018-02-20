@@ -9,3 +9,4 @@ TODO
 6. Save files
 7. Item Spawns optimieren (Nicht auf Steinen) 
 8. find and eliminate spooky scray invisible hitbox which kills u randomly
+9. optimize hitboxes
