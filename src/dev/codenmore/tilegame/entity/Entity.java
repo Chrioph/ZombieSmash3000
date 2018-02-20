@@ -1,10 +1,10 @@
 package dev.codenmore.tilegame.entity;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Settings;
 
 public abstract class Entity {
 	
@@ -30,7 +30,14 @@ public abstract class Entity {
 	
 	public abstract void tick();
 	
-	public abstract void render(Graphics g);
+	public void render(Graphics g) {
+		if(Settings.getDebug()) {
+			Rectangle collBounds = getCollisionBounds(0f, 0f);
+			g.setColor(Color.RED);
+			g.fillRect(collBounds.x,collBounds.y, bounds.width, bounds.height);
+		}
+
+	}
 	
 	public abstract void die();
 	
@@ -64,7 +71,7 @@ public abstract class Entity {
 	
 
 	public Rectangle getCollisionBounds(float xOffset, float yOffset) {
-		return new Rectangle ((int) (x+bounds.x + xOffset),(int) (y +bounds.y + yOffset), bounds.width, bounds.height );
+		return new Rectangle ((int) (x+bounds.x + xOffset - handler.getGameCamera().getxOffset()),(int) (y +bounds.y + yOffset - handler.getGameCamera().getyOffset()), bounds.width, bounds.height );
 	}
 
 	

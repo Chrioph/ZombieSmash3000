@@ -63,14 +63,15 @@ public class Arrow extends Creature{
 
 	@Override
 	public void render(Graphics g) {
-	if(direction == 0)
-		g.drawImage(Assets.arrowRight,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
-	if(direction == 1)
-		g.drawImage(Assets.arrowDown,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
-	if(direction == 2)
-		g.drawImage(Assets.arrowLeft,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
-	if(direction == 3)
-		g.drawImage(Assets.arrowUp,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		super.render(g);
+		if(direction == 0)
+			g.drawImage(Assets.arrowRight,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		if(direction == 1)
+			g.drawImage(Assets.arrowDown,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		if(direction == 2)
+			g.drawImage(Assets.arrowLeft,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		if(direction == 3)
+			g.drawImage(Assets.arrowUp,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 	
 	}
 

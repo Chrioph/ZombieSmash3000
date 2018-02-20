@@ -177,7 +177,7 @@ public class Player extends Creature{
 		}
 	}
 	
-	//GameOver Fenster öffnen
+	//GameOver Fenster ï¿½ffnen
 	public void die() {
 		System.out.println("You Lose");
 	}
@@ -213,6 +213,7 @@ public class Player extends Creature{
 
 	@Override
 	public void render(Graphics g) {
+		super.render(g);
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 			
 	}

@@ -143,6 +143,7 @@ public class Zombie extends Creature {
 	
 	
 	public void render(Graphics g) {
+		super.render(g);
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 		
 	}

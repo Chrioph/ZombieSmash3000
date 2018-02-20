@@ -32,7 +32,7 @@ public class SettingsState extends State{
                 handler.getGame().resizeDisplay(1280, 720);
             }));
 			add(new UIListElement(0, 0, 200, 40, "1680x1050", () -> {
-				// Change resolution to 1280x720
+				// Change resolution to 1680x1050
 				System.out.println("Resize 1680x1050");
 				handler.getGame().resizeDisplay(1680, 1050);
 			}));

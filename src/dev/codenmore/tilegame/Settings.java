@@ -15,6 +15,7 @@ public class Settings {
     private static int height = 1080;
     private static double scaleX = 1.0;
     private static double scaleY = 1.0;
+    private static boolean debug = false;
 
     public static void init()
     {
@@ -99,6 +100,14 @@ public class Settings {
     public static double getScaleY()
     {
         return scaleY;
+    }
+
+    public static boolean getDebug() {
+        return debug;
+    }
+
+    public static void setDebug(boolean mode) {
+        debug = mode;
     }
 
 
