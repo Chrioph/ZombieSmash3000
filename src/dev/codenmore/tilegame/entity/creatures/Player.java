@@ -26,7 +26,16 @@ public class Player extends Creature{
 	private Animation animARight;
 	
 	private int ammunition=5;
+	private int armor=4;
 	
+	public int getArmor() {
+		return armor;
+	}
+
+	public void setArmor(int armor) {
+		this.armor = armor;
+	}
+
 	private boolean rangedToggled=false;
 	
 	private long lastAttackTimer, attackCooldown=800, attackTimer = attackCooldown;

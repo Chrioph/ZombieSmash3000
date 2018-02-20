@@ -18,6 +18,7 @@ public class Item {
 	public static Item swordItem = new Item(Assets.sword,"Sword",2);
 	public static Item heartItem = new Item(Assets.heart,"Heart",3);
 	public static Item arrowItem = new Item(Assets.arrow,"Arrow",4);
+	public static Item armorItem = new Item(Assets.armor,"Armor",5);
 	
 	//Class
 	
@@ -47,7 +48,7 @@ public class Item {
 	public void tick() {
 		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(bounds)) {
 			pickedUp=true;
-			if(this.getId()!=2 && this.getId()!=3 && this.getId()!=4)
+			if(this.getId()!=2 && this.getId()!=3 && this.getId()!=4&& this.getId()!=5)
 				handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(this);
 			if(this.getId()==2)
 				handler.getWorld().getEntityManager().getPlayer().setDamage(handler.getWorld().getEntityManager().getPlayer().getDamage()+1);
@@ -55,6 +56,8 @@ public class Item {
 				handler.getWorld().getEntityManager().getPlayer().setHealth(handler.getWorld().getEntityManager().getPlayer().getHealth()+1);
 			if(this.getId()==4)
 				handler.getWorld().getEntityManager().getPlayer().setAmmunition(handler.getWorld().getEntityManager().getPlayer().getAmmunition()+1);
+			if(this.getId()==5)
+				handler.getWorld().getEntityManager().getPlayer().setArmor(handler.getWorld().getEntityManager().getPlayer().getArmor()+1);
 		}
 		
 	}

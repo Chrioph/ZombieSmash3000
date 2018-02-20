@@ -69,6 +69,7 @@ public class Zombie extends Creature {
 		int a=Utils.generateRandomInt(5);
 		int b=Utils.generateRandomInt(5);	
 		int c=Utils.generateRandomInt(5);	
+		int d=Utils.generateRandomInt(5);
 		if (a==3||a==5)
 			handler.getWorld().getItemManager().addItem(Item.swordItem.createNew((int) (x + Utils.generateRandomInt(200)-100),(int) ( y + Utils.generateRandomInt(200)-100 + bounds.height+100)));
 		
@@ -77,6 +78,8 @@ public class Zombie extends Creature {
 		
 		if(c==5||c==3|| c==4 || c==2 || c==1)
 			handler.getWorld().getItemManager().addItem(Item.arrowItem.createNew((int) (x + Utils.generateRandomInt(200)-100),(int) ( y + Utils.generateRandomInt(200)-100 + bounds.height+100)));
+		if(b==5||b==3)
+			handler.getWorld().getItemManager().addItem(Item.armorItem.createNew((int) (x + Utils.generateRandomInt(200)-100),(int) ( y + Utils.generateRandomInt(200)-100 + bounds.height+100)));
 	}
 	
 	
@@ -132,7 +135,8 @@ public class Zombie extends Creature {
 		if ( attackTimer < attackCooldown)
 			return;
 		if(ar.intersects(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f))) {
-			handler.getWorld().getEntityManager().getPlayer().hurt(damage);
+			handler.getWorld().getEntityManager().getPlayer().hurt( (damage - (Math.min((handler.getWorld().getEntityManager().getPlayer().getArmor()),(damage-1)))));
+			handler.getWorld().getEntityManager().getPlayer().setArmor(Math.max(handler.getWorld().getEntityManager().getPlayer().getArmor()-1, 0));
 			attackTimer=0;
 		}
 	}
