@@ -34,10 +34,10 @@ public class Zombie extends Creature {
 		this.speed= 1.5f;
 		health =5;
 		damage=3;
-		bounds.x=20;
-		bounds.y =28;
-		bounds.width =24;
-		bounds.height =36;
+		bounds.x=18;
+		bounds.y =26;
+		bounds.width =28;
+		bounds.height =40;
 		
 		animDown = new Animation(500, Assets.zombie_down);
 		animUp = new Animation(500,Assets.zombie_up);
