@@ -20,6 +20,7 @@ public class Item {
 	public static Item heartItem = new Item(Assets.heart,"Heart",3);
 	public static Item arrowItem = new Item(Assets.arrow,"Arrow",4);
 	public static Item armorItem = new Item(Assets.armor,"Armor",5);
+	public static Item healthPlusItem = new Item(Assets.healthPlus,"Health Plus",6);
 	
 	//Class
 	
@@ -51,17 +52,22 @@ public class Item {
 	
 	public void tick() {
 		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(this.getCollisionBounds(0,0))) {
-			pickedUp=true;
+			if(!(this.getId()==5 && handler.getWorld().getEntityManager().getPlayer().getArmor()>=handler.getWorld().getEntityManager().getPlayer().getMaxArmor()) &&
+					!(this.getId()==3 && handler.getWorld().getEntityManager().getPlayer().getHealth()>=handler.getWorld().getEntityManager().getPlayer().getMaxHealth())	)
+				pickedUp=true;
 			if(this.getId()!=2 && this.getId()!=3 && this.getId()!=4&& this.getId()!=5)
 				handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(this);
 			if(this.getId()==2)
 				handler.getWorld().getEntityManager().getPlayer().setDamage(handler.getWorld().getEntityManager().getPlayer().getDamage()+1);
-			if(this.getId()==3)
+			if(this.getId()==3&& pickedUp==true)
 				handler.getWorld().getEntityManager().getPlayer().setHealth(handler.getWorld().getEntityManager().getPlayer().getHealth()+1);
 			if(this.getId()==4)
 				handler.getWorld().getEntityManager().getPlayer().setAmmunition(handler.getWorld().getEntityManager().getPlayer().getAmmunition()+1);
-			if(this.getId()==5)
+			if(this.getId()==5 && pickedUp==true)
 				handler.getWorld().getEntityManager().getPlayer().setArmor(handler.getWorld().getEntityManager().getPlayer().getArmor()+1);
+			if(this.getId()==6 )
+				handler.getWorld().getEntityManager().getPlayer().setMaxHealth(handler.getWorld().getEntityManager().getPlayer().getMaxHealth()+1);
+
 		}
 		
 	}
@@ -87,10 +93,13 @@ public class Item {
 	}
 	
 	public Item createNew(int count) {
+		
+	
 		Item i= new Item(texture,name,id);
 		i.setCount(count);
 		i.setPickedUp(true);
 		return i;
+		
 	}
 	
 	public Item createNew(int x, int y) {

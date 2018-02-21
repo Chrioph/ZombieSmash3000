@@ -28,15 +28,10 @@ public class Player extends Creature{
 	private Animation animARight;
 	
 	private int ammunition=5;
-	private int armor=4;
+	private int armor=5;
+	private int maxArmor=5;
+	private int maxHealth=10;
 	
-	public int getArmor() {
-		return armor;
-	}
-
-	public void setArmor(int armor) {
-		this.armor = armor;
-	}
 
 	private boolean rangedToggled=false;
 	
@@ -48,7 +43,7 @@ public class Player extends Creature{
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
 		
 		health=10;
-		damage=3;
+		damage=300;
 		bounds.x=20;
 		bounds.y =28;
 		bounds.width =22;
@@ -265,6 +260,22 @@ public class Player extends Creature{
 		else return Assets.player1;
 	}
 
+	public int getMaxArmor() {
+		return maxArmor;
+	}
+
+	public void setMaxArmor(int maxArmor) {
+		this.maxArmor = maxArmor;
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+
 	public Inventory getInventory() {
 		return inventory;
 	}
@@ -287,6 +298,13 @@ public class Player extends Creature{
 
 	public void setRangedToggled(boolean rangedToggled) {
 		this.rangedToggled = rangedToggled;
+	}
+	public int getArmor() {
+		return armor;
+	}
+
+	public void setArmor(int armor) {
+		this.armor = armor;
 	}
 	
 	

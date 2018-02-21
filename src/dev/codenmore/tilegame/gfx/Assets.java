@@ -7,7 +7,7 @@ public class Assets {
 	
 	public static BufferedImage dirt,grass,stone;
 	public static BufferedImage player1,zombie;
-	public static BufferedImage wood, sword, bow, rock, tree, heart, armor;
+	public static BufferedImage wood, sword, bow, rock, tree, heart, armor, healthPlus;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
 	public static BufferedImage inventoryScreen,settingsBackground;
 	private static final int width = 32,height =32;
@@ -30,17 +30,18 @@ public class Assets {
 		inventoryScreen =ImageLoader.loadImage("/textures/inventoryScreen.png");
 		player1 = sheet.crop(width*2, height, width, height); 
 		
-		dirt =    sheet.crop(width*2, 0, width, height);
-		grass =   sheet.crop(width*3, 0, width, height);
-		stone =   sheet.crop(0, height, width, height);
+		dirt =     sheet.crop(width*2, 0, width, height);
+		grass =    sheet.crop(width*3, 0, width, height);
+		stone =    sheet.crop(0, height, width, height);
 		
-		tree =    sheet.crop(width,height,width,height);
-		wood =    sheet.crop(width, 0, width, height);
-		rock =    sheet.crop(0, 0, width, height);
-		sword=    sheet.crop(width*3, height*3, width, height);
-		bow  =    sheet.crop(width*2, height*6, width, height);
-		heart=    sheet.crop(width*7, height*3, width, height);
-		armor=    sheet.crop(0, height*7, width, height);
+		tree =     sheet.crop(width,height,width,height);
+		wood =     sheet.crop(width, 0, width, height);
+		rock =     sheet.crop(0, 0, width, height);
+		sword=     sheet.crop(width*3, height*3, width, height);
+		bow  =     sheet.crop(width*2, height*6, width, height);
+		heart=     sheet.crop(width*7, height*3, width, height);
+		armor=     sheet.crop(0, height*7, width, height);
+		healthPlus=sheet.crop(width*8, height*3, width, height);
 		
 		arrow     =   sheet.crop(width*3, height*6, width, height);
 		arrowRight=   sheet.crop(width*4, height*6, width, height);
