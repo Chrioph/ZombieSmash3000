@@ -12,8 +12,7 @@ import java.util.Properties;
 import dev.codenmore.tilegame.display.Display;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.GameCamera;
-
-
+import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.input.KeyManager;
 import dev.codenmore.tilegame.input.MouseManager;
 
@@ -99,6 +98,7 @@ public class Game implements Runnable{
 		
 		
 		
+		
 		//End here
 		bs.show();
 		g.dispose();
@@ -127,7 +127,6 @@ public class Game implements Runnable{
 				delta--;
 			}
 			if(timer >= 1000000000) {
-				System.out.println("Ticks and Frames: "+ticks+"FPS");
 				ticks=0;
 				timer=0;
 			}

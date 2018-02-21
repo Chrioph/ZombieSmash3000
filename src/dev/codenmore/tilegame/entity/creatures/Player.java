@@ -49,7 +49,7 @@ public class Player extends Creature{
 		
 		bounds.x=20;
 		bounds.y =28;
-		bounds.width =24;
+		bounds.width =22;
 		bounds.height =36;
 		
 		
@@ -94,7 +94,6 @@ public class Player extends Creature{
 	private void checkToggledRangeAttacks() {
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
 			rangedToggled=!rangedToggled;
-			System.out.println("Range " + rangedToggled);
 		}
 		
 	}
@@ -265,6 +264,15 @@ public class Player extends Creature{
 	public void setAmmunition(int ammunition) {
 		this.ammunition = ammunition;
 	}
+
+	public boolean isRangedToggled() {
+		return rangedToggled;
+	}
+
+	public void setRangedToggled(boolean rangedToggled) {
+		this.rangedToggled = rangedToggled;
+	}
+	
 	
 
 }

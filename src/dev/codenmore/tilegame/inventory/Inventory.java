@@ -57,14 +57,6 @@ public class Inventory {
 			return;
 		
 		g.drawImage(Assets.inventoryScreen, invX, invY, invWidth, invHeight, null);
-		g.drawImage(Assets.heart, 1175, 400,256,256, null);
-		g.drawImage(Assets.sword, 1200, 675,192,192, null);
-		g.drawImage(Assets.arrow, 1485, 688,192,192, null);
-		g.drawImage(Assets.armor, 1452, 400,256,256, null);
-		Text.drawString(g, "  "+ handler.getWorld().getEntityManager().getPlayer().getHealth()+"  ", 1303, 655, true, Color.WHITE, Assets.font40);
-		Text.drawString(g, "  "+ handler.getWorld().getEntityManager().getPlayer().getArmor()+"  ", 1578, 655, true, Color.WHITE, Assets.font40);
-		Text.drawString(g, "  "+ handler.getWorld().getEntityManager().getPlayer().getDamage()+"  ", 1303, 915, true, Color.WHITE, Assets.font40);
-		Text.drawString(g, "  "+ handler.getWorld().getEntityManager().getPlayer().getAmmunition()+"  ", 1578,915, true, Color.WHITE, Assets.font40);
 		int len = inventoryItems.size();
 		if(len == 0)
 			return;

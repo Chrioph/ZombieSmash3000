@@ -74,8 +74,7 @@ public class Item {
 	
 	public void render(Graphics g , int x, int y ){
 		g.drawImage(texture, x, y, ITEMWIDTH, ITEMHEIGHT,null);
-		g.setColor(Color.BLACK);
-		g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+		
 	}
 
 	

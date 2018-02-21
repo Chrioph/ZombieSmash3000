@@ -20,10 +20,16 @@ public class Arrow extends Creature{
 		this.speed=8.0f;
 		this.damage=2;
 		bounds.x=4   ;
-		bounds.y=24;
+		bounds.y=26;
 		bounds.width= 56  ;
 		bounds.height= 14;
-		if (direction == 1 || direction == 3) {
+		if (direction == 1  ) {
+			bounds.x=24;
+			bounds.y=4  ;
+			bounds.width= 14;
+			bounds.height= 56 ;
+		}
+		if(direction == 3) {
 			bounds.x=24;
 			bounds.y=4  ;
 			bounds.width= 14;
