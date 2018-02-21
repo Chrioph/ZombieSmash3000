@@ -4,14 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
-import dev.codenmore.tilegame.Game;
-import dev.codenmore.tilegame.HUD;
+
+
 import dev.codenmore.tilegame.Handler;
-import dev.codenmore.tilegame.entity.creatures.Player;
-import dev.codenmore.tilegame.entity.statics.Tree;
-import dev.codenmore.tilegame.gfx.Assets;
-import dev.codenmore.tilegame.gfx.Text;
-import dev.codenmore.tilegame.tiles.Tile;
+import dev.codenmore.tilegame.HUDs.HUD;
+
 import dev.codenmore.tilegame.worlds.World;
 
 public class GameState extends State {

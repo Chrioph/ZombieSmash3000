@@ -9,7 +9,7 @@ public class Assets {
 	public static BufferedImage player1,zombie;
 	public static BufferedImage wood, sword, bow, rock, tree, heart, armor, healthPlus;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
-	public static BufferedImage inventoryScreen,settingsBackground;
+	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow;
 	private static final int width = 32,height =32;
 	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right;
 	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right;
@@ -26,6 +26,7 @@ public class Assets {
 		
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet2.png"));
 		
+		HUDWindow = ImageLoader.loadImage("/textures/HUDWindow.png");
 		settingsBackground = ImageLoader.loadImage("/textures/SettingsBackground.png");
 		inventoryScreen =ImageLoader.loadImage("/textures/inventoryScreen.png");
 		player1 = sheet.crop(width*2, height, width, height); 
