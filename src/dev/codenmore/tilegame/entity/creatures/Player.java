@@ -43,7 +43,7 @@ public class Player extends Creature{
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
 		
 		health=10;
-		damage=300;
+		damage=3;
 		bounds.x=20;
 		bounds.y =28;
 		bounds.width =22;

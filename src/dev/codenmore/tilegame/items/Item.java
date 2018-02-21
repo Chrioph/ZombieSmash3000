@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.gfx.Assets;
+import dev.codenmore.tilegame.utils.Utils;
 
 public class Item {
 	
@@ -104,7 +105,7 @@ public class Item {
 	
 	public Item createNew(int x, int y) {
 		Item i= new Item(texture,name,id);
-		i.setPostion((int)(x),(int) (y));		
+		i.setPostion((int)(x+ Utils.generateRandomInt(200)-100),(int) (y+ Utils.generateRandomInt(200)-100));		
 		return i;
 		
 	}
