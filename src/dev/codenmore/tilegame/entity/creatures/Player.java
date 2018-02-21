@@ -28,7 +28,7 @@ public class Player extends Creature{
 	private Animation animARight;
 	
 	private int ammunition=5;
-	private int armor=5;
+	private int armor=4;
 	private int maxArmor=5;
 	private int maxHealth=10;
 	
