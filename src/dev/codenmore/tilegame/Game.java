@@ -10,6 +10,7 @@ import java.util.Properties;
 
 
 import dev.codenmore.tilegame.display.Display;
+import dev.codenmore.tilegame.entity.creatures.Player;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.GameCamera;
 import dev.codenmore.tilegame.gfx.Text;
@@ -20,6 +21,7 @@ import dev.codenmore.tilegame.state.MenuState;
 
 import dev.codenmore.tilegame.state.State;
 import dev.codenmore.tilegame.ui.UIObject;
+import dev.codenmore.tilegame.worlds.WorldGenerator;
 
 public class Game implements Runnable{
 	
@@ -43,7 +45,11 @@ public class Game implements Runnable{
 	
 	//Camera
 	private GameCamera camera;
-	
+
+
+	// worlds
+	private WorldGenerator worldGen;
+
 	
 	
 	//Handler
@@ -70,6 +76,8 @@ public class Game implements Runnable{
 		
 		handler = new Handler(this);
 		camera= new GameCamera(handler, 0, 0);
+		worldGen = new WorldGenerator(handler, new Player(handler,0,0));
+
 		
 		
 		State.setState(new MenuState(handler));
@@ -154,6 +162,10 @@ public class Game implements Runnable{
 	
 	public GameCamera getGameCamera() {
 		return camera;
+	}
+
+	public WorldGenerator getWorldGenerator(){
+		return worldGen;
 	}
 	
 	public int getWidth() {

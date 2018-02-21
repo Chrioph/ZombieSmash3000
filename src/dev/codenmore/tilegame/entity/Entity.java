@@ -1,9 +1,11 @@
 package dev.codenmore.tilegame.entity;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.Settings;
 
 public abstract class Entity {
@@ -19,6 +21,7 @@ public abstract class Entity {
 	public static final int DEFAULT_HEALTH = 10;
 	
 	public Entity(Handler handler, float x,float y, int width, int height) {
+
 		this.x=x;
 		this.y=y;
 		this.width=width;

@@ -1,12 +1,16 @@
 package dev.codenmore.tilegame.worlds;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Modifiers.DamageMod;
+import dev.codenmore.tilegame.Modifiers.HPMod;
+import dev.codenmore.tilegame.Modifiers.Mod;
+import dev.codenmore.tilegame.Modifiers.SpeedMod;
 import dev.codenmore.tilegame.entity.EntityManager;
-import dev.codenmore.tilegame.entity.creatures.Arrow;
 import dev.codenmore.tilegame.entity.creatures.Player;
-import dev.codenmore.tilegame.entity.creatures.Zombie;
+import dev.codenmore.tilegame.entity.creatures.Enemies.Zombie;
 import dev.codenmore.tilegame.entity.statics.Rock;
 import dev.codenmore.tilegame.entity.statics.Tree;
 import dev.codenmore.tilegame.items.ItemManager;
@@ -19,6 +23,7 @@ public class World {
 	private int width, height;
 	private int [][] tiles;
 	private int spawnX, spawnY;
+
 	
 	//Entities
 	
@@ -28,38 +33,27 @@ public class World {
 	
 	private ItemManager itemManager;
 	
-	public World(Handler handler,String path) {
+	public World(Handler handler, String path) {
+
 		this.handler=handler;
-		entityManager = new EntityManager(handler, new Player(handler, 100 , 100 ));
-		entityManager.addEntity(new Tree(handler, 300, 450));
-		entityManager.addEntity(new Tree(handler, 2000, 1300));
-		entityManager.addEntity(new Tree(handler, 400, 2000));
-		entityManager.addEntity(new Rock(handler, 3000, 2100));
-		entityManager.addEntity(new Rock(handler, 1700, 900));
-		entityManager.addEntity(new Rock(handler, 1400, 1900 ));
-		entityManager.addEntity(new Rock(handler, 2450, 900 ));
-		entityManager.addEntity(new Rock(handler, 2450, 850 ));
-		
-		entityManager.addEntity(new Zombie(handler, 1500, 1500 ));
-		entityManager.addEntity(new Zombie(handler, 1500, 1750 ));
-		entityManager.addEntity(new Zombie(handler, 1000, 750 ));
-		entityManager.addEntity(new Zombie(handler, 200, 450 ));
-		entityManager.addEntity(new Zombie(handler, 500, 170 ));
-		entityManager.addEntity(new Zombie(handler, 1000, 1900 ));
-		
-		
 		
 		itemManager = new ItemManager ( handler);
 		
 		loadWorld(path);
 		
+	}
+
+	public void start()
+	{
 		entityManager.getPlayer().setX(spawnX);
 		entityManager.getPlayer().setY(spawnY);
-		
 	}
 	
 	public EntityManager getEntityManager() {
 		return entityManager;
+	}
+	public void setEntityManager(EntityManager en) {
+		entityManager = en;
 	}
 
 	public void tick() {
@@ -143,6 +137,7 @@ public class World {
 		return width;
 		
 	}
+
 	
 	public int getHEight() {
 		return height;

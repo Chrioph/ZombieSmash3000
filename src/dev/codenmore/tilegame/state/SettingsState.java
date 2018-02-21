@@ -23,19 +23,21 @@ public class SettingsState extends State{
 			//@TODO: get list of available resolutions from some api, for now static values
 			add(new UIListElement(0, 0, 200, 40, "1920x1080", () -> {
                 // Change resolution to 1920x1080
-				System.out.println("Resize 1920x1080");
                 handler.getGame().resizeDisplay(1920, 1080);
             }));
 			add(new UIListElement(0, 0, 200, 40, "1280x720", () -> {
                 // Change resolution to 1280x720
-				System.out.println("Resize 1280x720");
                 handler.getGame().resizeDisplay(1280, 720);
             }));
 			add(new UIListElement(0, 0, 200, 40, "1680x1050", () -> {
 				// Change resolution to 1680x1050
-				System.out.println("Resize 1680x1050");
 				handler.getGame().resizeDisplay(1680, 1050);
 			}));
+		}}));
+		uiManager.addObject(new UIList(1200, 150, "Difficulty".length() * 30, 60,"Difficulty", new ArrayList<UIListElement>() {{
+			add(new UIListElement(0, 0, 200, 40, "Easy", () -> handler.getGame().getWorldGenerator().setDifficulty("EASY")));
+			add(new UIListElement(0, 0, 200, 40, "Normal", () -> handler.getGame().getWorldGenerator().setDifficulty("NORMAL")));
+			add(new UIListElement(0, 0, 200, 40, "Hard", () -> handler.getGame().getWorldGenerator().setDifficulty("HARD")));
 		}}));
 		uiManager.addObject(new UIImageButton( 50 ,  50 , 64 , 64, Assets.buttonBack, new ClickListener() {
 			

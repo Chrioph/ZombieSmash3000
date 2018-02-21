@@ -2,8 +2,14 @@ package dev.codenmore.tilegame.entity.creatures;
 
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Modifiers.DamageMod;
+import dev.codenmore.tilegame.Modifiers.HPMod;
+import dev.codenmore.tilegame.Modifiers.Mod;
+import dev.codenmore.tilegame.Modifiers.SpeedMod;
 import dev.codenmore.tilegame.entity.Entity;
 import dev.codenmore.tilegame.tiles.Tile;
+
+import java.util.ArrayList;
 
 public abstract class Creature extends Entity{
 
@@ -20,13 +26,35 @@ public abstract class Creature extends Entity{
 	protected int yAttack;
 	protected int xAttack;
 	protected int damage;
+
+	protected ArrayList<Mod> mods;
 	
 	public Creature( Handler handler ,float x, float y, int width, int height) {
 		super(handler, x, y,width,height);
+		mods = new ArrayList<Mod>();
 		damage=DEFAULT_CREATURE_DAMAGE;
 		speed=DEFAULT_SPEED;
 		xMove=0;
 		yMove=0;
+	}
+
+	public void setMods(ArrayList<Mod> modifications)
+	{
+		mods = modifications;
+		applyMods();
+	}
+
+	private void applyMods()
+	{
+		for(Mod mod : mods) {
+			if(mod instanceof HPMod) {
+				health = (int)Math.round(health * mod.getModifier());
+			}else if(mod instanceof DamageMod) {
+				damage = (int)Math.round(damage * mod.getModifier());
+			}else if(mod instanceof SpeedMod) {
+				speed = (int)Math.round(speed * mod.getModifier());
+			}
+		}
 	}
 	
 	public int getDamage() {

@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Modifiers.Mod;
+import dev.codenmore.tilegame.entity.creatures.Enemies.Enemy;
 import dev.codenmore.tilegame.entity.creatures.Player;
 
 public class EntityManager {
@@ -80,7 +82,15 @@ public class EntityManager {
 	}
 	
 	
-	
+	public void applyMods(ArrayList<Mod> mods)
+	{
+		for(Entity en : entities) {
+			if(en instanceof Enemy) {
+				Enemy enem = (Enemy) en;
+				enem.setMods(mods);
+			}
+		}
+	}
 	
 	
 	

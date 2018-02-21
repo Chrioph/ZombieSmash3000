@@ -1,4 +1,4 @@
-package dev.codenmore.tilegame.entity.creatures;
+package dev.codenmore.tilegame.entity.creatures.Enemies;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,12 +8,13 @@ import java.awt.image.BufferedImage;
 
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.entity.creatures.Creature;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.items.Item;
 import dev.codenmore.tilegame.utils.Utils;
 
-public class Zombie extends Creature {
+public class Zombie extends Enemy {
 	
 	private long lastMovement, movementCooldown=1500, movementTimer = movementCooldown;
 	private long lastAttackTimer, attackCooldown=800, attackTimer = attackCooldown;

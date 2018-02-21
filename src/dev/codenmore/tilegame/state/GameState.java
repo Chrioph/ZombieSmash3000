@@ -1,6 +1,5 @@
 package dev.codenmore.tilegame.state;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
@@ -10,6 +9,7 @@ import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.HUDs.HUD;
 
 import dev.codenmore.tilegame.worlds.World;
+import dev.codenmore.tilegame.worlds.WorldGenerator;
 
 public class GameState extends State {
 	
@@ -17,13 +17,15 @@ public class GameState extends State {
 	
 
 	private World world;
-	
+	private WorldGenerator worldGen;
+
 	private HUD hud;
 	
 	
 	public GameState(Handler handler) {
 		super(handler);
-		world= new World(handler,"res/worlds/world2.txt");
+		this.worldGen = handler.getGame().getWorldGenerator();
+		world= this.worldGen.world1();
 		handler.setWorld(world);
 
 		hud=new HUD(handler);
