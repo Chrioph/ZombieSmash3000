@@ -1,6 +1,6 @@
 package dev.codenmore.tilegame.ui;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -36,6 +36,13 @@ public class UIManager {
 	public void onMouseRelease(MouseEvent e) {
 		for(UIObject o: objects)
 			o.onMouseRelease(e);
+	}
+
+	public void updateAllBounds()
+	{
+		for(UIObject obj : objects) {
+			obj.updateBounds();
+		}
 	}
 	
 	public void addObject(UIObject o) {

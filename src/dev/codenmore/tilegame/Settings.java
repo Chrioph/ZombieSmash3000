@@ -77,8 +77,8 @@ public class Settings {
     private static void calcScale()
     {
         // default scale is 1.0 for Full HD (1920x1080)
-        scaleX = (double)(1.0/(1920.0/width));
-        scaleY = (double)(1.0/(1080.0/height));
+        scaleX = 1.0/(1920.0/width);
+        scaleY = 1.0/(1080.0/height);
         System.out.println("New Scale = " + String.valueOf(scaleX) + "/" + String.valueOf(scaleY));
     }
 

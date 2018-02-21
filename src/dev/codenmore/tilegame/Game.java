@@ -19,6 +19,7 @@ import dev.codenmore.tilegame.input.MouseManager;
 import dev.codenmore.tilegame.state.MenuState;
 
 import dev.codenmore.tilegame.state.State;
+import dev.codenmore.tilegame.ui.UIObject;
 
 public class Game implements Runnable{
 	
@@ -27,10 +28,9 @@ public class Game implements Runnable{
 	private boolean running=false;
 	private Thread thread;
 	public String title;
-	private BufferStrategy bs;	
-	private Graphics g;
-	private Properties properties;
-	private double scale;
+	private boolean afterScale = false;
+	private BufferStrategy bs;
+	private Dimension newDisplaySize = null;
 	
 	//States
 	public State gameState;
@@ -60,8 +60,7 @@ public class Game implements Runnable{
 	
 	public void init() {
 		// load properties
-		Settings.init();
-		display=new Display(title,Settings.getResolutionX(),Settings.getResolutionY());
+		display=new Display(title,width, height);
 		display.getFrame().addKeyListener(keyManager);
 		display.getFrame().addMouseListener(mouseManager);
 		display.getFrame().addMouseMotionListener(mouseManager);
@@ -83,18 +82,25 @@ public class Game implements Runnable{
 
 	}
 	private void render () {
+		if(newDisplaySize != null) {
+			changeDisplaySize();
+		}
 		bs = display.getCanvas().getBufferStrategy();
-		if(bs == null) {
+		if(bs == null || afterScale) {
+			System.out.println("new Buffer strategy");
 			display.getCanvas().createBufferStrategy(3);
+			afterScale = false;
 			return;
 		}
 		Graphics graphics = bs.getDrawGraphics();
 		Graphics2D g = (Graphics2D) graphics;
-
+		//System.out.println("Do Scale " + Settings.getScaleX() + "/" + Settings.getScaleY());
+		//g.scale(Settings.getScaleX(), Settings.getScaleY());
 		g.scale(Settings.getScaleX(), Settings.getScaleY());
 
+
 		//clear screen
-		g.clearRect(0, 0, width, height);
+		g.clearRect(0, 0, 1920, 1080);
 		//draw here
 		if (State.getState() != null)
 			State.getState().render(g);
@@ -179,15 +185,30 @@ public class Game implements Runnable{
 		 
 	}
 
-	public void resizeDisplay(int width, int height)
+	public void changeDisplaySize()
 	{
-		this.width = width;
-		this.height = height;
+		this.width = newDisplaySize.width;
+		this.height = newDisplaySize.height;
 
 		Settings.setResolutionX(width);
 		Settings.setResolutionY(height);
 		Settings.save();
+		handler.getGame().getMouseManager().getUIManager().updateAllBounds();
+		System.out.println(Settings.getScaleX() + "/" + Settings.getScaleY());
 		display.resize(width, height);
+		display.getFrame().addKeyListener(keyManager);
+		display.getFrame().addMouseListener(mouseManager);
+		display.getFrame().addMouseMotionListener(mouseManager);
+		display.getCanvas().addMouseListener(mouseManager);
+		display.getCanvas().addMouseMotionListener(mouseManager);
+		afterScale = true;
+		newDisplaySize = null;
+	}
+
+	public void resizeDisplay(int width, int height)
+	{
+		newDisplaySize = new Dimension(width, height);
+
 	}
 	
 }

@@ -3,7 +3,7 @@ package dev.codenmore.tilegame.ui;
 
 import dev.codenmore.tilegame.gfx.Assets;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -39,6 +39,7 @@ public class UIList extends UIObject{
 
     @Override
     public void render(Graphics g) {
+        super.render(g);
         g.setFont(Assets.font40);
         if(opened) {
             int pos = 2;

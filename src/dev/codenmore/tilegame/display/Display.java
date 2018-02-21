@@ -49,6 +49,21 @@ public class Display {
 	{
 		this.width = width;
 		this.height = height;
+		// reinitialize display
+		frame.dispose();
+		frame = new JFrame();
 		frame.setSize(width, height);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		canvas = null;
+		canvas = new Canvas();
+		canvas.setPreferredSize(new Dimension(width,height));
+		canvas.setMaximumSize(new Dimension(width,height));
+		canvas.setMinimumSize(new Dimension(width,height));
+		canvas.setFocusable(false);
+		frame.add(canvas);
+		frame.pack();
 	}
 }

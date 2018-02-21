@@ -26,20 +26,20 @@ public class GameCamera {
 	public void checkBlankSpace() {
 		if (xOffset <0)
 			xOffset =0;
-		else if ( xOffset > handler.getWorld().getWidth() * Tile.TILEWIDTH - handler.getWidth())
-			xOffset =  handler.getWorld().getWidth() * Tile.TILEWIDTH - handler.getWidth();
+		else if ( xOffset > handler.getWorld().getWidth() * Tile.TILEWIDTH - 1920)
+			xOffset =  handler.getWorld().getWidth() * Tile.TILEWIDTH - 1920;
 		if (yOffset<0)
 			yOffset = 0;
-		else if ( yOffset > handler.getWorld().getHEight() * Tile.TILEHEIGHT - handler.getHeight())
-			yOffset = handler.getWorld().getHEight() * Tile.TILEHEIGHT - handler.getHeight();
+		else if ( yOffset > handler.getWorld().getHEight() * Tile.TILEHEIGHT - 1080)
+			yOffset = handler.getWorld().getHEight() * Tile.TILEHEIGHT - 1080;
 		
 			
 	}
 	
 	
 	public void centerOnEntity(Entity e) {
-		xOffset = (e.getX()-handler.getWidth() / 2)+ e.getWidth()/2;
-		yOffset = e.getY()-handler.getHeight() / 2 +e.getHeight()/2;
+		xOffset = (e.getX()-1920 / 2)+ e.getWidth()/2;
+		yOffset = e.getY()-1080 / 2 +e.getHeight()/2;
 		checkBlankSpace();
 	}
 	

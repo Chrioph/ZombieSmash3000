@@ -1,6 +1,8 @@
 package dev.codenmore.tilegame.ui;
 
-import java.awt.Graphics;
+import dev.codenmore.tilegame.Settings;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -32,8 +34,14 @@ public class UIListElement extends UIObject{
 
     }
 
+    public void updateBounds()
+    {
+        this.bounds = new Rectangle((int) (x * Settings.getScaleX()), (int) (y  * Settings.getScaleY()),(int)(width * Settings.getScaleX()), (int)(height * Settings.getScaleY()));
+    }
+
     @Override
     public void render(Graphics g) {
+        super.render(g);
     }
 
     @Override

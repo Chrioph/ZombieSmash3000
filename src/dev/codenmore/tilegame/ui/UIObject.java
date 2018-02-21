@@ -2,8 +2,7 @@ package dev.codenmore.tilegame.ui;
 
 import dev.codenmore.tilegame.Settings;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public abstract class UIObject {
@@ -31,12 +30,13 @@ public abstract class UIObject {
 
 	public void updateBounds()
 	{
-		this.bounds = new Rectangle((int) (x * Settings.getScaleX()), (int) (y * Settings.getScaleY()),(int)(width * Settings.getScaleX()), (int)(height * Settings.getScaleY()));
+		this.bounds = new Rectangle((int) (x * Settings.getScaleX()), (int) (y  * Settings.getScaleY()),(int)(width * Settings.getScaleX()), (int)(height * Settings.getScaleY()));
 	}
 
 	public abstract void tick();
 	
-	public abstract void render(Graphics g);
+	public void render(Graphics g) {
+	}
 	
 	public abstract void onClick();
 	
