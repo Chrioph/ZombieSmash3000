@@ -2,6 +2,7 @@ package dev.codenmore.tilegame.state;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 
 import dev.codenmore.tilegame.Game;
 import dev.codenmore.tilegame.Handler;
@@ -34,6 +35,7 @@ public class GameState extends State {
 	public void tick() {
 		// TODO Auto-generated method stub
 		world.tick();
+		listenExit();
 	}
 
 	@Override
@@ -55,6 +57,9 @@ public class GameState extends State {
 			g.drawImage(Assets.sword, 454, 30,48,48, null);
 
 	}
-	
+	private void listenExit() {
+		if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE))
+			State.setState(new MenuState(handler));
+	}
 
 }

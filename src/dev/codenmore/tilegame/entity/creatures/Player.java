@@ -28,7 +28,7 @@ public class Player extends Creature{
 	private Animation animARight;
 	
 	private int ammunition=5;
-	private int armor=10000000;
+	private int armor=4;
 	
 	public int getArmor() {
 		return armor;
@@ -47,8 +47,8 @@ public class Player extends Creature{
 	public Player(Handler handler,float x, float y) {
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
 		
-		health=1000000000;
-		damage=100;
+		health=10;
+		damage=3;
 		bounds.x=20;
 		bounds.y =28;
 		bounds.width =22;
