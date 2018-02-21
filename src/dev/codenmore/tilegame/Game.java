@@ -40,8 +40,10 @@ public class Game implements Runnable{
 	//Input
 	private KeyManager keyManager;
 	private MouseManager mouseManager;
+	
 	//Camera
 	private GameCamera camera;
+	
 	
 	
 	//Handler
@@ -53,6 +55,7 @@ public class Game implements Runnable{
 		this.title=title;
 		keyManager= new KeyManager();
 		mouseManager= new MouseManager();	 
+		
 	}
 	
 	public void init() {

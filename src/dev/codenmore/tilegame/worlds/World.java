@@ -84,6 +84,7 @@ public class World {
 		
 		//Entities
 		entityManager.render(g);
+		
 	}
 	
 	

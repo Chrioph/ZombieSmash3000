@@ -47,26 +47,28 @@ public class EntityManager {
 		}
 		entities.sort(renderSorter);
 		
-		Iterator<Entity> ite = projectiles.iterator();
-		while( ite.hasNext() ) {
+		Iterator<Entity> it1 = projectiles.iterator();
+		while( it1.hasNext() ) {
 			
-			Entity e= ite.next();
+			Entity e= it1.next();
 			e.tick();
 			if (!e.isActive())
-				ite.remove();
+				it1.remove();
 			
 		}
 		projectiles.sort(renderSorter);
+		
 	}
 	public void render(Graphics g) {
 		for(Entity e : entities) {
 			e.render(g);
 		}
-		player.postRender(g);
+		
 		
 		for(Entity e : projectiles) {
 			e.render(g);
 		}
+		player.postRender(g);
 	}
 
 	public void addEntity(Entity e) {

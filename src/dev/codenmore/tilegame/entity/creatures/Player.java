@@ -140,19 +140,19 @@ public class Player extends Creature{
 					ammunition -= 1;
 					ar=a.getBounds();
 				}
-				if (handler.getKeyManager().aDown) {
+				else if (handler.getKeyManager().aDown) {
 					Arrow a= new Arrow(handler,(int) x ,(int) (y + 64), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 1  );
 					handler.getWorld().getEntityManager().addProjectile(a);
 					ammunition -= 1;
 					ar=a.getBounds();
 				}
-				if (handler.getKeyManager().aLeft) {
+				else if (handler.getKeyManager().aLeft) {
 					Arrow a= new Arrow(handler,(int) x-40 ,(int) (y), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 2  );
 					handler.getWorld().getEntityManager().addProjectile(a);
 					ammunition -= 1;
 					ar=a.getBounds();
 				}
-				if (handler.getKeyManager().aUp) {
+				else if (handler.getKeyManager().aUp) {
 					Arrow a= new Arrow(handler,(int) x ,(int) (y - 49), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 3  );
 					handler.getWorld().getEntityManager().addProjectile(a);
 					ammunition -= 1;
