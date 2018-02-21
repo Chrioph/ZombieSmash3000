@@ -1,5 +1,6 @@
 package dev.codenmore.tilegame.items;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -10,7 +11,7 @@ import dev.codenmore.tilegame.gfx.Assets;
 public class Item {
 	
 	//Handler
-	
+
 	
 	public static Item[] items = new Item[256];
 	public static Item woodItem = new Item(Assets.wood,"Wood",0);
@@ -39,14 +40,17 @@ public class Item {
 		this.name=name;
 		this.id=id;
 		count=1;
+		this.handler=handler;
 		
-		bounds= new Rectangle(x, y, ITEMWIDTH, ITEMHEIGHT);
+		bounds= new Rectangle((int)(x), (int)(y), ITEMWIDTH, ITEMHEIGHT);
 		
 		items[id]=this;
 	}
 	
+	
+	
 	public void tick() {
-		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(bounds)) {
+		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(this.getCollisionBounds(0,0))) {
 			pickedUp=true;
 			if(this.getId()!=2 && this.getId()!=3 && this.getId()!=4&& this.getId()!=5)
 				handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(this);
@@ -70,6 +74,8 @@ public class Item {
 	
 	public void render(Graphics g , int x, int y ){
 		g.drawImage(texture, x, y, ITEMWIDTH, ITEMHEIGHT,null);
+		g.setColor(Color.BLACK);
+		g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
 
 	
@@ -90,11 +96,14 @@ public class Item {
 	
 	public Item createNew(int x, int y) {
 		Item i= new Item(texture,name,id);
-		i.setPostion(x, y);		
+		i.setPostion((int)(x),(int) (y));		
 		return i;
 		
 	}
 	
+	public Rectangle getCollisionBounds(float xOffset, float yOffset) {
+		return new Rectangle ((int) (bounds.x + xOffset - handler.getGameCamera().getxOffset()),(int) (bounds.y + yOffset - handler.getGameCamera().getyOffset()), bounds.width, bounds.height );
+	}
 	
 	//Getters and Setters
 	
