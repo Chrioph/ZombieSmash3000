@@ -22,6 +22,7 @@ public class Item {
 	public static Item arrowItem = new Item(Assets.arrow,"Arrow",4);
 	public static Item armorItem = new Item(Assets.armor,"Armor",5);
 	public static Item healthPlusItem = new Item(Assets.healthPlus,"Health Plus",6);
+	public static Item bowItem = new Item(Assets.bow,"Bow",7);
 	
 	//Class
 	
@@ -68,7 +69,8 @@ public class Item {
 				handler.getWorld().getEntityManager().getPlayer().setArmor(handler.getWorld().getEntityManager().getPlayer().getArmor()+1);
 			if(this.getId()==6 )
 				handler.getWorld().getEntityManager().getPlayer().setMaxHealth(handler.getWorld().getEntityManager().getPlayer().getMaxHealth()+1);
-
+			if(this.getId()==7 )
+				handler.getWorld().getEntityManager().getPlayer().setRangedDamage(handler.getWorld().getEntityManager().getPlayer().getRangedDamage()+1);
 		}
 		
 	}

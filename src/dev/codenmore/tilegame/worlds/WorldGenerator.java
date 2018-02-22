@@ -73,6 +73,12 @@ public class WorldGenerator {
         world1EnManager.addEntity(new Zombie(handler, 200, 450 ));
         world1EnManager.addEntity(new Zombie(handler, 500, 170 ));
         world1EnManager.addEntity(new Zombie(handler, 1000, 1900 ));
+        world1EnManager.addEntity(new Zombie(handler, 500, 1500 ));
+        world1EnManager.addEntity(new Zombie(handler, 1570, 750 ));
+        world1EnManager.addEntity(new Zombie(handler, 1300, 750 ));
+        world1EnManager.addEntity(new Zombie(handler, 1200, 450 ));
+        world1EnManager.addEntity(new Zombie(handler, 500, 1700 ));
+        world1EnManager.addEntity(new Zombie(handler, 100, 1900 ));
 
 
 

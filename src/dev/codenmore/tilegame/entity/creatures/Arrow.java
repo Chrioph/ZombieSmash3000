@@ -15,12 +15,12 @@ public class Arrow extends Creature{
 	private int direction;
 	private Rectangle bounds1;
 	
-	public Arrow(Handler handler, float x, float y, int width, int height, int direction) {
+	public Arrow(Handler handler, float x, float y, int width, int height, int direction, int damage) {
 		super(handler, x, y, width, height);
 		bounds1=new Rectangle();
 		this.direction=direction;
 		this.speed=8.0f;
-		this.damage=2;
+		this.damage=damage;
 		bounds.x=4   ;
 		bounds.y=26;
 		bounds.width= 56  ;

@@ -24,6 +24,8 @@ public abstract class Enemy extends Creature {
 	public void die() {
 		this.active=false;
 		int[] arr= new int[7]; 
+		
+		// Nur Zahlen im Bereich von 1 - 8 ebnutzen, da bei Schwierigkeit Easy nur Zhalen bis 8 generiert werden.
 		for(int i=0;i<6;i++) {
 			arr[i]=Utils.generateRandomInt(spawnrate);
 		}
@@ -43,6 +45,9 @@ public abstract class Enemy extends Creature {
 		
 		if(arr[4]==7)
 			handler.getWorld().getItemManager().addItem(Item.healthPlusItem.createNew((int) (x ),(int) ( y + bounds.height+100)));
+		
+		if(arr[5]==3)
+			handler.getWorld().getItemManager().addItem(Item.bowItem.createNew((int) (x ),(int) ( y + bounds.height+100)));
 	}
 	public int getSpawnrate() {
 		return spawnrate;

@@ -27,15 +27,17 @@ public class Player extends Creature{
 	private Animation animALeft;
 	private Animation animARight;
 	
-	private int ammunition=50;
+	private int ammunition=5;
 	private int armor=4;
 	private int maxArmor=5;
 	private int maxHealth=10;
+	private int rangedDamage=2;
 	
 
 	private boolean rangedToggled=false;
 	
 	private long lastAttackTimer, attackCooldown=800, attackTimer = attackCooldown;
+	private Arrow arrow;
 	
 	private Inventory inventory;
 	
@@ -135,28 +137,28 @@ public class Player extends Creature{
 		else 
 			if(ammunition > 0){
 				if (handler.getKeyManager().aRight) {
-					Arrow a= new Arrow(handler,(int) x+40 ,(int) (y), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 0  );
-					handler.getWorld().getEntityManager().addProjectile(a);
+					arrow = new Arrow(handler,(int) x+40 ,(int) (y), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 0 , rangedDamage );
+					handler.getWorld().getEntityManager().addProjectile(arrow);
 					ammunition -= 1;
-					ar=a.getBounds();
+					ar=arrow.getBounds();
 				}
 				else if (handler.getKeyManager().aDown) {
-					Arrow a= new Arrow(handler,(int) x ,(int) (y + 64), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 1  );
-					handler.getWorld().getEntityManager().addProjectile(a);
+					arrow = new Arrow(handler,(int) x ,(int) (y + 64), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 1 , rangedDamage );
+					handler.getWorld().getEntityManager().addProjectile(arrow);
 					ammunition -= 1;
-					ar=a.getBounds();
+					ar=arrow.getBounds();
 				}
 				else if (handler.getKeyManager().aLeft) {
-					Arrow a= new Arrow(handler,(int) x-40 ,(int) (y), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 2  );
-					handler.getWorld().getEntityManager().addProjectile(a);
+					arrow = new Arrow(handler,(int) x-40 ,(int) (y), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 2 , rangedDamage );
+					handler.getWorld().getEntityManager().addProjectile(arrow);
 					ammunition -= 1;
-					ar=a.getBounds();
+					ar=arrow.getBounds();
 				}
 				else if (handler.getKeyManager().aUp) {
-					Arrow a= new Arrow(handler,(int) x ,(int) (y - 49), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 3  );
-					handler.getWorld().getEntityManager().addProjectile(a);
+					arrow = new Arrow(handler,(int) x ,(int) (y - 49), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 3 , rangedDamage );
+					handler.getWorld().getEntityManager().addProjectile(arrow);
 					ammunition -= 1;
-					ar=a.getBounds();
+					ar=arrow.getBounds();
 					
 				}
 				
@@ -259,6 +261,15 @@ public class Player extends Creature{
 		
 		else return Assets.player1;
 	}
+	
+	public Arrow getArrow() {
+		return arrow;
+	}
+
+	public void setArrow(Arrow arrow) {
+		this.arrow = arrow;
+	}
+
 
 	public int getMaxArmor() {
 		return maxArmor;
@@ -305,6 +316,14 @@ public class Player extends Creature{
 
 	public void setArmor(int armor) {
 		this.armor = armor;
+	}
+
+	public int getRangedDamage() {
+		return rangedDamage;
+	}
+
+	public void setRangedDamage(int rangedDamage) {
+		this.rangedDamage = rangedDamage;
 	}
 	
 	
