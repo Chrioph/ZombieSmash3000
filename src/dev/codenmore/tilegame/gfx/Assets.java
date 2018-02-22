@@ -40,8 +40,8 @@ public class Assets {
 		sword=     sheet.crop(width*3, height*3, width, height);
 		bow  =     sheet.crop(width*2, height*6, width, height);
 		heart=     sheet.crop(width*7, height*3, width, height);
-		armor=     sheet.crop(0, height*7, width, height);
-		healthPlus=sheet.crop(width*8, height*3, width, height);
+		armor=     sheet.crop(width*8, 0, width, height);
+		healthPlus=sheet.crop(width*9, 0, width, height);
 		
 		arrow     =   sheet.crop(width*3, height*6, width, height);
 		arrowRight=   sheet.crop(width*4, height*6, width, height);
@@ -95,21 +95,21 @@ public class Assets {
 		ogre =  sheet.crop(width*6, height, width, height); 
 				
 		ogre_down = new BufferedImage[2];
-		ogre_down[0]=sheet.crop( width*7 , height, width, height);
-		ogre_down[1]=sheet.crop( width*4 , height*2, width, height);
+		ogre_down[0]=sheet.crop( width*7 , height, width*2, height*2);
+		ogre_down[1]=sheet.crop( width*4 , height*2, width*2, height*2);
 				
 		ogre_up = new BufferedImage[2];
-		ogre_up[0]=sheet.crop( width *5, height*2, width, height);
-		ogre_up[1]=sheet.crop( width*6 , height*2, width, height);
+		ogre_up[0]=sheet.crop( width *5, height*2, width*2, height*2);
+		ogre_up[1]=sheet.crop( width*6 , height*2, width*2, height*2);
 			
 		ogre_left = new BufferedImage[2];
-		ogre_left[0]=sheet.crop( width*5 , height*3, width, height);
-		ogre_left[1]=sheet.crop( width*6 , height*3, width, height);		
+		ogre_left[0]=sheet.crop( width*5 , height*3,width*2, height*2);
+		ogre_left[1]=sheet.crop( width*6 , height*3, width*2, height*2);		
 				
 				
 		ogre_right = new BufferedImage[2];
-		ogre_right[0]=sheet.crop( width*7 , height*2, width, height);
-		ogre_right[1]=sheet.crop( width*4 , height*3, width, height);
+		ogre_right[0]=sheet.crop( width*7 , height*2, width*2, height*2);
+		ogre_right[1]=sheet.crop( width*4 , height*3, width*2, height*2);
 		
 		//Start
 		buttonStart = new BufferedImage[2];

@@ -113,9 +113,7 @@ public class World {
 		}
 		
 	}
-	
-	
-	
+		
 	
 	public Handler getHandler() {
 		return handler;

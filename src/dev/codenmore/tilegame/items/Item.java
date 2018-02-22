@@ -107,10 +107,31 @@ public class Item {
 	
 	public Item createNew(int x, int y) {
 		Item i= new Item(texture,name,id);
-		i.setPostion((int)(x+ Utils.generateRandomInt(200)-100),(int) (y+ Utils.generateRandomInt(200)-100));		
+		boolean b=false;
+		int r1=0;
+		int r2=0;
+		while (!b) {
+			r1=Utils.generateRandomInt(200)-100;
+			r2=Utils.generateRandomInt(200)-100;
+			if (!collisionWithTile((int)(x + r1 ), (int) (y + r2 )))
+				b=true;
+			
+		}
+		
+		i.setPostion((int)(x+ r1 ),(int) (y+ r2 ));		
 		return i;
 		
 	}
+	
+	protected boolean collisionWithTile(int x , int y ) {
+		
+		return handler.
+				getWorld().
+				getTile(x, y).
+				isSolid();
+		
+	}
+		
 	
 	public Rectangle getCollisionBounds(float xOffset, float yOffset) {
 		return new Rectangle ((int) (bounds.x + xOffset - handler.getGameCamera().getxOffset()),(int) (bounds.y + yOffset - handler.getGameCamera().getyOffset()), bounds.width, bounds.height );

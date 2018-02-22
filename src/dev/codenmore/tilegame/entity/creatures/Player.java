@@ -201,11 +201,11 @@ public class Player extends Creature{
 		
 		if (handler.getKeyManager().aUp)
 			yAttack=-1;
-		if (handler.getKeyManager().aDown)
+		else if (handler.getKeyManager().aDown)
 			yAttack=1;
-		if (handler.getKeyManager().aRight)
+		else if (handler.getKeyManager().aRight)
 			xAttack=1;
-		if (handler.getKeyManager().aLeft)
+		else if (handler.getKeyManager().aLeft)
 			xAttack=-1;;
 	}
 	
