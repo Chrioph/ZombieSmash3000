@@ -6,11 +6,15 @@ import dev.codenmore.tilegame.entity.creatures.Creature;
 import dev.codenmore.tilegame.items.Item;
 import dev.codenmore.tilegame.utils.Utils;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public abstract class Enemy extends Creature {
 
+	private long lastMovement, movementCooldown=1500, movementTimer = movementCooldown;
+	private long lastAttackTimer, attackCooldown=800, attackTimer = attackCooldown;
 	
+	private Rectangle ar = new Rectangle();
 	
     public Enemy(Handler handler , float x, float y, int width, int height) {
         super(handler, x, y,width,height);
@@ -49,6 +53,66 @@ public abstract class Enemy extends Creature {
 		if(arr[5]==3)
 			handler.getWorld().getItemManager().addItem(Item.bowItem.createNew((int) (x ),(int) ( y + bounds.height+100)));
 	}
+	
+	public void getMovement() {
+		xMove=0;
+		yMove=0;
+		
+		int x = Utils.generateRandomInt(250);
+		
+		if (x<=25)
+			yMove=-speed;
+		if (x>25 && x<=50)
+			yMove=speed;
+		if (x>50 && x<=75)
+			xMove=speed;
+		if (x>75 && x<=100)
+			xMove=-speed;
+		if (x>100 && x<=125) {
+			xMove=-speed;
+			yMove=-speed;
+		}
+		if (x>125 && x<=150) {
+			xMove=+speed;
+			yMove=-speed;
+		}
+		if (x>150 && x<=175) {
+			xMove=-speed;
+			yMove=+speed;
+		}
+		if (x>175 && x<=200) {
+			xMove=+speed;
+			yMove=+speed;
+		}
+				
+	}
+	
+	protected void generateMovement() {
+		movementTimer += System.currentTimeMillis()- lastMovement;
+		lastMovement = System.currentTimeMillis();
+		if(movementTimer<=movementCooldown)
+			return;
+		getMovement();
+		movementTimer=0;
+	}
+	
+	protected void checkAttacks() {
+		ar.x=(int) x + bounds.x - 6 - (int) handler.getGameCamera().getxOffset();
+		ar.y=(int) y + bounds.y - 6 - (int) handler.getGameCamera().getyOffset();
+		ar.width= bounds.width+12;
+		ar.height=bounds.height+12;
+		attackTimer += System.currentTimeMillis() - lastAttackTimer;
+		lastAttackTimer=System.currentTimeMillis();
+		if ( attackTimer < attackCooldown)
+			return;
+		if(ar.intersects(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f))) {
+			handler.getWorld().getEntityManager().getPlayer().hurt( (damage - (Math.min((handler.getWorld().getEntityManager().getPlayer().getArmor()),(damage-1)))));
+			handler.getWorld().getEntityManager().getPlayer().setArmor(Math.max(handler.getWorld().getEntityManager().getPlayer().getArmor()-1, 0));
+			attackTimer=0;
+		}
+	}
+	
+	
 	public int getSpawnrate() {
 		return spawnrate;
 	}

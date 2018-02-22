@@ -16,8 +16,7 @@ import dev.codenmore.tilegame.utils.Utils;
 
 public class Zombie extends Enemy {
 	
-	private long lastMovement, movementCooldown=1500, movementTimer = movementCooldown;
-	private long lastAttackTimer, attackCooldown=800, attackTimer = attackCooldown;
+	
 	
 	private Animation animDown;
 	private Animation animUp;
@@ -28,7 +27,7 @@ public class Zombie extends Enemy {
 	private Animation animALeft;
 	private Animation animARight;
 	
-	private Rectangle ar = new Rectangle();
+	
 	
 	public Zombie(Handler handler , float x, float y) {
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
@@ -68,63 +67,11 @@ public class Zombie extends Enemy {
 	
 	
 	
-	public void getMovement() {
-		xMove=0;
-		yMove=0;
-		
-		int x = Utils.generateRandomInt(250);
-		
-		if (x<=25)
-			yMove=-speed;
-		if (x>25 && x<=50)
-			yMove=speed;
-		if (x>50 && x<=75)
-			xMove=speed;
-		if (x>75 && x<=100)
-			xMove=-speed;
-		if (x>100 && x<=125) {
-			xMove=-speed;
-			yMove=-speed;
-		}
-		if (x>125 && x<=150) {
-			xMove=+speed;
-			yMove=-speed;
-		}
-		if (x>150 && x<=175) {
-			xMove=-speed;
-			yMove=+speed;
-		}
-		if (x>175 && x<=200) {
-			xMove=+speed;
-			yMove=+speed;
-		}
-				
-	}
 	
-	private void generateMovement() {
-		movementTimer += System.currentTimeMillis()- lastMovement;
-		lastMovement = System.currentTimeMillis();
-		if(movementTimer<=movementCooldown)
-			return;
-		getMovement();
-		movementTimer=0;
-	}
 	
-	private void checkAttacks() {
-		ar.x=(int) x + bounds.x - 6 - (int) handler.getGameCamera().getxOffset();
-		ar.y=(int) y + bounds.y - 6 - (int) handler.getGameCamera().getyOffset();
-		ar.width= bounds.width+12;
-		ar.height=bounds.height+12;
-		attackTimer += System.currentTimeMillis() - lastAttackTimer;
-		lastAttackTimer=System.currentTimeMillis();
-		if ( attackTimer < attackCooldown)
-			return;
-		if(ar.intersects(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f))) {
-			handler.getWorld().getEntityManager().getPlayer().hurt( (damage - (Math.min((handler.getWorld().getEntityManager().getPlayer().getArmor()),(damage-1)))));
-			handler.getWorld().getEntityManager().getPlayer().setArmor(Math.max(handler.getWorld().getEntityManager().getPlayer().getArmor()-1, 0));
-			attackTimer=0;
-		}
-	}
+	
+	
+	
 	
 	
 	public void render(Graphics g) {

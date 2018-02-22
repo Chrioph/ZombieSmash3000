@@ -6,15 +6,14 @@ import java.awt.image.BufferedImage;
 public class Assets {
 	
 	public static BufferedImage dirt,grass,stone;
-	public static BufferedImage player1,zombie;
+	public static BufferedImage player1,zombie, ogre;
 	public static BufferedImage wood, sword, bow, rock, tree, heart, armor, healthPlus;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
 	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow;
 	private static final int width = 32,height =32;
-	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right;
-	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right;
-	public static BufferedImage[] aDown, aLeft, aRight, aUp;
-	public static BufferedImage[] zaDown, zaLeft, zaRight, zaUp;
+	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right, aDown, aLeft, aRight, aUp;;
+	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right, zaDown, zaLeft, zaRight, zaUp;
+	public static BufferedImage[] ogre_down , ogre_up, ogre_left, ogre_right, oaDown, oaLeft, oaRight, oaUp;
 	public static BufferedImage[] buttonStart, buttonSettings, buttonBack;
 	
 	public static Font font56, font28, font40;
@@ -70,7 +69,7 @@ public class Assets {
 		player1_right[0]=sheet.crop( width*3 , height*2, width, height);
 		player1_right[1]=sheet.crop( 0 , height*3, width, height);
 		
-		//Player 2
+		//Zombie
 		
 		zombie =  sheet.crop(width*6, height, width, height); 
 		
@@ -90,6 +89,27 @@ public class Assets {
 		zombie_right = new BufferedImage[2];
 		zombie_right[0]=sheet.crop( width*7 , height*2, width, height);
 		zombie_right[1]=sheet.crop( width*4 , height*3, width, height);
+		
+		//Ogre
+		
+		ogre =  sheet.crop(width*6, height, width, height); 
+				
+		ogre_down = new BufferedImage[2];
+		ogre_down[0]=sheet.crop( width*7 , height, width, height);
+		ogre_down[1]=sheet.crop( width*4 , height*2, width, height);
+				
+		ogre_up = new BufferedImage[2];
+		ogre_up[0]=sheet.crop( width *5, height*2, width, height);
+		ogre_up[1]=sheet.crop( width*6 , height*2, width, height);
+			
+		ogre_left = new BufferedImage[2];
+		ogre_left[0]=sheet.crop( width*5 , height*3, width, height);
+		ogre_left[1]=sheet.crop( width*6 , height*3, width, height);		
+				
+				
+		ogre_right = new BufferedImage[2];
+		ogre_right[0]=sheet.crop( width*7 , height*2, width, height);
+		ogre_right[1]=sheet.crop( width*4 , height*3, width, height);
 		
 		//Start
 		buttonStart = new BufferedImage[2];
