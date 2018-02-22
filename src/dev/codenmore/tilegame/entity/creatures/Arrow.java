@@ -1,9 +1,11 @@
 package dev.codenmore.tilegame.entity.creatures;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.entity.Entity;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.tiles.Tile;
@@ -78,6 +80,10 @@ public class Arrow extends Creature{
 			g.drawImage(Assets.arrowLeft,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 		if(direction == 3)
 			g.drawImage(Assets.arrowUp,(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		if (Settings.getDebug()) {
+			g.setColor(Color.PINK);
+			g.fillRect((int) (bounds1.x - handler.getGameCamera().getxOffset() + x) ,(int) (bounds1.y - handler.getGameCamera().getyOffset() + y), bounds1.width, bounds1.height);
+		}
 	
 	}
 
@@ -99,7 +105,7 @@ public class Arrow extends Creature{
 					continue;
 				if (e.isPlayer())
 					continue;
-				if ( e.getCollisionBounds(0,0).intersects((int) (x+bounds1.x ),(int) (y +bounds1.y ), bounds1.width, bounds1.height)) {
+				if ( e.getCollisionBounds(0,0).intersects((int) (x + bounds1.x - handler.getGameCamera().getxOffset()),(int) (y + bounds1.y - handler.getGameCamera().getyOffset() ), bounds1.width, bounds1.height)) {
 					e.hurt(damage);
 				}
 			}

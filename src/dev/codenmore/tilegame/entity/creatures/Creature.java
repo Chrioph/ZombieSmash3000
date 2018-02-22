@@ -6,6 +6,7 @@ import dev.codenmore.tilegame.Modifiers.DamageMod;
 import dev.codenmore.tilegame.Modifiers.HPMod;
 import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.Modifiers.SpeedMod;
+import dev.codenmore.tilegame.Modifiers.itemspawnMod;
 import dev.codenmore.tilegame.entity.Entity;
 import dev.codenmore.tilegame.tiles.Tile;
 
@@ -26,6 +27,7 @@ public abstract class Creature extends Entity{
 	protected int yAttack;
 	protected int xAttack;
 	protected int damage;
+	protected int spawnrate;
 
 	protected ArrayList<Mod> mods;
 	
@@ -53,6 +55,9 @@ public abstract class Creature extends Entity{
 				damage = (int)Math.round(damage * mod.getModifier());
 			}else if(mod instanceof SpeedMod) {
 				speed = (int)Math.round(speed * mod.getModifier());
+			}
+			else if (mod instanceof itemspawnMod) {
+				spawnrate = (int)Math.round(spawnrate * mod.getModifier());
 			}
 		}
 	}
