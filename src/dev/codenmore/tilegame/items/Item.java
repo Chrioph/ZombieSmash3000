@@ -107,18 +107,6 @@ public class Item {
 	
 	public Item createNew(int x, int y) {
 		Item i= new Item(texture,name,id);
-		boolean b=false;
-		int r1=0;
-		int r2=0;
-		while (!b) {
-			r1=Utils.generateRandomInt(200)-100;
-			r2=Utils.generateRandomInt(200)-100;
-			if (!collisionWithTile((int)(x + r1 ), (int) (y + r2 )))
-				b=true;
-			
-		}
-		
-		i.setPostion((int)(x+ r1 ),(int) (y+ r2 ));		
 		return i;
 		
 	}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.utils.Utils;
 
 public class ItemManager {
 	
@@ -15,7 +16,7 @@ public class ItemManager {
 	public ItemManager(Handler handler) {
 		this.handler=handler;
 		items = new ArrayList<Item>();
-		
+			
 	}
 
 	
@@ -38,6 +39,16 @@ public class ItemManager {
 	
 	public void addItem(Item i) {
 		i.setHandler(handler);
+		boolean b=false;
+		int r1=0;
+		int r2=0;
+		while (!b) {
+			r1=Utils.generateRandomInt(200)-100;
+			r2=Utils.generateRandomInt(200)-100;
+			if (!i.collisionWithTile((int)(i.x + r1 ), (int) (i.y + r2 )))
+				b=true;
+			}
+		i.setPostion((int)(i.x+ r1 ),(int) (i.y+ r2 ));	
 		items.add(i);
 	}
 
