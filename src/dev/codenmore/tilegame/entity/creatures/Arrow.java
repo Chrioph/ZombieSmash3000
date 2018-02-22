@@ -19,7 +19,7 @@ public class Arrow extends Creature{
 		super(handler, x, y, width, height);
 		bounds1=new Rectangle();
 		this.direction=direction;
-		this.speed=8.0f;
+		this.speed=12.0f;
 		this.damage=damage;
 		bounds.x=4   ;
 		bounds.y=26;
