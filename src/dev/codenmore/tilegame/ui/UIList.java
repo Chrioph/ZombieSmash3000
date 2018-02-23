@@ -43,7 +43,7 @@ public class UIList extends UIObject{
         g.setFont(Assets.font40);
         if(opened) {
             int pos = 2;
-            g.drawRect((int)x,(int)y-height/2+20,placeholder.length() * 30,height);
+            g.drawRect((int)x,(int)y-height/2+20 + (elements.size() * height),placeholder.length() * 30,height);
             g.drawString(placeholder,(int) x,(int) y+40);
             for(UIListElement element : elements) {
                 element.setX(x);

@@ -8,7 +8,7 @@ public class KeyManager implements KeyListener{
 	private boolean[] keys, justPressed, cantPress;
 	public boolean up, down, left, right, aUp,aDown,aLeft,aRight;
 	public KeyManager() {
-		keys =new boolean [256];
+		keys =new boolean [1024];
 		justPressed =new boolean [keys.length];
 		cantPress=new boolean [keys.length];
 	}

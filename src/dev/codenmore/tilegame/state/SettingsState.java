@@ -19,6 +19,7 @@ public class SettingsState extends State{
 		uiManager= new UIManager(handler);
 		handler.getMouseManager().setUIManager(uiManager);
 
+
 		uiManager.addObject(new UIList(300, 150, "Resolution".length() * 30, 60,"Resolution", new ArrayList<UIListElement>() {{
 			//@TODO: get list of available resolutions from some api, for now static values
 			add(new UIListElement(0, 0, 200, 40, "1920x1080", () -> {

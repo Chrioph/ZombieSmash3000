@@ -1,6 +1,6 @@
 package dev.codenmore.tilegame.gfx;
 
-import java.awt.Font;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Assets {
@@ -24,9 +24,10 @@ public class Assets {
 		font40 = FontLoader.loadFont("res/fonts/slkscr.ttf",40);
 		
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet2.png"));
+		SpriteSheet ogreSheet = new SpriteSheet(ImageLoader.loadImage("/textures/OgreSpreadsheet.png"));
 		
 		HUDWindow = ImageLoader.loadImage("/textures/HUDWindow.png");
-		settingsBackground = ImageLoader.loadImage("/textures/SettingsBackground.png");
+		settingsBackground = ImageLoader.loadImage("/textures/Settings_Screen2.png");
 		inventoryScreen =ImageLoader.loadImage("/textures/inventoryScreen.png");
 		player1 = sheet.crop(width*2, height, width, height); 
 		
@@ -92,24 +93,24 @@ public class Assets {
 		
 		//Ogre
 		
-		ogre =  sheet.crop(width*6, height, width, height); 
-				
-		ogre_down = new BufferedImage[2];
-		ogre_down[0]=sheet.crop( width*7 , height, width*2, height*2);
-		ogre_down[1]=sheet.crop( width*4 , height*2, width*2, height*2);
-				
-		ogre_up = new BufferedImage[2];
-		ogre_up[0]=sheet.crop( width *5, height*2, width*2, height*2);
-		ogre_up[1]=sheet.crop( width*6 , height*2, width*2, height*2);
-			
-		ogre_left = new BufferedImage[2];
-		ogre_left[0]=sheet.crop( width*5 , height*3,width*2, height*2);
-		ogre_left[1]=sheet.crop( width*6 , height*3, width*2, height*2);		
-				
+		ogre =  ogreSheet.crop(width*4, 0, width*2, height*2);
 				
 		ogre_right = new BufferedImage[2];
-		ogre_right[0]=sheet.crop( width*7 , height*2, width*2, height*2);
-		ogre_right[1]=sheet.crop( width*4 , height*3, width*2, height*2);
+		ogre_right[0]=ogreSheet.crop( 0 , 0, width*2, height*2);
+		ogre_right[1]=ogreSheet.crop( 0 , 0, width*2, height*2);
+				
+		ogre_left = new BufferedImage[2];
+		ogre_left[0]=ogreSheet.crop( width *2, 0, width*2, height*2);
+		ogre_left[1]=ogreSheet.crop( width*2 , 0, width*2, height*2);
+			
+		ogre_down = new BufferedImage[2];
+		ogre_down[0]=ogreSheet.crop( width*4 , 0,width*2, height*2);
+		ogre_down[1]=ogreSheet.crop( width*4 , 0, width*2, height*2);
+				
+				
+		ogre_up = new BufferedImage[2];
+		ogre_up[0]=ogreSheet.crop( width*6 , 0, width*2, height*2);
+		ogre_up[1]=ogreSheet.crop( width*6 , 0, width*2, height*2);
 		
 		//Start
 		buttonStart = new BufferedImage[2];
@@ -161,6 +162,26 @@ public class Assets {
 		zaLeft = new BufferedImage[2];
 		zaLeft[0]=sheet.crop(width*6, height*4, width, height);
 		zaLeft[1]=sheet.crop(width*6, height*5, width, height);
+
+
+		//Ogre Attack
+
+		oaRight = new BufferedImage[2];
+		oaRight[0]=ogreSheet.crop( 0 , 0, width*2, height*2);
+		oaRight[1]=ogreSheet.crop( 0 , 0, width*2, height*2);
+
+		oaLeft = new BufferedImage[2];
+		oaLeft[0]=ogreSheet.crop( width *2, 0, width*2, height*2);
+		oaLeft[1]=ogreSheet.crop( width*2 , 0, width*2, height*2);
+
+		oaDown = new BufferedImage[2];
+		oaDown[0]=ogreSheet.crop( width*4 , 0,width*2, height*2);
+		oaDown[1]=ogreSheet.crop( width*4 , 0, width*2, height*2);
+
+
+		oaUp = new BufferedImage[2];
+		oaUp[0]=ogreSheet.crop( width*6 , 0, width*2, height*2);
+		oaUp[1]=ogreSheet.crop( width*6 , 0, width*2, height*2);
 	}
 		
 		

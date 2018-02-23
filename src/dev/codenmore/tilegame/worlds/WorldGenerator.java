@@ -6,6 +6,7 @@ import dev.codenmore.tilegame.Modifiers.HPMod;
 import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.Modifiers.SpeedMod;
 import dev.codenmore.tilegame.entity.EntityManager;
+import dev.codenmore.tilegame.entity.creatures.Enemies.Ogre;
 import dev.codenmore.tilegame.entity.creatures.Enemies.Zombie;
 import dev.codenmore.tilegame.entity.creatures.Player;
 import dev.codenmore.tilegame.entity.statics.Rock;
@@ -79,6 +80,8 @@ public class WorldGenerator {
         world1EnManager.addEntity(new Zombie(handler, 1200, 450 ));
         world1EnManager.addEntity(new Zombie(handler, 500, 1700 ));
         world1EnManager.addEntity(new Zombie(handler, 100, 1900 ));
+        world1EnManager.addEntity(new Ogre(handler, 1200, 1900 ));
+        world1EnManager.addEntity(new Ogre(handler, 1600, 1900 ));
 
 
 

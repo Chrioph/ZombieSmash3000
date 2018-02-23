@@ -23,12 +23,14 @@ public class Ogre extends Enemy {
 		super(handler, x , y, Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
 		
 		this.speed= 1.5f;
+		width = 64;
+		height = 64;
 		health =15;
 		damage=2;
-		bounds.x=18;
-		bounds.y =26;
-		bounds.width =28;
-		bounds.height =40;
+		bounds.x=8*2;
+		bounds.y =6*2;
+		bounds.width =48*2;
+		bounds.height =52*2;
 		
 		animDown = new Animation(500, Assets.ogre_down);
 		animUp = new Animation(500,Assets.ogre_up);
@@ -83,7 +85,7 @@ public class Ogre extends Enemy {
 	}
 	public void render(Graphics g) {
 		super.render(g);
-		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width*2,height*2,null);
 		
 	}
 }
