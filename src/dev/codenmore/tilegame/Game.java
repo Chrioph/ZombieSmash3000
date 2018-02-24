@@ -68,11 +68,12 @@ public class Game implements Runnable{
 	public void init() {
 		// load properties
 		display=new Display(title,width, height);
-		display.getFrame().addKeyListener(keyManager);
+		/*display.getFrame().addKeyListener(keyManager);
 		display.getFrame().addMouseListener(mouseManager);
 		display.getFrame().addMouseMotionListener(mouseManager);
 		display.getCanvas().addMouseListener(mouseManager);
 		display.getCanvas().addMouseMotionListener(mouseManager);
+		*/
 		Assets.init();
 		
 		handler = new Handler(this);
@@ -91,7 +92,7 @@ public class Game implements Runnable{
 
 	}
 	private void render () {
-		if(newDisplaySize != null) {
+		/*if(newDisplaySize != null) {
 			changeDisplaySize();
 		}
 		bs = display.getCanvas().getBufferStrategy();
@@ -123,6 +124,7 @@ public class Game implements Runnable{
 		// fixes some stuttering issues on mac/linux (https://stackoverflow.com/questions/19480076/java-animation-stutters-when-not-moving-mouse-cursor)
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
+		*/
 	}
 	
 	public void run() {
