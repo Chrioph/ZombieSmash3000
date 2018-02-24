@@ -32,6 +32,7 @@ public class Game implements Runnable{
 	public String title;
 	private boolean afterScale = false;
 	private BufferStrategy bs;
+	private int displayFPS = 0;
 	private Dimension newDisplaySize = null;
 	
 	//States
@@ -102,6 +103,7 @@ public class Game implements Runnable{
 		}
 		Graphics graphics = bs.getDrawGraphics();
 		Graphics2D g = (Graphics2D) graphics;
+
 		//System.out.println("Do Scale " + Settings.getScaleX() + "/" + Settings.getScaleY());
 		//g.scale(Settings.getScaleX(), Settings.getScaleY());
 		g.scale(Settings.getScaleX(), Settings.getScaleY());
@@ -118,12 +120,14 @@ public class Game implements Runnable{
 		
 		//End here
 		bs.show();
+		// fixes some stuttering issues on mac/linux (https://stackoverflow.com/questions/19480076/java-animation-stutters-when-not-moving-mouse-cursor)
+		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
 	
 	public void run() {
 		init();
-		
+
 		int fps = 60;
 		double timePerTick=1000000000/fps;
 		double delta=0;
@@ -144,6 +148,7 @@ public class Game implements Runnable{
 				delta--;
 			}
 			if(timer >= 1000000000) {
+				displayFPS = ticks;
 				ticks=0;
 				timer=0;
 			}
@@ -221,6 +226,11 @@ public class Game implements Runnable{
 	{
 		newDisplaySize = new Dimension(width, height);
 
+	}
+
+	public int getDisplayFPS()
+	{
+		return displayFPS;
 	}
 	
 }

@@ -34,6 +34,8 @@ public class HUD {
 				g.drawImage(Assets.bow, 552, 50,48,48, null);
 			if(!handler.getWorld().getEntityManager().getPlayer().isRangedToggled())
 				g.drawImage(Assets.sword, 552, 50,48,48, null);
+
+			Text.drawString(g, String.valueOf(handler.getGame().getDisplayFPS()), 1880, 20, true, Color.WHITE, Assets.font40);
 		}
 	}
 }
