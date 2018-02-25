@@ -43,6 +43,21 @@ public class World {
 		
 	}
 
+	/**
+	 * Second constructor for random generated worlds
+	 * @param handler
+	 * @param tiles
+	 * @param spawnX
+	 * @param spawnY
+	 */
+	public World(Handler handler, int[][] tiles, int spawnX, int spawnY) {
+		this.handler = handler;
+		this.spawnX = spawnX;
+		this.spawnY = spawnY;
+		this.tiles = tiles;
+
+	}
+
 	public void start()
 	{
 		entityManager.getPlayer().setX(spawnX);
