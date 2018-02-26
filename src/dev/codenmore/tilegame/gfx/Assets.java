@@ -19,12 +19,13 @@ public class Assets {
 	public static BufferedImage[] buttonStart, buttonSettings, buttonBack;
 	public static BufferedImage[] settingsMenuButton;
 	
-	public static Font font56, font28, font40;
+	public static Font font56, font28, font40,font100;
 	
 	public static void init() {
 		font56 = FontLoader.loadFont("res/fonts/slkscr.ttf",56);
 		font28 = FontLoader.loadFont("res/fonts/slkscr.ttf",28);
 		font40 = FontLoader.loadFont("res/fonts/slkscr.ttf",40);
+		font100 = FontLoader.loadFont("res/fonts/slkscr.ttf",100);
 		
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet2.png"));
 		SpriteSheet ogreSheet = new SpriteSheet(ImageLoader.loadImage("/textures/OgreSpreadsheet.png"));

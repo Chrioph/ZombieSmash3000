@@ -5,12 +5,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-
-
+import java.awt.image.BufferedImage;
 
 import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.HUDs.HUD;
 import dev.codenmore.tilegame.gfx.Assets;
+import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.worlds.World;
 import dev.codenmore.tilegame.worlds.WorldGenerator;
 
@@ -62,30 +62,31 @@ public class GameState extends State {
 		// TODO Auto-generated method stub
 		world.render(g);
 		hud.render(g);
+		checkPlayerDie(g);
+
+	}
+	
+	private void checkPlayerDie(Graphics g) {
 		if(handler.getWorld().getEntityManager().getPlayer().isDead()) {
 			if(!b) {
-				System.out.println();
 				timeUntilNextRender=System.currentTimeMillis()+10;
 				b=true;
 			}
-			paintComponent(g,v);
-			System.out.println(System.currentTimeMillis());
-			System.out.println(timeUntilNextRender);
+			paintComponent(Assets.deathScreen,g,v);
+			Text.drawString(g, "YOU DIED", 	handler.getWidth()/2, handler.getHeight()/2 + 200, true, Color.RED, Assets.font100);
 			if(System.currentTimeMillis()>timeUntilNextRender&&v<0.99) {
 				v+=0.01;
 				b=false;
 			}
 			handler.getWorld().getEntityManager().getPlayer().render(g);
 		}
-
 	}
 	
-	
-	public void paintComponent(Graphics g, float v) {
+	public void paintComponent(BufferedImage i,Graphics g, float v) {
 	    Graphics2D g2d = (Graphics2D)g;
 	    AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, v);
 	    g2d.setComposite(composite);
-	    g2d.drawImage(Assets.deathScreen, 0, 0, handler.getWidth(), handler.getHeight(),null);
+	    g2d.drawImage(i, 0, 0, handler.getWidth(), handler.getHeight(),null);
 	}
 	
 	private void listenExit() {
