@@ -84,7 +84,7 @@ public abstract class Enemy extends Creature {
 		if ( attackTimer < attackCooldown)
 			return;
 		if(ar.intersects(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f))) {
-			handler.getWorld().getEntityManager().getPlayer().hurt( (damage - (Math.min((handler.getWorld().getEntityManager().getPlayer().getArmor()),(damage-1)))));
+			handler.getWorld().getEntityManager().getPlayer().hurt( (Math.max(0,damage - (Math.min((handler.getWorld().getEntityManager().getPlayer().getArmor()),(damage-1))))));
 			handler.getWorld().getEntityManager().getPlayer().setArmor(Math.max(handler.getWorld().getEntityManager().getPlayer().getArmor()-1, 0));
 			attackTimer=0;
 		}

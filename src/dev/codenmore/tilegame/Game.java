@@ -96,7 +96,6 @@ public class Game implements Runnable{
 		}
 		bs = display.getCanvas().getBufferStrategy();
 		if(bs == null || afterScale) {
-			System.out.println("new Buffer strategy");
 			display.getCanvas().createBufferStrategy(3);
 			afterScale = false;
 			return;

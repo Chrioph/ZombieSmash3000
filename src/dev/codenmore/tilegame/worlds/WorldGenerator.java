@@ -59,7 +59,7 @@ public class WorldGenerator {
         world2();
     }
 
-    public World world1(){
+    private World world1(){
         World world1 = new World(1, handler,"res/worlds/world2.txt");
         EntityManager world1EnManager = new EntityManager(handler, player);
 
@@ -122,7 +122,7 @@ public class WorldGenerator {
         }
     }
 
-    public World world2()
+    private World world2()
     {
         World world2 = new World(2, handler,"res/worlds/world1.txt");
         EntityManager world2EnManager = new EntityManager(handler, player);

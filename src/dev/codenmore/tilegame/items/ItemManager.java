@@ -51,7 +51,6 @@ public class ItemManager {
 				b=true;
 			}
 		i.setPostion((int)(i.x + x + r1  ),(int) (i.y+ y + r2 ));	
-		System.out.println("Okay");
 		items.add(i);
 	}
 

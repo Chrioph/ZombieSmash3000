@@ -6,11 +6,15 @@ import java.awt.image.BufferedImage;
 public class Assets {
 	
 	public static BufferedImage dirt,grass,stone,finish;
-	public static BufferedImage player1,zombie, ogre;
+	public static BufferedImage player1,zombie, ogre, gravestone;
 	public static BufferedImage wood, sword, bow, rock, tree, heart, armor, healthPlus;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
-	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow;
+	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow,deathScreen;
+<<<<<<< Updated upstream
 	public static BufferedImage settingsBodyElement, settingsHeader;
+	
+=======
+>>>>>>> Stashed changes
 	private static final int width = 32,height =32;
 	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right, aDown, aLeft, aRight, aUp;;
 	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right, zaDown, zaLeft, zaRight, zaUp;
@@ -36,6 +40,9 @@ public class Assets {
 		settingsMenuButton[0] = ImageLoader.loadImage("/textures/SettingsChoiceButton.png");
 		settingsMenuButton[1] = ImageLoader.loadImage("/textures/SettingsButtonPressed.png");
 		inventoryScreen =ImageLoader.loadImage("/textures/inventoryScreen.png");
+		deathScreen = sheet.crop(width*10, 0, width, height);
+		
+		
 		player1 = sheet.crop(width*2, height, width, height); 
 		
 		dirt =     sheet.crop(width*2, 0, width, height);
@@ -60,6 +67,7 @@ public class Assets {
 		
 		//Player 1
 		player1 =  sheet.crop(width*2, height, width, height); 
+		gravestone = sheet.crop(width*9, height, width, height);
 		
 		player1_down = new BufferedImage[2];
 		player1_down[0]=sheet.crop( width*3 , height, width, height);
