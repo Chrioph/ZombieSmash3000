@@ -10,11 +10,13 @@ public class Assets {
 	public static BufferedImage wood, sword, bow, rock, tree, heart, armor, healthPlus;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
 	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow;
+	public static BufferedImage settingsBodyElement, settingsHeader;
 	private static final int width = 32,height =32;
 	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right, aDown, aLeft, aRight, aUp;;
 	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right, zaDown, zaLeft, zaRight, zaUp;
 	public static BufferedImage[] ogre_down , ogre_up, ogre_left, ogre_right, oaDown, oaLeft, oaRight, oaUp;
 	public static BufferedImage[] buttonStart, buttonSettings, buttonBack;
+	public static BufferedImage[] settingsMenuButton;
 	
 	public static Font font56, font28, font40;
 	
@@ -28,6 +30,11 @@ public class Assets {
 		
 		HUDWindow = ImageLoader.loadImage("/textures/HUDWindow.png");
 		settingsBackground = ImageLoader.loadImage("/textures/Settings_Screen2.png");
+		settingsBodyElement = ImageLoader.loadImage("/textures/SettingsBodyElement.png");
+		settingsHeader = ImageLoader.loadImage("/textures/SettingsSubPageHead.png");
+		settingsMenuButton = new BufferedImage[2];
+		settingsMenuButton[0] = ImageLoader.loadImage("/textures/SettingsChoiceButton.png");
+		settingsMenuButton[1] = ImageLoader.loadImage("/textures/SettingsButtonPressed.png");
 		inventoryScreen =ImageLoader.loadImage("/textures/inventoryScreen.png");
 		player1 = sheet.crop(width*2, height, width, height); 
 		
