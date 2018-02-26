@@ -25,7 +25,7 @@ public class Assets {
 		font56 = FontLoader.loadFont("/fonts/slkscr.ttf",56);
 		font28 = FontLoader.loadFont("/fonts/slkscr.ttf",28);
 		font40 = FontLoader.loadFont("/fonts/slkscr.ttf",40);
-        font100 = FontLoader.loadFont("res/fonts/slkscr.ttf",100);
+        font100 = FontLoader.loadFont("/fonts/slkscr.ttf",100);
 		
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet2.png"));
 		SpriteSheet ogreSheet = new SpriteSheet(ImageLoader.loadImage("/textures/OgreSpreadsheet.png"));
