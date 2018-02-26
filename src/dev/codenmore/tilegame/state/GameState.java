@@ -18,8 +18,8 @@ public class GameState extends State {
 	
 	
 	private boolean b=false;
-	private float timeUntilNextRender;
-	private float v = 0.2f;
+	private long timeUntilNextRender;
+	private float v = 0.01f;
 	
 	private World world;
 	private WorldGenerator worldGen;
@@ -64,13 +64,15 @@ public class GameState extends State {
 		hud.render(g);
 		if(handler.getWorld().getEntityManager().getPlayer().isDead()) {
 			if(!b) {
-				timeUntilNextRender=System.currentTimeMillis()+200;
+				System.out.println();
+				timeUntilNextRender=System.currentTimeMillis()+10;
 				b=true;
 			}
 			paintComponent(g,v);
-			System.out.println(System.currentTimeMillis()>timeUntilNextRender);
-			if(System.currentTimeMillis()>timeUntilNextRender&&v<1.0) {
-				v+=0.2;
+			System.out.println(System.currentTimeMillis());
+			System.out.println(timeUntilNextRender);
+			if(System.currentTimeMillis()>timeUntilNextRender&&v<0.99) {
+				v+=0.01;
 				b=false;
 			}
 			handler.getWorld().getEntityManager().getPlayer().render(g);
