@@ -25,7 +25,7 @@ public class GameState extends State {
 	public GameState(Handler handler) {
 		super(handler);
 		this.worldGen = handler.getGame().getWorldGenerator();
-		world= this.worldGen.world1();
+		world= this.worldGen.generateWorldRooms(12837);
 		handler.setWorld(world);
 
 		hud=new HUD(handler);

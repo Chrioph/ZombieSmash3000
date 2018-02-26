@@ -11,9 +11,12 @@ import dev.codenmore.tilegame.entity.creatures.Enemies.Zombie;
 import dev.codenmore.tilegame.entity.creatures.Player;
 import dev.codenmore.tilegame.entity.statics.Rock;
 import dev.codenmore.tilegame.entity.statics.Tree;
+import dev.codenmore.tilegame.tiles.Tile;
 import dev.codenmore.tilegame.worlds.util.Cell;
+import dev.codenmore.tilegame.worlds.util.Map;
+import dev.codenmore.tilegame.worlds.util.Room;
 
-import java.lang.reflect.Array;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -53,7 +56,7 @@ public class WorldGenerator {
         UP(0), DOWN(1), LEFT(2), RIGHT(3);
 
         private int value;
-        private Directions(int value) {
+        Direction(int value) {
             this.value = value;
         }
 
@@ -106,6 +109,7 @@ public class WorldGenerator {
         world1.setEntityManager(world1EnManager);
 
         worlds.add(world1);
+        printGrid(world1.getTiles());
         applyMods();
 
         world1.start();
@@ -114,14 +118,102 @@ public class WorldGenerator {
     }
 
 
+    public World generateWorldRooms(long seed)
+    {
+        int[][] tiles = new int[100][100];
 
-    public void generateWorld(long seed)
+        // generate start room, always 4x4
+        Random rand = new Random(seed);
+
+        // we want the room to be somewhere in bounds, those are the starting points for the room
+        int spawnRoomX = rand.nextInt(27) + 1;
+        int spawnRoomY = rand.nextInt(27) + 1;
+
+        ArrayList<Room> rooms = new ArrayList<Room>();
+        Room spawnRoom = new Room(spawnRoomX, spawnRoomY, 4, 4);
+        rooms.add(spawnRoom);
+
+        // we default every tile to a stone tile, then carve into the map
+        for(int i = 0; i<tiles.length;i++) {
+            for(int j = 0; j<tiles[i].length;j++) {
+                tiles[i][j] = 2;
+            }
+        }
+
+        for(int i = 0; i<4; i++) {
+            tiles[spawnRoomX+i][spawnRoomY+i] = 0;
+        }
+        // Calculate player start coordinates
+        int playerSpawnX = (spawnRoomX +1)* Tile.TILEWIDTH;
+        int playerSpawnY = (spawnRoomY +1)* Tile.TILEHEIGHT;
+
+        // generate rooms for the space that is left
+        // technically, the start room reserves 5x5 space, because the outer line has to be painted
+        // in this case, we have 30x30 space that we can distribute
+
+
+        for(int i = 0; i<1000; i++) {
+            int size = (rand.nextInt(10)+1) * 2 + 1;
+            int rectangularity = rand.nextInt(1+size)*2;
+            int width = size, height = size;
+            boolean overlaps = false;
+            if(rand.nextInt(10) < 5) {
+                width += rectangularity;
+            }else {
+                height += rectangularity;
+            }
+
+            int x = rand.nextInt(100-width);
+            int y = rand.nextInt(100-height);
+
+            Room newRoom = new Room(x,y,width,height);
+            for(Room room : rooms) {
+                if(room.intersects(newRoom)) {
+                    overlaps = true;
+                    break;
+                }
+            }
+            if(overlaps) {
+                continue;
+            }
+
+            rooms.add(newRoom);
+
+        }
+
+        for(Room room : rooms) {
+            for(int i = 0; i<room.width; i++) {
+                for(int j = 0; j<room.height; j++) {
+                    tiles[room.x+i][room.y+j] = 0;
+                }
+            }
+        }
+
+        World rWorld = new World(handler,tiles, playerSpawnX, playerSpawnY);
+        EntityManager world1EnManager = new EntityManager(handler, player);
+
+        rWorld.setEntityManager(world1EnManager);
+        printGrid(tiles);
+        Map myMap = new Map(tiles);
+        myMap.renderMapImage();
+        worlds.add(rWorld);
+        applyMods();
+
+
+        rWorld.start();
+        return rWorld;
+
+
+    }
+
+
+    public World generateWorldGrowingTree(long seed)
     {
         Random rand = new Random(seed);
         // Generate tileset for world
 
         //max size for world
-        int[][] tiles = new int[77][77];
+        int[][] tiles = new int[32][32];
         // outline should be completely solid
         for(int i = 0; i<tiles.length;i++) {
             tiles[0][i] = 2;
@@ -130,18 +222,25 @@ public class WorldGenerator {
             tiles[i][tiles.length-1] = 2;
         }
 
-        int rand1 = rand.nextInt(48) + 1;
-        int rand2 = rand.nextInt(48) + 1;
-        int[][] visitedCells = new int[48][48];
+        int rand1 = rand.nextInt(10);
+        int rand2 = rand.nextInt(10);
+        int[][] visitedCells = new int[10][10];
         for(int i = 0; i<visitedCells.length;i++) {
             for(int j = 0; j<visitedCells[i].length; j++) {
                 visitedCells[i][j] = 0;
             }
         }
         Cell cell;
+        Cell nCell;
+        int rand3;
 
-        ArrayList<Cell> cells = new ArrayList<Cell>();
-        ArrayList<Direction> directions = new ArrayList<Direction>();
+        ArrayList<Cell> cells;
+        cells = new ArrayList<Cell>();
+        ArrayList<Direction> directions;
+        directions = new ArrayList<Direction>();
+        boolean nextFound;
+
+
         directions.add(Direction.UP);
         directions.add(Direction.DOWN);
         directions.add(Direction.RIGHT);
@@ -149,54 +248,191 @@ public class WorldGenerator {
 
         cells.add(new Cell(rand1, rand2));
         visitedCells[rand1][rand2] = 1;
+        System.out.println("Start Cell: " + rand1 + "/" + rand2);
+
+        //
+        tiles[getTripleCoords(rand1)][getTripleCoords(rand2)] = 0;
         while(!cells.isEmpty()) {
-            int rand3 = rand.nextInt(cells.size());
+            nextFound = false;
+            rand3 = rand.nextInt(cells.size());
             cell = cells.get(rand3);
             Collections.shuffle(directions, rand);
             for(int i = 0; i<directions.size(); i++) {
                 if(directions.get(i).getValue() == 0) { // UP
                     if(cell.y-1 >= 0) {
                         if(visitedCells[cell.x][cell.y-1] == 0) {
-                            cells.add(new Cell(cell.x, cell.y-1));
+                            // draw path in tiles
+                            // when moving up we need to set tiles left and right
+                            // last position is reserved for outer wall
+
+                            tiles[getTripleCoords(cell.x)][getTripleCoords(cell.y-1)] = 0;
+                            tiles[getTripleCoords(cell.x)][getTripleCoords(cell.y-1)+1] = 0;
+                            tiles[getTripleCoords(cell.x)][getTripleCoords(cell.y-1)+2] = 0;
+
+
+                            nCell = new Cell(cell.x, cell.y-1);
+                            cells.add(nCell);
+
+                            if(getTripleCoords(nCell.x) + 1 < tiles.length - 1) {
+                                tiles[getTripleCoords(nCell.x) + 1][getTripleCoords(nCell.y)] = 2;
+                                tiles[getTripleCoords(nCell.x) + 1][getTripleCoords(nCell.y)+1] = 2;
+                                tiles[getTripleCoords(nCell.x) + 1][getTripleCoords(nCell.y)+2] = 2;
+                            }else if(getTripleCoords(nCell.x) - 1 > 0) {
+                                tiles[getTripleCoords(nCell.x) - 1][getTripleCoords(nCell.y)] = 2;
+                                tiles[getTripleCoords(nCell.x) - 1][getTripleCoords(nCell.y)+1] = 2;
+                                tiles[getTripleCoords(nCell.x) - 1][getTripleCoords(nCell.y)+2] = 2;
+                            }
+
+                            visitedCells[nCell.x][nCell.y] = 1;
+                            System.out.println("New Cell (" + nCell.x + "/" + nCell.y +")");
+                            nextFound = true;
+                            break;
                         }
                     }
 
                 }else if(directions.get(i).getValue() == 1) { // DOWN
-                    if(cell.y+1 <= 47) {
+                    if(cell.y+1 <= visitedCells.length-1) {
                         if(visitedCells[cell.x][cell.y+1] == 0) {
-                            cells.add(new Cell(cell.x, cell.y+1));
+                            // draw path in tiles
+                            // when moving up we need to set tiles left and right
+                            // last position is reserved for outer wall
+
+                            tiles[getTripleCoords(cell.x)][getTripleCoords(cell.y+1)] = 0;
+                            tiles[getTripleCoords(cell.x)][getTripleCoords(cell.y+1)-1] = 0;
+                            tiles[getTripleCoords(cell.x)][getTripleCoords(cell.y+1)-2] = 0;
+                            nCell = new Cell(cell.x, cell.y+1);
+                            cells.add(nCell);
+
+                            if(getTripleCoords(nCell.x) + 1 < tiles.length - 1) {
+                                tiles[getTripleCoords(nCell.x) + 1][getTripleCoords(nCell.y)] = 2;
+                                tiles[getTripleCoords(nCell.x) + 1][getTripleCoords(nCell.y)-1] = 2;
+                                tiles[getTripleCoords(nCell.x) + 1][getTripleCoords(nCell.y)-2] = 2;
+                            }else if(getTripleCoords(nCell.x) - 1 > 0) {
+                                tiles[getTripleCoords(nCell.x) - 1][getTripleCoords(nCell.y)] = 2;
+                                tiles[getTripleCoords(nCell.x) - 1][getTripleCoords(nCell.y)-1] = 2;
+                                tiles[getTripleCoords(nCell.x) - 1][getTripleCoords(nCell.y)-2] = 2;
+                            }
+
+                            visitedCells[nCell.x][nCell.y] = 1;
+                            System.out.println("New Cell (" + nCell.x + "/" + nCell.y +")");
+                            nextFound = true;
+                            break;
                         }
                     }
 
                 }else if(directions.get(i).getValue() == 2) { // LEFT
                     if(cell.x-1 >= 0) {
                         if(visitedCells[cell.x-1][cell.y] == 0) {
-                            cells.add(new Cell(cell.x-1, cell.y));
+                            // draw path in tiles
+                            // when moving up we need to set tiles left and right
+                            // last position is reserved for outer wall
+
+                            tiles[getTripleCoords(cell.x-1)][getTripleCoords(cell.y)] = 0;
+                            tiles[getTripleCoords(cell.x-1)+1][getTripleCoords(cell.y)] = 0;
+                            tiles[getTripleCoords(cell.x-1)+2][getTripleCoords(cell.y)] = 0;
+
+                            nCell = new Cell(cell.x-1, cell.y);
+                            cells.add(nCell);
+
+                            if(getTripleCoords(nCell.y) + 1 < tiles.length - 1) {
+                                tiles[getTripleCoords(nCell.x)][getTripleCoords(nCell.y)+1] = 2;
+                                tiles[getTripleCoords(nCell.x)+1][getTripleCoords(nCell.y)+1] = 2;
+                                tiles[getTripleCoords(nCell.x)+2][getTripleCoords(nCell.y)+1] = 2;
+                            }else if(getTripleCoords(nCell.y) - 1 > 0) {
+                                tiles[getTripleCoords(nCell.x)][getTripleCoords(nCell.y)-1] = 2;
+                                tiles[getTripleCoords(nCell.x)+1][getTripleCoords(nCell.y)-1] = 2;
+                                tiles[getTripleCoords(nCell.x)+2][getTripleCoords(nCell.y)-1] = 2;
+                            }
+
+                            visitedCells[nCell.x][nCell.y] = 1;
+                            System.out.println("New Cell (" + nCell.x + "/" + nCell.y +")");
+                            nextFound = true;
+                            break;
                         }
                     }
 
                 }else if(directions.get(i).getValue() == 3) { // RIGHT
-                    if(cell.x+1 <= 47) {
+                    if(cell.x+1 <= visitedCells.length-1) {
                         if(visitedCells[cell.x+1][cell.y] == 0) {
-                            cells.add(new Cell(cell.x+1, cell.y));
+                            // draw path in tiles
+                            // when moving up we need to set tiles left and right
+                            // last position is reserved for outer wall
+
+                            tiles[getTripleCoords(cell.x+1)][getTripleCoords(cell.y)] = 0;
+                            tiles[getTripleCoords(cell.x+1)-1][getTripleCoords(cell.y)] = 0;
+                            tiles[getTripleCoords(cell.x+1)-2][getTripleCoords(cell.y)] = 0;
+
+                            nCell = new Cell(cell.x+1, cell.y);
+                            cells.add(nCell);
+                            visitedCells[nCell.x][nCell.y] = 1;
+                            if(getTripleCoords(nCell.y) + 1 < tiles.length - 1) {
+                                tiles[getTripleCoords(nCell.x)][getTripleCoords(nCell.y)+1] = 2;
+                                tiles[getTripleCoords(nCell.x)-1][getTripleCoords(nCell.y)+1] = 2;
+                                tiles[getTripleCoords(nCell.x)-2][getTripleCoords(nCell.y)+1] = 2;
+                            }else if(getTripleCoords(nCell.y) - 1 > 0) {
+                                tiles[getTripleCoords(nCell.x)][getTripleCoords(nCell.y)-1] = 2;
+                                tiles[getTripleCoords(nCell.x)-1][getTripleCoords(nCell.y)-1] = 2;
+                                tiles[getTripleCoords(nCell.x)-2][getTripleCoords(nCell.y)-1] = 2;
+                            }
+                            System.out.println("New Cell (" + nCell.x + "/" + nCell.y +")");
+                            nextFound = true;
+                            break;
                         }
                     }
 
                 }
             }
-            // there was no available cell found
-            cells.remove(cell);
+            if(!nextFound) {
+                // there was no available cell found
+                cells.remove(cell);
+            }
+
 
 
         }
 
         // END
 
-        //World rWorld = new World(handler, "");
+        World rWorld = new World(handler,tiles, 300, 300);
+        EntityManager world1EnManager = new EntityManager(handler, player);
+
+        rWorld.setEntityManager(world1EnManager);
+        printGrid(tiles);
+        worlds.add(rWorld);
+        applyMods();
 
 
-        //return rWorld;
+        rWorld.start();
+        return rWorld;
 
+    }
+
+    /**
+     * Because of index starting at 0 we need an extra function to get the real 3 times position of coords
+     *
+     * Example:
+     * We want to edit one array at the 12th position and another one on the 36th.
+     * To access these positions, we would need for the first array an index of 11, for the second an index of 35
+     * which means we can't just triple the first index to get our second one
+     * Hence, we triple the first index and add 2 (3*11 = 33 + 2 = 35)
+     * @param i
+     * @return
+     */
+    private int getTripleCoords(int i)
+    {
+        return (i*3)+2;
+    }
+
+    private void printGrid(int[][] tiles)
+    {
+        for(int i = 0; i < tiles.length; i++)
+        {
+            for(int j = 0; j < tiles[i].length; j++)
+            {
+                System.out.printf("%5d ", tiles[i][j]);
+            }
+            System.out.println();
+        }
     }
 
 

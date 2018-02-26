@@ -55,6 +55,9 @@ public class World {
 		this.spawnX = spawnX;
 		this.spawnY = spawnY;
 		this.tiles = tiles;
+		this.width = this.tiles.length;
+		this.height = this.tiles[0].length;
+		itemManager = new ItemManager ( handler);
 
 	}
 
@@ -151,7 +154,10 @@ public class World {
 		
 	}
 
-	
+	public int[][] getTiles()
+	{
+		return tiles;
+	}
 	public int getHEight() {
 		return height;
 	}

@@ -78,7 +78,6 @@ public class Game implements Runnable{
 		handler = new Handler(this);
 		camera= new GameCamera(handler, 0, 0);
 		worldGen = new WorldGenerator(handler, new Player(handler,0,0));
-		worldGen.generateWorld(1);
 
 		
 		
