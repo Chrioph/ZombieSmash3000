@@ -60,7 +60,7 @@ public class WorldGenerator {
     }
 
     private World world1(){
-        World world1 = new World(1, handler,"res/worlds/world2.txt");
+        World world1 = new World(1, handler,"/worlds/world2.txt");
         EntityManager world1EnManager = new EntityManager(handler, player);
 
         world1EnManager.addEntity(new Tree(handler, 300, 450));
@@ -124,7 +124,7 @@ public class WorldGenerator {
 
     private World world2()
     {
-        World world2 = new World(2, handler,"res/worlds/world1.txt");
+        World world2 = new World(2, handler,"/worlds/world1.txt");
         EntityManager world2EnManager = new EntityManager(handler, player);
 
         //Add Entities here
