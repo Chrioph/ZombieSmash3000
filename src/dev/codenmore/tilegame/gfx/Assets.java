@@ -10,11 +10,8 @@ public class Assets {
 	public static BufferedImage wood, sword, bow, rock, tree, heart, armor, healthPlus;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
 	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow,deathScreen;
-<<<<<<< Updated upstream
 	public static BufferedImage settingsBodyElement, settingsHeader;
 	
-=======
->>>>>>> Stashed changes
 	private static final int width = 32,height =32;
 	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right, aDown, aLeft, aRight, aUp;;
 	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right, zaDown, zaLeft, zaRight, zaUp;

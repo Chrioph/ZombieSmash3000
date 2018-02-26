@@ -17,8 +17,10 @@ import dev.codenmore.tilegame.worlds.WorldGenerator;
 public class GameState extends State {
 	
 	
+	private boolean b=false;
+	private float timeUntilNextRender;
+	private float v = 0.2f;
 	
-
 	private World world;
 	private WorldGenerator worldGen;
 
@@ -61,37 +63,17 @@ public class GameState extends State {
 		world.render(g);
 		hud.render(g);
 		if(handler.getWorld().getEntityManager().getPlayer().isDead()) {
-			float v = 0.2f;
-			paintComponent(g,v);
-			v+=0.2;
-			float timeUntilnextRender=System.currentTimeMillis()+500000;
-			while(System.currentTimeMillis()<timeUntilnextRender) {
-				
+			if(!b) {
+				timeUntilNextRender=System.currentTimeMillis()+200;
+				b=true;
 			}
 			paintComponent(g,v);
-			handler.getWorld().getEntityManager().getPlayer().render(g);
-			v+=0.2;
-			timeUntilnextRender=System.currentTimeMillis()+500000;
-			while(System.currentTimeMillis()<timeUntilnextRender) {
-				
+			System.out.println(System.currentTimeMillis()>timeUntilNextRender);
+			if(System.currentTimeMillis()>timeUntilNextRender&&v<1.0) {
+				v+=0.2;
+				b=false;
 			}
-			paintComponent(g,v);
 			handler.getWorld().getEntityManager().getPlayer().render(g);
-			v+=0.2;
-			timeUntilnextRender=System.currentTimeMillis()+500000;
-			while(System.currentTimeMillis()<timeUntilnextRender) {
-				
-			}
-			paintComponent(g,v);
-			handler.getWorld().getEntityManager().getPlayer().render(g);
-			v+=0.2;
-			timeUntilnextRender=System.currentTimeMillis()+500000;
-			while(System.currentTimeMillis()<timeUntilnextRender) {
-				
-			}
-			paintComponent(g,v);
-			handler.getWorld().getEntityManager().getPlayer().render(g);
-			
 		}
 
 	}
