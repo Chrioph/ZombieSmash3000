@@ -25,7 +25,8 @@ public class GameState extends State {
 	public GameState(Handler handler) {
 		super(handler);
 		this.worldGen = handler.getGame().getWorldGenerator();
-		world= this.worldGen.world1();
+		world= this.worldGen.getFirstWorld();
+		world.start();
 		handler.setWorld(world);
 
 		hud=new HUD(handler);
@@ -40,8 +41,13 @@ public class GameState extends State {
 		if(handler.getWorld().getEntityManager().getPlayer().collisionWithFinish(
 				(int)(handler.getWorld().getEntityManager().getPlayer().getX() /128),
 				(int) (handler.getWorld().getEntityManager().getPlayer().getY() /128 ))) {
-			this.world=this.worldGen.world2();
-			handler.setWorld(this.world);
+			World nextWorld;
+			if((nextWorld = this.worldGen.getNextWorld()) != null) {
+				this.world=nextWorld;
+				handler.setWorld(this.world);
+				this.world.start();
+			}
+
 		}
 	}
 
