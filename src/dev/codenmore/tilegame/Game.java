@@ -210,7 +210,6 @@ public class Game implements Runnable{
 		Settings.setResolutionY(height);
 		Settings.save();
 		handler.getGame().getMouseManager().getUIManager().updateAllBounds();
-		System.out.println(Settings.getScaleX() + "/" + Settings.getScaleY());
 		display.resize(width, height);
 		display.getFrame().addKeyListener(keyManager);
 		display.getFrame().addMouseListener(mouseManager);

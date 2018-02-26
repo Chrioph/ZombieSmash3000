@@ -50,7 +50,7 @@ public class ItemManager {
 			if (!i.collisionWithTile((int)(i.x + r1 ), (int) (i.y + r2 )))
 				b=true;
 			}
-		i.setPostion((int)(i.x + x + r1  ),(int) (i.y+ y + r2 ));	
+		i.setPostion((int)(i.x + x + r1  ),(int) (i.y+ y + r2 ));
 		items.add(i);
 	}
 
