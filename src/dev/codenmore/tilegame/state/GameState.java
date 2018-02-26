@@ -37,6 +37,12 @@ public class GameState extends State {
 		// TODO Auto-generated method stub
 		world.tick();
 		listenExit();
+		if(handler.getWorld().getEntityManager().getPlayer().collisionWithFinish(
+				(int)(handler.getWorld().getEntityManager().getPlayer().getX() /128),
+				(int) (handler.getWorld().getEntityManager().getPlayer().getY() /128 ))) {
+			this.world=this.worldGen.world2();
+			handler.setWorld(this.world);
+		}
 	}
 
 	@Override

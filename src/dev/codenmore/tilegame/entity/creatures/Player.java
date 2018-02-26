@@ -238,6 +238,10 @@ public class Player extends Creature{
 		return true;
 	}
 	
+	public boolean collisionWithFinish(int x, int y) {
+		return handler.getWorld().getTile(x, y).isFinish();
+	}
+	
 	private BufferedImage getCurrentAnimationFrame() {
 		if (xMove<0)
 			return animLeft.getCurrentFrame();

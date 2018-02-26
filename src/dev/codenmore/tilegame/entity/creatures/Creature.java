@@ -144,6 +144,7 @@ public abstract class Creature extends Entity{
 	}
 	
 	
+	
 	//GETTER and SETTERS
 
 	public int getHealth() {

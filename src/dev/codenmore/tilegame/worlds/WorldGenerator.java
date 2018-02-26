@@ -54,8 +54,7 @@ public class WorldGenerator {
         worlds = new ArrayList<World>();
     }
 
-    public World world1()
-    {
+    public World world1(){
         World world1 = new World(handler,"res/worlds/world2.txt");
         EntityManager world1EnManager = new EntityManager(handler, player);
 
@@ -86,7 +85,7 @@ public class WorldGenerator {
 
 
         world1.setEntityManager(world1EnManager);
-
+        
         worlds.add(world1);
         applyMods();
 
@@ -95,7 +94,22 @@ public class WorldGenerator {
         return world1;
     }
 
+    public World world2()
+    {
+        World world2 = new World(handler,"res/worlds/world1.txt");
+        EntityManager world2EnManager = new EntityManager(handler, player);
 
+        //Add Entities here
+
+        world2.setEntityManager(world2EnManager);
+
+        worlds.add(world2);
+        applyMods();
+
+        world2.start();
+
+        return world2;
+    }
 
     /**
      * If there is a difficulty with the given name, resets difficulty modifications with modifications from chosen difficulty
