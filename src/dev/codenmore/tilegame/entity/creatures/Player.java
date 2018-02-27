@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.Settings;
+import dev.codenmore.tilegame.crafting.CraftingScreen;
 import dev.codenmore.tilegame.entity.Entity;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
@@ -41,6 +42,7 @@ public class Player extends Creature{
 	private Arrow arrow;
 	
 	private Inventory inventory;
+	private CraftingScreen craftingScreen;
 	
 	public Player(Handler handler,float x, float y) {
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
@@ -66,7 +68,7 @@ public class Player extends Creature{
 		animARight= new Animation(400, Assets.aRight);
 		
 		inventory=new Inventory(handler);
-		
+		craftingScreen=new CraftingScreen(handler);
 	}
 
 	@Override
@@ -91,6 +93,7 @@ public class Player extends Creature{
 		
 		
 		inventory.tick();
+		craftingScreen.tick();
 	}
 	
 	 private void checkAlive() {
@@ -196,7 +199,7 @@ public class Player extends Creature{
 		xMove=0;
 		yMove=0;
 		
-		if(inventory.isActive())
+		if(inventory.isActive()||craftingScreen.isActive())
 			return;
 		xAttack=0;
 		yAttack=0;
@@ -243,6 +246,7 @@ public class Player extends Creature{
 	
 	public void postRender(Graphics g) {
 		inventory.render(g);
+		craftingScreen.render(g);
 	}
 	
 	public boolean isPlayer() {
@@ -350,6 +354,14 @@ public class Player extends Creature{
 
 	public void setDead(boolean isDead) {
 		this.isDead = isDead;
+	}
+
+	public CraftingScreen getCraftingScreen() {
+		return craftingScreen;
+	}
+
+	public void setCraftingScreen(CraftingScreen craftingScreen) {
+		this.craftingScreen = craftingScreen;
 	}
 	
 	

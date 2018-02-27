@@ -5,11 +5,11 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 	
-	public static BufferedImage dirt,grass,stone,finish;
+	public static BufferedImage dirt,grass,stone,finish,solidWood,wood;
 	public static BufferedImage player1,zombie, ogre, gravestone;
-	public static BufferedImage wood, sword, bow, rock, tree, heart, armor, healthPlus;
+	public static BufferedImage log, sword, bow, rock, tree, heart, armor, healthPlus;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
-	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow,deathScreen;
+	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow,deathScreen,craftingScreen;
 	public static BufferedImage settingsBodyElement, settingsHeader;
 	
 	private static final int width = 32,height =32;
@@ -39,17 +39,20 @@ public class Assets {
 		settingsMenuButton[1] = ImageLoader.loadImage("/textures/SettingsButtonPressed.png");
 		inventoryScreen =ImageLoader.loadImage("/textures/inventoryScreen.png");
 		deathScreen = sheet.crop(width*10, 0, width, height);
+		craftingScreen =ImageLoader.loadImage("/textures/CraftingScreen.png");
 		
 		
 		player1 = sheet.crop(width*2, height, width, height); 
 		
+		wood=      sheet.crop(width*10, height, width, height);
+		solidWood= sheet.crop(width*11, 0, width, height);
 		dirt =     sheet.crop(width*2, 0, width, height);
 		grass =    sheet.crop(width*3, 0, width, height);
 		stone =    sheet.crop(0, height, width, height);
 		finish=    sheet.crop(width*8, height, width, height);
 		
 		tree =     sheet.crop(width,height,width,height);
-		wood =     sheet.crop(width, 0, width, height);
+		log =     sheet.crop(width, 0, width, height);
 		rock =     sheet.crop(0, 0, width, height);
 		sword=     sheet.crop(width*3, height*3, width, height);
 		bow  =     sheet.crop(width*2, height*6, width, height);

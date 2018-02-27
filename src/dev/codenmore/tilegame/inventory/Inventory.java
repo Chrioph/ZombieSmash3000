@@ -32,8 +32,8 @@ public class Inventory {
 	public Inventory(Handler handler) {
 		this.handler=handler;
 		inventoryItems = new ArrayList<Item>();
-		
-		
+		inventoryItems.add(Item.logItem);
+		inventoryItems.add(Item.rockItem);
 	}
 	
 	
@@ -82,7 +82,7 @@ public class Inventory {
 	public void addItem(Item item) {
 		for (Item i: inventoryItems) {
 			if(i.getId()==item.getId()){
-				i.setCount(i.getCount()+item.getCount());
+				i.setCount(i.getCount()+item.getCount()+1);
 				return;
 			}
 		}
@@ -92,6 +92,16 @@ public class Inventory {
 
 	//Getters and Setters
 	
+	public ArrayList<Item> getInventoryItems() {
+		return inventoryItems;
+	}
+
+
+	public void setInventoryItems(ArrayList<Item> inventoryItems) {
+		this.inventoryItems = inventoryItems;
+	}
+
+
 	public Handler getHandler() {
 		return handler;
 	}
