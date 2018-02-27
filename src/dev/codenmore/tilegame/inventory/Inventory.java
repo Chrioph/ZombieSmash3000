@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
+import dev.codenmore.tilegame.items.CraftableItem;
 import dev.codenmore.tilegame.items.Item;
 
 public class Inventory {
@@ -34,6 +35,8 @@ public class Inventory {
 		inventoryItems = new ArrayList<Item>();
 		inventoryItems.add(Item.logItem);
 		inventoryItems.add(Item.rockItem);
+		inventoryItems.add(CraftableItem.woodItem);
+		inventoryItems.add(CraftableItem.solidWoodItem);
 	}
 	
 	

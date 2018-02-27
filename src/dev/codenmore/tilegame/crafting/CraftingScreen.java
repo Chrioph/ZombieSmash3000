@@ -29,7 +29,7 @@ public class CraftingScreen {
 			craftImageWidth= 96, 
 			craftImageHeight=96;
 	
-	private int resCountX=  1550, resCountY= 210;
+	private int resCountX=  1575, resCountY= 210;
 	
 	private int selectedItem=0;
 	
@@ -49,13 +49,15 @@ public class CraftingScreen {
 			active=!active;
 		if(!active)
 			return;
-		 if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_W))
+		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ENTER))
+			craftItem();
+		if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_W))
 			 selectedItem--;
-		 if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_S))
+		if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_S))
 			 selectedItem++;
-		 if (selectedItem<0)
+		if (selectedItem<0)
 			 selectedItem= craftableItems.size()-1;
-		 else if (selectedItem >= craftableItems.size())
+		else if (selectedItem >= craftableItems.size())
 			 selectedItem=0;
 	}
 	
@@ -64,6 +66,8 @@ public class CraftingScreen {
 			return;
 		
 		g.drawImage(Assets.craftingScreen, invX,invY, invWidth, invHeight, null);
+		Text.drawString(g, "Press Enter", craftImageX+50, craftImageY+150, true, Color.WHITE, Assets.font28);
+		Text.drawString(g, "to craft", craftImageX+50, craftImageY+150+invListSpacing, true, Color.WHITE, Assets.font28);
 		int len = craftableItems.size();
 		if(len == 0) {
 			System.out.println("return");
@@ -97,6 +101,22 @@ public class CraftingScreen {
 		}
 		
 	}
+	
+	private void craftItem() {
+		for (int j=0;j<craftableItems.get(selectedItem).getLen();j++) {	
+			if (craftableItems.get(selectedItem).getResources(j)  <=  
+					handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().get(j).getCount()) {
+				for (int i=0;i<craftableItems.get(selectedItem).getResources(j);i++) {
+					handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().get(j).
+					setCount(handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().get(j).getCount() - 1);;
+				}
+			}
+			else return;
+		}
+		handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().add(craftableItems.get(selectedItem));
+	
+	}
+	
 	public boolean isActive() {
 		return active;
 	}
