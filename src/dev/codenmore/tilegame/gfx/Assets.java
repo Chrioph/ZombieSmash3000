@@ -5,35 +5,48 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 	
-	public static BufferedImage dirt,grass,stone;
-	public static BufferedImage player1,zombie, ogre;
+	public static BufferedImage dirt,grass,stone,finish;
+	public static BufferedImage player1,zombie, ogre, gravestone;
 	public static BufferedImage wood, sword, bow, rock, tree, heart, armor, healthPlus;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
-	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow;
+	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow,deathScreen;
+	public static BufferedImage settingsBodyElement, settingsHeader;
+	
 	private static final int width = 32,height =32;
 	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right, aDown, aLeft, aRight, aUp;;
 	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right, zaDown, zaLeft, zaRight, zaUp;
 	public static BufferedImage[] ogre_down , ogre_up, ogre_left, ogre_right, oaDown, oaLeft, oaRight, oaUp;
 	public static BufferedImage[] buttonStart, buttonSettings, buttonBack;
+	public static BufferedImage[] settingsMenuButton;
 	
-	public static Font font56, font28, font40;
+	public static Font font56, font28, font40,font100;
 	
 	public static void init() {
-		font56 = FontLoader.loadFont("res/fonts/slkscr.ttf",56);
-		font28 = FontLoader.loadFont("res/fonts/slkscr.ttf",28);
-		font40 = FontLoader.loadFont("res/fonts/slkscr.ttf",40);
+		font56 = FontLoader.loadFont("/fonts/slkscr.ttf",56);
+		font28 = FontLoader.loadFont("/fonts/slkscr.ttf",28);
+		font40 = FontLoader.loadFont("/fonts/slkscr.ttf",40);
+        font100 = FontLoader.loadFont("/fonts/slkscr.ttf",100);
 		
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet2.png"));
 		SpriteSheet ogreSheet = new SpriteSheet(ImageLoader.loadImage("/textures/OgreSpreadsheet.png"));
 		
 		HUDWindow = ImageLoader.loadImage("/textures/HUDWindow.png");
 		settingsBackground = ImageLoader.loadImage("/textures/Settings_Screen2.png");
+		settingsBodyElement = ImageLoader.loadImage("/textures/SettingsBodyElement.png");
+		settingsHeader = ImageLoader.loadImage("/textures/SettingsSubPageHead.png");
+		settingsMenuButton = new BufferedImage[2];
+		settingsMenuButton[0] = ImageLoader.loadImage("/textures/SettingsChoiceButton.png");
+		settingsMenuButton[1] = ImageLoader.loadImage("/textures/SettingsButtonPressed.png");
 		inventoryScreen =ImageLoader.loadImage("/textures/inventoryScreen.png");
+		deathScreen = sheet.crop(width*10, 0, width, height);
+		
+		
 		player1 = sheet.crop(width*2, height, width, height); 
 		
 		dirt =     sheet.crop(width*2, 0, width, height);
 		grass =    sheet.crop(width*3, 0, width, height);
 		stone =    sheet.crop(0, height, width, height);
+		finish=    sheet.crop(width*8, height, width, height);
 		
 		tree =     sheet.crop(width,height,width,height);
 		wood =     sheet.crop(width, 0, width, height);
@@ -52,6 +65,7 @@ public class Assets {
 		
 		//Player 1
 		player1 =  sheet.crop(width*2, height, width, height); 
+		gravestone = sheet.crop(width*9, height, width, height);
 		
 		player1_down = new BufferedImage[2];
 		player1_down[0]=sheet.crop( width*3 , height, width, height);

@@ -32,6 +32,7 @@ public class Player extends Creature{
 	private int maxArmor=5;
 	private int maxHealth=10;
 	private int rangedDamage=2;
+	private boolean isDead=false;
 	
 
 	private boolean rangedToggled=false;
@@ -78,7 +79,7 @@ public class Player extends Creature{
 		animAUp.tick();
 		animALeft.tick();
 		animARight.tick();
-		
+		checkAlive();
 		
 		getInput();
 		
@@ -91,12 +92,22 @@ public class Player extends Creature{
 		
 		inventory.tick();
 	}
+	
+	 private void checkAlive() {
+		 if (health<=0) {
+			 health=0;
+			 isDead=true;
+		 }
+		 
+	 }
+	 
 	private void checkToggledRangeAttacks() {
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
 			rangedToggled=!rangedToggled;
 		}
 		
 	}
+	
 	private void checkAttacks() {
 		attackTimer += System.currentTimeMillis() - lastAttackTimer;
 		lastAttackTimer=System.currentTimeMillis();
@@ -238,7 +249,14 @@ public class Player extends Creature{
 		return true;
 	}
 	
+	public boolean collisionWithFinish(int x, int y) {
+		return handler.getWorld().getTile(x, y).isFinish();
+	}
+	
 	private BufferedImage getCurrentAnimationFrame() {
+		if(isDead)
+			return Assets.gravestone;
+		
 		if (xMove<0)
 			return animLeft.getCurrentFrame();
 		if (xMove>0)
@@ -324,6 +342,14 @@ public class Player extends Creature{
 
 	public void setRangedDamage(int rangedDamage) {
 		this.rangedDamage = rangedDamage;
+	}
+
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void setDead(boolean isDead) {
+		this.isDead = isDead;
 	}
 	
 	

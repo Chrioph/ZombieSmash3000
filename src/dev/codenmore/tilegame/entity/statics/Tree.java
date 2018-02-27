@@ -28,7 +28,7 @@ public class Tree extends StaticEntity{
 public void die() {
 		
 	for(int i=0;i<Utils.generateRandomInt(2)+1;i++) {
-		handler.getWorld().getItemManager().addItem(Item.woodItem.createNew((int) (x + Utils.generateRandomInt(200)-100),(int) ( y + Utils.generateRandomInt(200)-100 + bounds.height+100)));
+		handler.getWorld().getItemManager().addItem(Item.woodItem.createNew(), (int) x ,(int)  y );
 	}
 		
 	}

@@ -105,7 +105,7 @@ public class Item {
 		
 	}
 	
-	public Item createNew(int x, int y) {
+	public Item createNew() {
 		Item i= new Item(texture,name,id);
 		return i;
 		

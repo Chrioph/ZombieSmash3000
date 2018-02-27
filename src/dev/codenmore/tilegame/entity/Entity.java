@@ -46,7 +46,7 @@ public abstract class Entity {
 	
 	public void hurt (int amt) {
 		health -=amt;
-		if (health<=0) {
+		if (health<=0&& !this.isPlayer()) {
 			active=false;
 			die();
 		}
