@@ -56,6 +56,12 @@ public class WorldGenerator {
         difficultyMods = new ArrayList<Mod>();
         worlds = new ArrayList<World>();
 
+        initializeWorlds();
+
+    }
+
+    private void initializeWorlds()
+    {
         world1();
         world2();
     }
@@ -158,6 +164,12 @@ public class WorldGenerator {
             }
         }
         applyMods();
+    }
+
+    public void resetWorlds()
+    {
+        worlds.clear();
+        initializeWorlds();
     }
 
 

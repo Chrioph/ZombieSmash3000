@@ -137,7 +137,9 @@ public class World {
 		}
 		
 	}
-		
+
+	public void reset()
+	{}
 	
 	public Handler getHandler() {
 		return handler;

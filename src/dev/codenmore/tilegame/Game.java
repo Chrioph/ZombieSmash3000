@@ -34,7 +34,10 @@ public class Game implements Runnable{
 	private BufferStrategy bs;
 	private int displayFPS = 0;
 	private Dimension newDisplaySize = null;
-	
+
+	private boolean restartRender = false;
+	private boolean restartTick = false;
+
 	//States
 	public State gameState;
 	public State menuState;
@@ -74,23 +77,43 @@ public class Game implements Runnable{
 		display.getCanvas().addMouseListener(mouseManager);
 		display.getCanvas().addMouseMotionListener(mouseManager);
 		Assets.init();
-		
+
+		initGameComponents();
+
+		State.setState(new MenuState(handler));
+	}
+
+	private void initGameComponents()
+	{
 		handler = new Handler(this);
 		camera= new GameCamera(handler, 0, 0);
 		worldGen = new WorldGenerator(handler, new Player(handler,0,0));
+	}
 
-		
-		
-		State.setState(new MenuState(handler));
+	private void destroyGameComponents()
+	{
+		handler.destroy();
+		worldGen.resetWorlds();
+		State.setState(null);
 	}
 	
 	private void tick() {
+		if(restartTick) {
+			destroyGameComponents();
+			initGameComponents();
+			State.setState(new MenuState(handler));
+			restartTick = false;
+		}
 		keyManager.tick();
 		if (State.getState() != null)
 			State.getState().tick();
 
 	}
 	private void render () {
+		if(restartRender) {
+			restartRender = false;
+			return;
+		}
 		if(newDisplaySize != null) {
 			changeDisplaySize();
 		}
@@ -152,6 +175,7 @@ public class Game implements Runnable{
 				timer=0;
 			}
 		}
+		display.killDisplay();
 		stop();
 		
 	}
@@ -234,7 +258,12 @@ public class Game implements Runnable{
 	
 	public void close() {
 		running=false;
-		display.killDisplay();
+	}
+
+	public void restart()
+	{
+		restartRender = true;
+		restartTick = true;
 	}
 }
 	

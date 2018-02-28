@@ -92,16 +92,8 @@ public class GameState extends State {
 	
 	private void listenExit() {
 		if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
-			handler.getWorld().getEntityManager().getPlayer().setDead(false);
-			handler.getWorld().getEntityManager().getPlayer().setAmmunition(5);
-			handler.getWorld().getEntityManager().getPlayer().setDamage(3);
-			handler.getWorld().getEntityManager().getPlayer().setArmor(4);
-			handler.getWorld().getEntityManager().getPlayer().setMaxHealth(10);
-			handler.getWorld().getEntityManager().getPlayer().setRangedDamage(2);
-			handler.getWorld().getEntityManager().getPlayer().setHealth(10);
-			handler.getWorld().getEntityManager().getPlayer().setRangedToggled(false);
-			handler.getWorld().getEntityManager().getPlayer().setInventory(new Inventory(handler));
-			State.setState(new MenuState(handler));
+
+			handler.getGame().restart();
 		}
 	}
 
