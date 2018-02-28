@@ -5,6 +5,7 @@ import dev.codenmore.tilegame.Modifiers.DamageMod;
 import dev.codenmore.tilegame.Modifiers.HPMod;
 import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.Modifiers.SpeedMod;
+import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.entity.EntityManager;
 import dev.codenmore.tilegame.entity.creatures.Enemies.Ogre;
 import dev.codenmore.tilegame.entity.creatures.Enemies.Zombie;
@@ -60,7 +61,13 @@ public class WorldGenerator {
     }
 
     private World world1(){
-        World world1 = new World(1, handler,"/worlds/world2.txt");
+        World world1;
+        if(Settings.getRenderDungeon()) {
+            world1 = new World(1, handler,"/worlds/dungeon2.txt");
+        }else {
+            world1 = new World(1, handler,"/worlds/world2.txt");
+        }
+
         EntityManager world1EnManager = new EntityManager(handler, player);
 
         world1EnManager.addEntity(new Tree(handler, 300, 450));

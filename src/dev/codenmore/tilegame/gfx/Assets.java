@@ -11,6 +11,8 @@ public class Assets {
 	public static BufferedImage dungeonWallStraightDown, dungeonWallStraightUp, dungeonWallLeftCorner;
 	public static BufferedImage	dungeonWallRightCorner, dungeonWallLeft, dungeonWallRight, dungeonWallUpperCornerLeft;
 	public static BufferedImage dungeonWallUpperCornerRight, dungeonWallMiddle, dungeonWallSingleBlock, dungeonFloor;
+	public static BufferedImage dungeonWallSingleMiddle, dungeonWallSingleLeft, dungeonWallSingleRight, dungeonWallSingleMiddleUpwards;
+	public static BufferedImage dungeonWallSingleUp, dungeonWallSingleDown;
 
 
 	public static BufferedImage player1,zombie, ogre, gravestone;
@@ -71,8 +73,15 @@ public class Assets {
 		dungeonWallMiddle = dungeonWallsSheet.crop(width, height, width, height);
 
 		dungeonWallSingleBlock = ImageLoader.loadImage("/textures/DungeonTileWallSingleBlock.png");
+		dungeonWallSingleMiddle = ImageLoader.loadImage("/textures/dungeonTileWalLSingleMiddle.png");
+		dungeonWallSingleLeft = ImageLoader.loadImage("/textures/dungeonTileWallSingleLeft.png");
+		dungeonWallSingleRight = ImageLoader.loadImage("/textures/dungeonTileWallSingleRight.png");
+		dungeonWallSingleMiddleUpwards = ImageLoader.loadImage("/textures/dungeonTileWallSingleMiddleUpwards.png");
+		dungeonWallSingleUp = ImageLoader.loadImage("/textures/dungeonTileWallSingleUp.png");
+		dungeonWallSingleDown = ImageLoader.loadImage("/textures/dungeonTileWallSingleDown.png");
 		dungeonFloor = ImageLoader.loadImage("/textures/dungeonTileFloor.png");
-		
+
+
 		tree =     sheet.crop(width,height,width,height);
 		log =     sheet.crop(width, 0, width, height);
 		rock =     sheet.crop(0, 0, width, height);

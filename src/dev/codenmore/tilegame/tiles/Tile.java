@@ -1,5 +1,8 @@
 package dev.codenmore.tilegame.tiles;
 
+import dev.codenmore.tilegame.tiles.dungeon.dungeonFloorTile;
+import dev.codenmore.tilegame.tiles.dungeon.dungeonWallTile;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -14,6 +17,8 @@ public class Tile {
 	public static Tile finishTile=new FinishTile(3);
 	public static Tile solidWoodTile=new SolidWoodTile(4);
 	public static Tile woodTile=new WoodTile(5);
+	public static Tile dungeonFloor = new dungeonFloorTile(6);
+	public static Tile dungeonWallTile = new dungeonWallTile(7);
 	
 	//CLASS
 
