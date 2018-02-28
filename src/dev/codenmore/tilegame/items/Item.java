@@ -15,7 +15,7 @@ public class Item {
 
 	
 	public static Item[] items = new Item[256];
-	public static Item woodItem = new Item(Assets.wood,"Wood",0);
+	public static Item logItem = new Item(Assets.log,"Log",0);
 	public static Item rockItem = new Item(Assets.rock,"Rock",1);
 	public static Item swordItem = new Item(Assets.sword,"Sword",2);
 	public static Item heartItem = new Item(Assets.heart,"Heart",3);
@@ -23,6 +23,7 @@ public class Item {
 	public static Item armorItem = new Item(Assets.armor,"Armor",5);
 	public static Item healthPlusItem = new Item(Assets.healthPlus,"Health Plus",6);
 	public static Item bowItem = new Item(Assets.bow,"Bow",7);
+	
 	
 	//Class
 	
@@ -42,7 +43,7 @@ public class Item {
 		this.texture=texture;
 		this.name=name;
 		this.id=id;
-		count=1;
+		count=0;
 		this.handler=handler;
 		
 		bounds= new Rectangle((int)(x), (int)(y), ITEMWIDTH, ITEMHEIGHT);
@@ -105,7 +106,7 @@ public class Item {
 		
 	}
 	
-	public Item createNew(int x, int y) {
+	public Item createNew() {
 		Item i= new Item(texture,name,id);
 		return i;
 		

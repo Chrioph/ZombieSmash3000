@@ -96,7 +96,6 @@ public class Game implements Runnable{
 		}
 		bs = display.getCanvas().getBufferStrategy();
 		if(bs == null || afterScale) {
-			System.out.println("new Buffer strategy");
 			display.getCanvas().createBufferStrategy(3);
 			afterScale = false;
 			return;
@@ -211,7 +210,6 @@ public class Game implements Runnable{
 		Settings.setResolutionY(height);
 		Settings.save();
 		handler.getGame().getMouseManager().getUIManager().updateAllBounds();
-		System.out.println(Settings.getScaleX() + "/" + Settings.getScaleY());
 		display.resize(width, height);
 		display.getFrame().addKeyListener(keyManager);
 		display.getFrame().addMouseListener(mouseManager);

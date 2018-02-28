@@ -23,6 +23,7 @@ public class World {
 	private int width, height;
 	private int [][] tiles;
 	private int spawnX, spawnY;
+	private int id;
 
 	
 	//Entities
@@ -33,7 +34,8 @@ public class World {
 	
 	private ItemManager itemManager;
 	
-	public World(Handler handler, String path) {
+	public World(int id, Handler handler, String path) {
+		this.id = id;
 
 		this.handler=handler;
 		
@@ -154,10 +156,17 @@ public class World {
 		
 	}
 
+	public int getId()
+	{
+		return id;
+	}
+
+
 	public int[][] getTiles()
 	{
 		return tiles;
 	}
+
 	public int getHEight() {
 		return height;
 	}

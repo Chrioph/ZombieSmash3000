@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
+import dev.codenmore.tilegame.items.CraftableItem;
 import dev.codenmore.tilegame.items.Item;
 
 public class Inventory {
@@ -32,8 +33,10 @@ public class Inventory {
 	public Inventory(Handler handler) {
 		this.handler=handler;
 		inventoryItems = new ArrayList<Item>();
-		
-		
+		inventoryItems.add(Item.logItem);
+		inventoryItems.add(Item.rockItem);
+		inventoryItems.add(CraftableItem.woodItem);
+		inventoryItems.add(CraftableItem.solidWoodItem);
 	}
 	
 	
@@ -82,7 +85,7 @@ public class Inventory {
 	public void addItem(Item item) {
 		for (Item i: inventoryItems) {
 			if(i.getId()==item.getId()){
-				i.setCount(i.getCount()+item.getCount());
+				i.setCount(i.getCount()+item.getCount()+1);
 				return;
 			}
 		}
@@ -92,6 +95,16 @@ public class Inventory {
 
 	//Getters and Setters
 	
+	public ArrayList<Item> getInventoryItems() {
+		return inventoryItems;
+	}
+
+
+	public void setInventoryItems(ArrayList<Item> inventoryItems) {
+		this.inventoryItems = inventoryItems;
+	}
+
+
 	public Handler getHandler() {
 		return handler;
 	}

@@ -32,6 +32,8 @@ public class WorldGenerator {
     private ArrayList<Mod> difficultyMods;
     private ArrayList<World> worlds;
 
+    private World currentWorld;
+
     private enum Difficulty {
         EASY, NORMAL, HARD;
 
@@ -73,11 +75,13 @@ public class WorldGenerator {
 
         difficultyMods = new ArrayList<Mod>();
         worlds = new ArrayList<World>();
+
+        world1();
+        world2();
     }
 
-    public World world1()
-    {
-        World world1 = new World(handler,"res/worlds/world2.txt");
+    private World world1(){
+        World world1 = new World(1, handler,"/worlds/world2.txt");
         EntityManager world1EnManager = new EntityManager(handler, player);
 
         world1EnManager.addEntity(new Tree(handler, 300, 450));
@@ -111,12 +115,15 @@ public class WorldGenerator {
         worlds.add(world1);
         printGrid(world1.getTiles());
         applyMods();
-
-        world1.start();
+        currentWorld = world1;
 
         return world1;
     }
 
+    public World getFirstWorld()
+    {
+        return worlds.get(0);
+    }
 
     public World generateWorldRooms(long seed)
     {
@@ -436,6 +443,39 @@ public class WorldGenerator {
     }
 
 
+    public World getNextWorld()
+    {
+        boolean next = false;
+        for(int i = 0; i<worlds.size(); i++) {
+            if(worlds.get(i).getId() == currentWorld.getId()) {
+                if(i<worlds.size()-1) {
+                    currentWorld = worlds.get(i+1);
+                    next = true;
+                    break;
+                }
+            }
+        }
+        if(next) {
+            return currentWorld;
+        }else {
+            return null;
+        }
+    }
+
+    private World world2()
+    {
+        World world2 = new World(2, handler,"/worlds/world1.txt");
+        EntityManager world2EnManager = new EntityManager(handler, player);
+
+        //Add Entities here
+
+        world2.setEntityManager(world2EnManager);
+
+        worlds.add(world2);
+        applyMods();
+
+        return world2;
+    }
 
     /**
      * If there is a difficulty with the given name, resets difficulty modifications with modifications from chosen difficulty

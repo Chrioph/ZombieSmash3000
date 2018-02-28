@@ -11,12 +11,14 @@ public class ItemManager {
 	
 	private Handler handler;
 	private ArrayList<Item> items;
+	private int x;
+	private int y;
 	
 	
 	public ItemManager(Handler handler) {
 		this.handler=handler;
 		items = new ArrayList<Item>();
-			
+
 	}
 
 	
@@ -37,7 +39,7 @@ public class ItemManager {
 	}
 	
 	
-	public void addItem(Item i) {
+	public void addItem(Item i, int x, int y ) {
 		i.setHandler(handler);
 		boolean b=false;
 		int r1=0;
@@ -48,7 +50,7 @@ public class ItemManager {
 			if (!i.collisionWithTile((int)(i.x + r1 ), (int) (i.y + r2 )))
 				b=true;
 			}
-		i.setPostion((int)(i.x+ r1 ),(int) (i.y+ r2 ));	
+		i.setPostion((int)(i.x + x + r1  ),(int) (i.y+ y + r2 ));
 		items.add(i);
 	}
 

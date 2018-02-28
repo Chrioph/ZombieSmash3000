@@ -1,8 +1,6 @@
 package dev.codenmore.tilegame.utils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 
 public class Utils {
@@ -11,7 +9,7 @@ public class Utils {
 		StringBuilder builder = new StringBuilder();
 		
 		try {
-			BufferedReader br = new BufferedReader ( new FileReader(path));
+			BufferedReader br = new BufferedReader (new InputStreamReader(Utils.class.getResource(path).openStream()));
 			String line;
 			while ((line = br.readLine()) !=null) {
 				builder.append(line + "\n");

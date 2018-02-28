@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.Settings;
+import dev.codenmore.tilegame.crafting.CraftingScreen;
 import dev.codenmore.tilegame.entity.Entity;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
@@ -32,6 +33,7 @@ public class Player extends Creature{
 	private int maxArmor=5;
 	private int maxHealth=10;
 	private int rangedDamage=2;
+	private boolean isDead=false;
 	
 
 	private boolean rangedToggled=false;
@@ -40,6 +42,7 @@ public class Player extends Creature{
 	private Arrow arrow;
 	
 	private Inventory inventory;
+	private CraftingScreen craftingScreen;
 	
 	public Player(Handler handler,float x, float y) {
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
@@ -65,7 +68,7 @@ public class Player extends Creature{
 		animARight= new Animation(400, Assets.aRight);
 		
 		inventory=new Inventory(handler);
-		
+		craftingScreen=new CraftingScreen(handler);
 	}
 
 	@Override
@@ -78,7 +81,7 @@ public class Player extends Creature{
 		animAUp.tick();
 		animALeft.tick();
 		animARight.tick();
-		
+		checkAlive();
 		
 		getInput();
 		
@@ -90,13 +93,24 @@ public class Player extends Creature{
 		
 		
 		inventory.tick();
+		craftingScreen.tick();
 	}
+	
+	 private void checkAlive() {
+		 if (health<=0) {
+			 health=0;
+			 isDead=true;
+		 }
+		 
+	 }
+	 
 	private void checkToggledRangeAttacks() {
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
 			rangedToggled=!rangedToggled;
 		}
 		
 	}
+	
 	private void checkAttacks() {
 		attackTimer += System.currentTimeMillis() - lastAttackTimer;
 		lastAttackTimer=System.currentTimeMillis();
@@ -185,7 +199,7 @@ public class Player extends Creature{
 		xMove=0;
 		yMove=0;
 		
-		if(inventory.isActive())
+		if(inventory.isActive()||craftingScreen.isActive())
 			return;
 		xAttack=0;
 		yAttack=0;
@@ -232,13 +246,21 @@ public class Player extends Creature{
 	
 	public void postRender(Graphics g) {
 		inventory.render(g);
+		craftingScreen.render(g);
 	}
 	
 	public boolean isPlayer() {
 		return true;
 	}
 	
+	public boolean collisionWithFinish(int x, int y) {
+		return handler.getWorld().getTile(x, y).isFinish();
+	}
+	
 	private BufferedImage getCurrentAnimationFrame() {
+		if(isDead)
+			return Assets.gravestone;
+		
 		if (xMove<0)
 			return animLeft.getCurrentFrame();
 		if (xMove>0)
@@ -324,6 +346,22 @@ public class Player extends Creature{
 
 	public void setRangedDamage(int rangedDamage) {
 		this.rangedDamage = rangedDamage;
+	}
+
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void setDead(boolean isDead) {
+		this.isDead = isDead;
+	}
+
+	public CraftingScreen getCraftingScreen() {
+		return craftingScreen;
+	}
+
+	public void setCraftingScreen(CraftingScreen craftingScreen) {
+		this.craftingScreen = craftingScreen;
 	}
 	
 	
