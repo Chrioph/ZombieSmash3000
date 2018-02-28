@@ -31,6 +31,8 @@ public class Zombie extends Enemy {
 	
 	public Zombie(Handler handler , float x, float y) {
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
+		
+		this.aggroRange=300;
 		this.speed= 1.5f;
 		health =5;
 		damage=3;
@@ -51,6 +53,7 @@ public class Zombie extends Enemy {
 	}
 	
 	public void tick() {
+		distToPlayer=Math.abs((int)(x-handler.getWorld().getEntityManager().getPlayer().getX() + y-handler.getWorld().getEntityManager().getPlayer().getY()));
 		generateMovement();
 		checkAttacks();
 		animDown.tick();

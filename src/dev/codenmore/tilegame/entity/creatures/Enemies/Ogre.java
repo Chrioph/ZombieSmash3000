@@ -22,6 +22,7 @@ public class Ogre extends Enemy {
 	public Ogre(Handler handler, float x, float y) {
 		super(handler, x , y, Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
 		
+		this.aggroRange=200;
 		this.speed= 1.5f;
 		width = 64;
 		height = 64;
@@ -45,6 +46,7 @@ public class Ogre extends Enemy {
 
 	@Override
 	public void tick() {
+		distToPlayer=Math.abs((int)(x-handler.getWorld().getEntityManager().getPlayer().getX() + y-handler.getWorld().getEntityManager().getPlayer().getY()));
 		generateMovement();
 		checkAttacks();
 		animDown.tick();
