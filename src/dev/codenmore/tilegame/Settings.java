@@ -17,6 +17,8 @@ public class Settings {
     private static double scaleY = 1.0;
     private static boolean debug = false;
 
+    private static boolean renderDungeon = false;
+
     public static void init()
     {
         Properties properties = new Properties();
@@ -107,6 +109,14 @@ public class Settings {
 
     public static void setDebug(boolean mode) {
         debug = mode;
+    }
+
+    public static boolean getRenderDungeon() {
+        return renderDungeon;
+    }
+
+    public static void setRenderDungeon(boolean b) {
+        renderDungeon = true;
     }
 
 

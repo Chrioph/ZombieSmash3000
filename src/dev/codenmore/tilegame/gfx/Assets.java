@@ -6,6 +6,13 @@ import java.awt.image.BufferedImage;
 public class Assets {
 	
 	public static BufferedImage dirt,grass,stone,finish,solidWood,wood;
+
+	// Dungeon
+	public static BufferedImage dungeonWallStraightDown, dungeonWallStraightUp, dungeonWallLeftCorner;
+	public static BufferedImage	dungeonWallRightCorner, dungeonWallLeft, dungeonWallRight, dungeonWallUpperCornerLeft;
+	public static BufferedImage dungeonWallUpperCornerRight, dungeonWallMiddle, dungeonWallSingleBlock, dungeonFloor;
+
+
 	public static BufferedImage player1,zombie, ogre, gravestone;
 	public static BufferedImage log, sword, bow, rock, tree, heart, armor, healthPlus;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
@@ -28,6 +35,7 @@ public class Assets {
         font100 = FontLoader.loadFont("/fonts/slkscr.ttf",100);
 		
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet2.png"));
+		SpriteSheet dungeonWallsSheet = new SpriteSheet(ImageLoader.loadImage("/textures/dungeonWallsSheet.png"));
 		SpriteSheet ogreSheet = new SpriteSheet(ImageLoader.loadImage("/textures/OgreSpreadsheet.png"));
 		
 		HUDWindow = ImageLoader.loadImage("/textures/HUDWindow.png");
@@ -50,6 +58,20 @@ public class Assets {
 		grass =    sheet.crop(width*3, 0, width, height);
 		stone =    sheet.crop(0, height, width, height);
 		finish=    sheet.crop(width*8, height, width, height);
+
+		// Dungeon
+		dungeonWallLeft = dungeonWallsSheet.crop(0, height, width, height);
+		dungeonWallLeftCorner = dungeonWallsSheet.crop(0, height*2, width, height);
+		dungeonWallRightCorner = dungeonWallsSheet.crop(width*2, height*2, width, height);
+		dungeonWallUpperCornerLeft = dungeonWallsSheet.crop(0, 0, width, height);
+		dungeonWallUpperCornerRight = dungeonWallsSheet.crop(width*2, 0, width, height);
+		dungeonWallRight = dungeonWallsSheet.crop(width*2, height, width, height);
+		dungeonWallStraightDown = dungeonWallsSheet.crop(width, height*2, width, height);
+		dungeonWallStraightUp = dungeonWallsSheet.crop(width, 0, width, height);
+		dungeonWallMiddle = dungeonWallsSheet.crop(width, height, width, height);
+
+		dungeonWallSingleBlock = ImageLoader.loadImage("/textures/DungeonTileWallSingleBlock.png");
+		dungeonFloor = ImageLoader.loadImage("/textures/dungeonTileFloor.png");
 		
 		tree =     sheet.crop(width,height,width,height);
 		log =     sheet.crop(width, 0, width, height);
