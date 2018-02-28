@@ -11,6 +11,7 @@ import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.HUDs.HUD;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
+import dev.codenmore.tilegame.inventory.Inventory;
 import dev.codenmore.tilegame.worlds.World;
 import dev.codenmore.tilegame.worlds.WorldGenerator;
 
@@ -99,6 +100,7 @@ public class GameState extends State {
 			handler.getWorld().getEntityManager().getPlayer().setRangedDamage(2);
 			handler.getWorld().getEntityManager().getPlayer().setHealth(10);
 			handler.getWorld().getEntityManager().getPlayer().setRangedToggled(false);
+			handler.getWorld().getEntityManager().getPlayer().setInventory(new Inventory(handler));
 			State.setState(new MenuState(handler));
 		}
 	}
