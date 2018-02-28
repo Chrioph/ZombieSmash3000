@@ -163,22 +163,19 @@ public class Assets {
 		aLeft[0]=sheet.crop(width*2, height*4, width, height);
 		aLeft[1]=sheet.crop(width*2, height*5, width, height);
 		
-		//Zombie Attack
-		zaUp = new BufferedImage[2];
-		zaUp[0]=sheet.crop(width*7, height*4, width, height);
-		zaUp[1]=sheet.crop(width*7, height*5, width, height);
+		//Zombie Aggro
 		
 		zaDown = new BufferedImage[2];
-		zaDown[0]=sheet.crop(4, height*4, width, height);
-		zaDown[1]=sheet.crop(4, height*5, width, height);
+		zaDown[0]=sheet.crop(width*8, height*4, width, height);
+		zaDown[1]=sheet.crop(width*11, height*4, width, height);
 		
 		zaRight = new BufferedImage[2];
-		zaRight[0]=sheet.crop(width*5, height*4, width, height);
-		zaRight[1]=sheet.crop(width*5, height*5, width, height);
+		zaRight[0]=sheet.crop(width*8, height*5, width, height);
+		zaRight[1]=sheet.crop(width*11, height*5, width, height);
 		
 		zaLeft = new BufferedImage[2];
-		zaLeft[0]=sheet.crop(width*6, height*4, width, height);
-		zaLeft[1]=sheet.crop(width*6, height*5, width, height);
+		zaLeft[0]=sheet.crop(width*9, height*5, width, height);
+		zaLeft[1]=sheet.crop(width*10, height*5, width, height);
 
 
 		//Ogre Attack
