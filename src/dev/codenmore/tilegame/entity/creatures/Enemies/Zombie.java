@@ -31,6 +31,8 @@ public class Zombie extends Enemy {
 	
 	public Zombie(Handler handler , float x, float y) {
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
+		
+		this.aggroRange=300;
 		this.speed= 1.5f;
 		health =5;
 		damage=3;
@@ -51,6 +53,7 @@ public class Zombie extends Enemy {
 	}
 	
 	public void tick() {
+		distToPlayer=Math.abs((int)(x-handler.getWorld().getEntityManager().getPlayer().getX() + y-handler.getWorld().getEntityManager().getPlayer().getY()));
 		generateMovement();
 		checkAttacks();
 		animDown.tick();
@@ -58,22 +61,12 @@ public class Zombie extends Enemy {
 		animLeft.tick();
 		animRight.tick();
 		animADown.tick();
-		animAUp.tick();
 		animALeft.tick();
 		animARight.tick();
 		
 		move();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public void render(Graphics g) {
 		super.render(g);
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
@@ -81,6 +74,19 @@ public class Zombie extends Enemy {
 	}
 	
 	private BufferedImage getCurrentAnimationFrame() {
+		
+		if(distToPlayer<=aggroRange) {
+			if (xMove<0)
+				return animALeft.getCurrentFrame();
+			if (xMove>0)
+				return animARight.getCurrentFrame();
+			if (yMove<0)
+				return animUp.getCurrentFrame();
+			if (yMove>0)
+				return animADown.getCurrentFrame();
+		}
+		
+		
 		if (xMove<0)
 			return animLeft.getCurrentFrame();
 		if (xMove>0)
@@ -91,14 +97,7 @@ public class Zombie extends Enemy {
 			return animDown.getCurrentFrame();
 		
 		
-		if (xAttack<0)
-			return animALeft.getCurrentFrame();
-		if (xAttack>0)
-			return animARight.getCurrentFrame();
-		if (yAttack<0)
-			return animAUp.getCurrentFrame();
-		if (yAttack>0)
-			return animADown.getCurrentFrame();
+		
 		
 		
 		else return Assets.zombie;

@@ -15,6 +15,10 @@ public abstract class Enemy extends Creature {
 	private long lastAttackTimer, attackCooldown=800, attackTimer = attackCooldown;
 	
 	private Rectangle ar = new Rectangle();
+	protected int distToPlayer;
+	private int playerDirection=0;
+	protected int aggroRange;
+	
 	
     public Enemy(Handler handler , float x, float y, int width, int height) {
         super(handler, x, y,width,height);
@@ -32,7 +36,7 @@ public abstract class Enemy extends Creature {
 		
 	}
 	
-	public void getMovement() {
+	private void getMovement() {
 		xMove=0;
 		yMove=0;
 		
@@ -65,7 +69,69 @@ public abstract class Enemy extends Creature {
 				
 	}
 	
+	private void getAggroMovement() {
+		
+		xMove=0;
+		yMove=0;
+		getPlayerDirection();
+		if (playerDirection==4)
+			xMove=-speed;
+		if (playerDirection==6)
+			xMove=speed;
+		if (playerDirection==7)
+			yMove=-speed;
+		if (playerDirection==8)
+			yMove=speed;
+		if (playerDirection==0) {
+			yMove=-speed;
+			xMove=-speed;
+		}
+		if (playerDirection==1) {
+			yMove=speed;
+			xMove=-speed;
+		}
+		if (playerDirection==2) {
+			yMove=-speed;
+			xMove=speed;
+		}
+		if (playerDirection==3) {
+			yMove=speed;
+			xMove=speed;
+		}
+	}
+	
+	
+	private void getPlayerDirection() {
+		//Direction 0 : oben links
+		//Direction 1 : unten links
+		//Direction 2 : oben rechts
+		//Direction 3 : unten rechts
+		//Direction 4 : links
+		//Direction 6 : rechts
+		//Direction 7 : oben
+		//Direction 8 : unten
+		if(x-handler.getWorld().getEntityManager().getPlayer().getX()<0)  		//rechts
+			playerDirection=2;
+		else if (x-handler.getWorld().getEntityManager().getPlayer().getX()>=2*-speed&&x-handler.getWorld().getEntityManager().getPlayer().getX()<=2*speed) //mitte
+				playerDirection=7;
+		else 																	//links
+				playerDirection=0;
+				
+				
+		if(y-handler.getWorld().getEntityManager().getPlayer().getY()<0)		//unten
+				playerDirection+=1;
+		else if (y-handler.getWorld().getEntityManager().getPlayer().getY()>=2*-speed&&y-handler.getWorld().getEntityManager().getPlayer().getY()<=2*speed)	//mitte
+			playerDirection+=4;
+		else 																	//oben
+			playerDirection+=0;
+	}
+	
 	protected void generateMovement() {
+		if (distToPlayer<=aggroRange) {
+			getAggroMovement();
+			return;
+			
+		}
 		movementTimer += System.currentTimeMillis()- lastMovement;
 		lastMovement = System.currentTimeMillis();
 		if(movementTimer<=movementCooldown)
