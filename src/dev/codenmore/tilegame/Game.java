@@ -20,8 +20,23 @@ import dev.codenmore.tilegame.input.MouseManager;
 import dev.codenmore.tilegame.state.MenuState;
 
 import dev.codenmore.tilegame.state.State;
+import dev.codenmore.tilegame.test.triangle;
 import dev.codenmore.tilegame.ui.UIObject;
 import dev.codenmore.tilegame.worlds.WorldGenerator;
+
+
+import org.lwjgl.*;
+import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.*;
+import org.lwjgl.system.*;
+
+import java.nio.*;
+
+import static org.lwjgl.glfw.Callbacks.*;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.system.MemoryStack.*;
+import static org.lwjgl.system.MemoryUtil.*;
 
 public class Game implements Runnable{
 	
@@ -34,6 +49,9 @@ public class Game implements Runnable{
 	private BufferStrategy bs;
 	private int displayFPS = 0;
 	private Dimension newDisplaySize = null;
+
+	//OpenGL
+	private long window;
 	
 	//States
 	public State gameState;
@@ -68,12 +86,17 @@ public class Game implements Runnable{
 	public void init() {
 		// load properties
 		display=new Display(title,width, height);
-		/*display.getFrame().addKeyListener(keyManager);
-		display.getFrame().addMouseListener(mouseManager);
-		display.getFrame().addMouseMotionListener(mouseManager);
-		display.getCanvas().addMouseListener(mouseManager);
-		display.getCanvas().addMouseMotionListener(mouseManager);
-		*/
+		if(!Settings.getOpenGl()) {
+			display.getFrame().addKeyListener(keyManager);
+			display.getFrame().addMouseListener(mouseManager);
+			display.getFrame().addMouseMotionListener(mouseManager);
+			display.getCanvas().addMouseListener(mouseManager);
+			display.getCanvas().addMouseMotionListener(mouseManager);
+		}else {
+			window = display.getWindow();
+		}
+
+
 		Assets.init();
 		
 		handler = new Handler(this);
@@ -92,43 +115,67 @@ public class Game implements Runnable{
 
 	}
 	private void render () {
-		/*if(newDisplaySize != null) {
-			changeDisplaySize();
+		if(Settings.getOpenGl()) {
+			renderOpenGl();
+		}else {
+			if(newDisplaySize != null) {
+				changeDisplaySize();
+			}
+			bs = display.getCanvas().getBufferStrategy();
+			if(bs == null || afterScale) {
+				display.getCanvas().createBufferStrategy(3);
+				afterScale = false;
+				return;
+			}
+			Graphics graphics = bs.getDrawGraphics();
+			Graphics2D g = (Graphics2D) graphics;
+
+			//System.out.println("Do Scale " + Settings.getScaleX() + "/" + Settings.getScaleY());
+			//g.scale(Settings.getScaleX(), Settings.getScaleY());
+			g.scale(Settings.getScaleX(), Settings.getScaleY());
+
+
+			//clear screen
+			g.clearRect(0, 0, 1920, 1080);
+			//draw here
+			if (State.getState() != null)
+				State.getState().render(g);
+
+
+
+
+			//End here
+			bs.show();
+			// fixes some stuttering issues on mac/linux (https://stackoverflow.com/questions/19480076/java-animation-stutters-when-not-moving-mouse-cursor)
+			Toolkit.getDefaultToolkit().sync();
+			g.dispose();
 		}
-		bs = display.getCanvas().getBufferStrategy();
-		if(bs == null || afterScale) {
-			display.getCanvas().createBufferStrategy(3);
-			afterScale = false;
-			return;
-		}
-		Graphics graphics = bs.getDrawGraphics();
-		Graphics2D g = (Graphics2D) graphics;
-
-		//System.out.println("Do Scale " + Settings.getScaleX() + "/" + Settings.getScaleY());
-		//g.scale(Settings.getScaleX(), Settings.getScaleY());
-		g.scale(Settings.getScaleX(), Settings.getScaleY());
 
 
-		//clear screen
-		g.clearRect(0, 0, 1920, 1080);
-		//draw here
-		if (State.getState() != null)
-			State.getState().render(g);
-		
-		
-		
-		
-		//End here
-		bs.show();
-		// fixes some stuttering issues on mac/linux (https://stackoverflow.com/questions/19480076/java-animation-stutters-when-not-moving-mouse-cursor)
-		Toolkit.getDefaultToolkit().sync();
-		g.dispose();
-		*/
+	}
+
+	public void renderOpenGl()
+	{
+		triangle mytri = new triangle();
+		mytri.render(window);
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 	
 	public void run() {
 		init();
 
+		if(Settings.getOpenGl()) {
+			loopOpenGL();
+		}else {
+			loop();
+		}
+		
+	}
+
+	private void loopOpenGL()
+	{
 		int fps = 60;
 		double timePerTick=1000000000/fps;
 		double delta=0;
@@ -136,7 +183,38 @@ public class Game implements Runnable{
 		long lastTime=System.nanoTime();
 		long timer=0;
 		int ticks=0;
-		
+		while(!glfwWindowShouldClose(window)) {
+			double time = glfwGetTime();
+			now=System.nanoTime();
+			delta += (now -lastTime) /timePerTick;
+			timer+=now-lastTime;
+			lastTime=now;
+			if (delta>=1) {
+				tick();
+				renderOpenGl();
+				ticks++;
+				delta--;
+			}
+			if(timer >= 1000000000) {
+				displayFPS = ticks;
+				ticks=0;
+				timer=0;
+			}
+
+		}
+
+
+	}
+
+	private void loop()
+	{
+		int fps = 60;
+		double timePerTick=1000000000/fps;
+		double delta=0;
+		long now;
+		long lastTime=System.nanoTime();
+		long timer=0;
+		int ticks=0;
 		while(running) {
 			now=System.nanoTime();
 			delta += (now -lastTime) /timePerTick;
@@ -154,8 +232,9 @@ public class Game implements Runnable{
 				timer=0;
 			}
 		}
+
+
 		stop();
-		
 	}
 	
 	public KeyManager getKeyManager() {

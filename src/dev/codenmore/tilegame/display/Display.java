@@ -1,14 +1,24 @@
 package dev.codenmore.tilegame.display;
 
-import com.jogamp.newt.opengl.GLWindow;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLProfile;
-
 import java.awt.Canvas;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+
+import dev.codenmore.tilegame.Settings;
+
+import org.lwjgl.*;
+import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.*;
+import org.lwjgl.system.*;
+
+import java.nio.*;
+
+import static org.lwjgl.glfw.Callbacks.*;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.system.MemoryStack.*;
+import static org.lwjgl.system.MemoryUtil.*;
 
 public class Display {
 	
@@ -18,34 +28,36 @@ public class Display {
 	private int width ;
 	private int height ;
 
-
-	// OpenGL
-	private static GLWindow window;
+	//OpenGl
+	private long window;
 	
 	public Display(String title , int width, int height) {
 		this.width=width;
 		this.height=height;
-		this.title= title; 
-		createDisplay();
+		this.title= title;
+
+		// OpenGl
+		if(Settings.getOpenGl()) {
+			createDisplayOpenGl();
+		}else {
+			createDisplay();
+		}
+
+
+
 		
+	}
+
+	public void destroy()
+	{
+		glfwFreeCallbacks(window);
+		glfwDestroyWindow(window);
+
+		glfwTerminate();
+		glfwSetErrorCallback(null).free();
 	}
 	
 	private void createDisplay(){
-
-		// OpenGL
-		GLProfile glProfile = GLProfile.get(GLProfile.GL4);
-		GLCapabilities capabilities = new GLCapabilities(glProfile);
-
-		window = GLWindow.create(capabilities);
-
-		window.setTitle(title);
-		window.setSize(width, height);
-
-		window.setContextCreationFlags(GLContext.CTX_OPTION_DEBUG);
-		window.setVisible(true);
-
-		//window.addGLEventListener(this);
-		//window.addKeyListener(this);
 
 		frame = new JFrame(title);
 		frame.setSize(width, height);
@@ -61,6 +73,46 @@ public class Display {
 		frame.add(canvas);
 		frame.pack();
 	}
+
+	private void createDisplayOpenGl()
+	{
+		// Setup an error callback. The default implementation
+		// will print the error message in System.err.
+		GLFWErrorCallback.createPrint(System.err).set();
+
+		// Initialize GLFW. Most GLFW functions will not work before doing this.
+		if ( !glfwInit() )
+			throw new IllegalStateException("Unable to initialize GLFW");
+
+		// Configure GLFW
+		glfwDefaultWindowHints(); // optional, the current window hints are already the default
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
+
+		// Create the window
+		window = glfwCreateWindow(width, height, title, NULL, NULL);
+		if ( window == NULL )
+			throw new RuntimeException("Failed to create the GLFW window");
+
+		// Setup a key callback. It will be called every time a key is pressed, repeated or released.
+		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+			if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
+				glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+		});
+
+		glfwMakeContextCurrent(window);
+		GL.createCapabilities();
+	}
+
+	public long getWindow()
+	{
+		return window;
+	}
+
 	public Canvas getCanvas() {
 		return this.canvas;
 	}

@@ -16,6 +16,7 @@ public class Settings {
     private static double scaleX = 1.0;
     private static double scaleY = 1.0;
     private static boolean debug = false;
+    private static boolean opengl = false;
 
     public static void init()
     {
@@ -107,6 +108,15 @@ public class Settings {
 
     public static void setDebug(boolean mode) {
         debug = mode;
+    }
+
+    public static boolean getOpenGl()
+    {
+        return opengl;
+    }
+
+    public static void setOpenGl(boolean b) {
+        opengl = b;
     }
 
 
