@@ -1,5 +1,6 @@
 package dev.codenmore.tilegame.entity.creatures.Enemies;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -26,8 +27,9 @@ public class Ogre extends Enemy {
 		this.speed= 1.5f;
 		width = 64;
 		height = 64;
+		maxHealth=15;
 		health =15;
-		damage=2;
+		damage=1;
 		bounds.x=8*2;
 		bounds.y =6*2;
 		bounds.width =48*2;
@@ -87,7 +89,18 @@ public class Ogre extends Enemy {
 	}
 	public void render(Graphics g) {
 		super.render(g);
+		renderHealthbar(g);
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width*2,height*2,null);
 		
 	}
+	protected void renderHealthbar(Graphics g) {
+    	g.setColor(Color.BLACK);
+    	g.fillRect((int)(x - handler.getGameCamera().getxOffset() + bounds.width/2 - 5*maxHealth-4 + 15),(int) (y-handler.getGameCamera().getyOffset()-15), 10*maxHealth+8, 10);
+    	g.fillRect((int)(x - handler.getGameCamera().getxOffset() + bounds.width/2 - 5*maxHealth + 15),(int) (y-handler.getGameCamera().getyOffset()-19), 10*maxHealth, 18);
+    	g.setColor(Color.RED);
+    	g.fillRect((int)(x - handler.getGameCamera().getxOffset() + bounds.width/2 - 5*maxHealth + 15),(int) (y-handler.getGameCamera().getyOffset()-15), 10*maxHealth, 10);
+    	g.setColor(Color.GREEN);
+    	g.fillRect((int)(x - handler.getGameCamera().getxOffset() + bounds.width/2 - 5*maxHealth + 15),(int) (y-handler.getGameCamera().getyOffset()-15), 10*health, 10);
+    	
+    }
 }

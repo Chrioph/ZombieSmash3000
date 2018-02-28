@@ -31,7 +31,6 @@ public class Player extends Creature{
 	private int ammunition=5;
 	private int armor=4;
 	private int maxArmor=5;
-	private int maxHealth=10;
 	private int rangedDamage=2;
 	private boolean isDead=false;
 	
@@ -46,7 +45,7 @@ public class Player extends Creature{
 	
 	public Player(Handler handler,float x, float y) {
 		super(handler ,x, y,Creature.DEFAULT_CREATURE_WIDTH,Creature .DEFAULT_CREATURE_HEIGHT);
-		
+		maxHealth=10;
 		health=10;
 		damage=3;
 		bounds.x=20;

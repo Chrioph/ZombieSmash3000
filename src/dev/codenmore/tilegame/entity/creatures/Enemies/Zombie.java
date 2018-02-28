@@ -34,6 +34,7 @@ public class Zombie extends Enemy {
 		
 		this.aggroRange=300;
 		this.speed= 1.5f;
+		maxHealth=5;
 		health =5;
 		damage=3;
 		bounds.x=18;
@@ -69,6 +70,7 @@ public class Zombie extends Enemy {
 
 	public void render(Graphics g) {
 		super.render(g);
+		renderHealthbar(g);
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 		
 	}
