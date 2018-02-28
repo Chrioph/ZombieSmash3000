@@ -21,7 +21,6 @@ public abstract class Enemy extends Creature {
 	private int playerDirection=0;
 	protected int aggroRange;
 	
-	
     public Enemy(Handler handler , float x, float y, int width, int height) {
         super(handler, x, y,width,height);
         damage=DEFAULT_CREATURE_DAMAGE;
@@ -170,6 +169,9 @@ public abstract class Enemy extends Creature {
 		}
 	}
 	
+	protected boolean renderHurtAnimation() {
+		return ar.intersects(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f));
+	}
 	
 	public int getSpawnrate() {
 		return spawnrate;

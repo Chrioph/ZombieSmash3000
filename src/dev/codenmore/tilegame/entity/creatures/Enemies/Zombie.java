@@ -71,6 +71,8 @@ public class Zombie extends Enemy {
 	public void render(Graphics g) {
 		super.render(g);
 		renderHealthbar(g);
+		if(renderHurtAnimation())
+			handler.getWorld().getEntityManager().getPlayer().hurtAnimation(g);
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 		
 	}

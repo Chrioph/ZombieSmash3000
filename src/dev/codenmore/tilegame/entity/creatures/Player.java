@@ -194,6 +194,15 @@ public class Player extends Creature{
 		System.out.println("You Lose");
 	}
 	
+	public void hurtAnimation(Graphics g) {
+		g.setColor(Color.RED);
+		g.fillRect(0, 0, 1920, 4);
+		g.fillRect(0, 0, 4, 1080);
+		g.fillRect(0, 1080-4, 1920, 4);
+		g.fillRect(1920-4, 0, 4, 1080);
+	}
+	
+	
 	private void getInput() {
 		xMove=0;
 		yMove=0;
