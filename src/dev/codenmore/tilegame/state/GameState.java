@@ -11,6 +11,7 @@ import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.HUDs.HUD;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
+import dev.codenmore.tilegame.inventory.Inventory;
 import dev.codenmore.tilegame.worlds.World;
 import dev.codenmore.tilegame.worlds.WorldGenerator;
 
@@ -73,7 +74,7 @@ public class GameState extends State {
 				b=true;
 			}
 			paintComponent(Assets.deathScreen,g,v);
-			Text.drawString(g, "YOU DIED", 	handler.getWidth()/2, handler.getHeight()/2 + 200, true, Color.RED, Assets.font100);
+			Text.drawString(g, "YOU DIED", 	1920/2, 1080/2 + 200, true, Color.RED, Assets.font100);
 			if(System.currentTimeMillis()>timeUntilNextRender&&v<0.99) {
 				v+=0.01;
 				b=false;
@@ -86,7 +87,7 @@ public class GameState extends State {
 	    Graphics2D g2d = (Graphics2D)g;
 	    AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, v);
 	    g2d.setComposite(composite);
-	    g2d.drawImage(i, 0, 0, handler.getWidth(), handler.getHeight(),null);
+	    g2d.drawImage(i, 0, 0, 1920, 1080,null);
 	}
 	
 	private void listenExit() {
@@ -99,6 +100,7 @@ public class GameState extends State {
 			handler.getWorld().getEntityManager().getPlayer().setRangedDamage(2);
 			handler.getWorld().getEntityManager().getPlayer().setHealth(10);
 			handler.getWorld().getEntityManager().getPlayer().setRangedToggled(false);
+			handler.getWorld().getEntityManager().getPlayer().setInventory(new Inventory(handler));
 			State.setState(new MenuState(handler));
 		}
 	}

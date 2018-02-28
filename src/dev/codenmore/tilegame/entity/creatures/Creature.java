@@ -28,6 +28,7 @@ public abstract class Creature extends Entity{
 	protected int xAttack;
 	protected int damage;
 	protected int spawnrate;
+	protected int maxHealth;
 
 	protected ArrayList<Mod> mods;
 	

@@ -58,7 +58,7 @@ public class Item {
 			if(!(this.getId()==5 && handler.getWorld().getEntityManager().getPlayer().getArmor()>=handler.getWorld().getEntityManager().getPlayer().getMaxArmor()) &&
 					!(this.getId()==3 && handler.getWorld().getEntityManager().getPlayer().getHealth()>=handler.getWorld().getEntityManager().getPlayer().getMaxHealth())	)
 				pickedUp=true;
-			if(this.getId()!=2 && this.getId()!=3 && this.getId()!=4&& this.getId()!=5)
+			if(this.getId()!=2 && this.getId()!=3 && this.getId()!=4&& this.getId()!=5 && this.getId()!=6&&this.getId()!=7)
 				handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(this);
 			if(this.getId()==2)
 				handler.getWorld().getEntityManager().getPlayer().setDamage(handler.getWorld().getEntityManager().getPlayer().getDamage()+1);

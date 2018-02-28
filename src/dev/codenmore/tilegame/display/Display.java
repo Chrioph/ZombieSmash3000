@@ -24,6 +24,8 @@ public class Display {
 	private void createDisplay(){
 		
 		frame = new JFrame(title);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		frame.setUndecorated(true);
 		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -52,6 +54,8 @@ public class Display {
 		// reinitialize display
 		frame.dispose();
 		frame = new JFrame();
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		frame.setUndecorated(true);
 		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -66,4 +70,8 @@ public class Display {
 		frame.add(canvas);
 		frame.pack();
 	}
+	public void killDisplay() {
+		frame.dispose();
+	}
+
 }

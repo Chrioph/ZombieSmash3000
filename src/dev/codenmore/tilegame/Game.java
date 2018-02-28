@@ -219,7 +219,8 @@ public class Game implements Runnable{
 		afterScale = true;
 		newDisplaySize = null;
 	}
-
+	
+	
 	public void resizeDisplay(int width, int height)
 	{
 		newDisplaySize = new Dimension(width, height);
@@ -231,6 +232,10 @@ public class Game implements Runnable{
 		return displayFPS;
 	}
 	
+	public void close() {
+		running=false;
+		display.killDisplay();
+	}
 }
 	
 

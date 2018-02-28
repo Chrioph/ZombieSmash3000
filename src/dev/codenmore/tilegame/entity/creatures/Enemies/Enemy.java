@@ -6,6 +6,8 @@ import dev.codenmore.tilegame.entity.creatures.Creature;
 import dev.codenmore.tilegame.items.Item;
 import dev.codenmore.tilegame.utils.Utils;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -19,7 +21,6 @@ public abstract class Enemy extends Creature {
 	private int playerDirection=0;
 	protected int aggroRange;
 	
-	
     public Enemy(Handler handler , float x, float y, int width, int height) {
         super(handler, x, y,width,height);
         damage=DEFAULT_CREATURE_DAMAGE;
@@ -29,6 +30,18 @@ public abstract class Enemy extends Creature {
         spawnrate=10;
     }
    
+    protected void renderHealthbar(Graphics g) {
+    	g.setColor(Color.BLACK);
+    	g.fillRect((int)(x - handler.getGameCamera().getxOffset() + bounds.width - 5*maxHealth-4),(int) (y-handler.getGameCamera().getyOffset()-15), 10*maxHealth+8, 10);
+    	g.fillRect((int)(x - handler.getGameCamera().getxOffset() + bounds.width - 5*maxHealth),(int) (y-handler.getGameCamera().getyOffset()-19), 10*maxHealth, 18);
+    	g.setColor(Color.RED);
+    	g.fillRect((int)(x - handler.getGameCamera().getxOffset() + bounds.width - 5*maxHealth),(int) (y-handler.getGameCamera().getyOffset()-15), 10*maxHealth, 10);
+    	g.setColor(Color.GREEN);
+    	g.fillRect((int)(x - handler.getGameCamera().getxOffset() + bounds.width - 5*maxHealth),(int) (y-handler.getGameCamera().getyOffset()-15), 10*health, 10);
+    	
+    }
+    
+    
 	public void die() {
 		this.active=false;
 		spawnItems();
@@ -156,6 +169,9 @@ public abstract class Enemy extends Creature {
 		}
 	}
 	
+	protected boolean renderHurtAnimation() {
+		return ar.intersects(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f));
+	}
 	
 	public int getSpawnrate() {
 		return spawnrate;
