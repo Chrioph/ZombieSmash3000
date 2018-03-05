@@ -49,7 +49,6 @@ public class Ogre extends Enemy {
 	@Override
 	public void tick() {
 		distToPlayer=Math.abs((int)(x-handler.getWorld().getEntityManager().getPlayer().getX() + y-handler.getWorld().getEntityManager().getPlayer().getY()));
-		generateMovement();
 		checkAttacks();
 		animDown.tick();
 		animUp.tick();
@@ -59,9 +58,11 @@ public class Ogre extends Enemy {
 		animAUp.tick();
 		animALeft.tick();
 		animARight.tick();
-		
+		//generate is in the checkKnockback method
+		checkKnockback();
 		move();
 	}
+
 
 	
 	private BufferedImage getCurrentAnimationFrame() {

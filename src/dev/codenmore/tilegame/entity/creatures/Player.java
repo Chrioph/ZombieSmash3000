@@ -28,11 +28,13 @@ public class Player extends Creature{
 	private Animation animALeft;
 	private Animation animARight;
 	
+	private int knockbackCounter;
 	private int ammunition=5;
 	private int armor=4;
 	private int maxArmor=5;
 	private int rangedDamage=2;
 	private boolean isDead=false;
+	private int enemyDirection;
 	
 
 	private boolean rangedToggled=false;
@@ -72,6 +74,10 @@ public class Player extends Creature{
 
 	@Override
 	public void tick() {
+		if(knockbackCounter>0) {
+			knockback(enemyDirection);
+			knockbackCounter--;
+		}
 		animDown.tick();
 		animUp.tick();
 		animLeft.tick();
@@ -81,8 +87,8 @@ public class Player extends Creature{
 		animALeft.tick();
 		animARight.tick();
 		checkAlive();
-		
-		getInput();
+		if(!(knockbackCounter>0))
+			getInput();
 		
 		move();
 		handler.getGameCamera().centerOnEntity(this);
@@ -183,7 +189,9 @@ public class Player extends Creature{
 				continue;
 			if ( e.getCollisionBounds(0, 0).intersects(ar)) {
 				e.hurt(damage);
-				
+				e.knockback();
+				e.setKnockbackCounter(7);
+				System.out.println(e.getKnockbackCounter());
 				return;
 			}
 		}
@@ -250,6 +258,42 @@ public class Player extends Creature{
 			g.fillRect(ar.x, ar.y, ar.width, ar.height);
 		}
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+	}
+	
+	public void knockback(int direction) {
+		xMove=0;
+		yMove=0;
+		enemyDirection=direction;
+		if(direction==0) {
+			xMove=-5.0f;
+			yMove=-5.0f;
+		}
+		if(direction==1) {
+			xMove=-5.0f;
+			yMove=5.0f;
+		}
+		if(direction==2) {
+			xMove=5.0f;
+			yMove=-5.0f;
+		}
+		if(direction==3) {
+			xMove=5.0f;
+			yMove=5.0f;
+		}
+		if(direction==4) {
+			xMove=-5.0f;
+		}
+		if(direction==6) {
+			xMove=5.0f;
+		}
+		if(direction==7) {
+			yMove=-5.0f;
+		}
+		if(direction==8) {
+			yMove=5.0f;
+		}
+		move();
+		
 	}
 	
 	public void postRender(Graphics g) {
@@ -370,6 +414,20 @@ public class Player extends Creature{
 
 	public void setCraftingScreen(CraftingScreen craftingScreen) {
 		this.craftingScreen = craftingScreen;
+	}
+
+	public int getKnockbackCounter() {
+		return knockbackCounter;
+	}
+
+	public void setKnockbackCounter(int knockbackCounter) {
+		this.knockbackCounter = knockbackCounter;
+	}
+
+	@Override
+	public void knockback() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -77,6 +77,7 @@ public class Zombie extends Enemy {
 		
 	}
 	
+	
 	private BufferedImage getCurrentAnimationFrame() {
 		
 		if(distToPlayer<=aggroRange) {

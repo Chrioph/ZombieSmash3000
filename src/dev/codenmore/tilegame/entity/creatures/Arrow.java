@@ -68,6 +68,7 @@ public class Arrow extends Creature{
 		getMovement();
 		move();
 	}
+	
 
 	@Override
 	public void render(Graphics g) {

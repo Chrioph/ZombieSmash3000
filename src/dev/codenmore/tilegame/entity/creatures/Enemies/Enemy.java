@@ -165,8 +165,57 @@ public abstract class Enemy extends Creature {
 		if(ar.intersects(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f))) {
 			handler.getWorld().getEntityManager().getPlayer().hurt( (Math.max(0,damage - (Math.min((handler.getWorld().getEntityManager().getPlayer().getArmor()),(damage-1))))));
 			handler.getWorld().getEntityManager().getPlayer().setArmor(Math.max(handler.getWorld().getEntityManager().getPlayer().getArmor()-1, 0));
+			handler.getWorld().getEntityManager().getPlayer().knockback(playerDirection);
+			handler.getWorld().getEntityManager().getPlayer().setKnockbackCounter(7);
 			attackTimer=0;
 		}
+	}
+	
+	public void knockback(int direction) {
+		xMove=0;
+		yMove=0;
+		if(direction==0) {
+			xMove=-5.0f;
+			yMove=-5.0f;
+		}
+		if(direction==1) {
+			xMove=-5.0f;
+			yMove=5.0f;
+		}
+		if(direction==2) {
+			xMove=5.0f;
+			yMove=-5.0f;
+		}
+		if(direction==3) {
+			xMove=5.0f;
+			yMove=5.0f;
+		}
+		if(direction==4) {
+			xMove=-5.0f;
+		}
+		if(direction==6) {
+			xMove=5.0f;
+		}
+		if(direction==7) {
+			yMove=-5.0f;
+		}
+		if(direction==8) {
+			yMove=5.0f;
+		}
+		move();
+		System.out.println(knockbackCounter);
+		
+	}
+	
+	protected void checkKnockback() {
+		if(knockbackCounter>0) {
+			knockback(playerDirection);
+			knockbackCounter--;
+			System.out.println(knockbackCounter);
+		}
+		
+		if(!(knockbackCounter>0))
+			generateMovement();
 	}
 	
 	protected boolean renderHurtAnimation() {
@@ -176,11 +225,13 @@ public abstract class Enemy extends Creature {
 	public int getSpawnrate() {
 		return spawnrate;
 	}
+	
 	public void setSpawnrate(int spawnrate) {
 		this.spawnrate = spawnrate;
 	}
 	
 	private void spawnItems() {
+
 		// Nur Zahlen im Bereich von 1 - 8 ebnutzen, da bei Schwierigkeit Easy nur Zhalen bis 8 generiert werden.
 		int[] arr= new int[7]; 
 		for(int i=0;i<6;i++) {
@@ -206,4 +257,6 @@ public abstract class Enemy extends Creature {
 		if(arr[5]==3)
 			handler.getWorld().getItemManager().addItem(Item.bowItem.createNew(), (int)x,(int)y);
 	}
+
+	
 }
