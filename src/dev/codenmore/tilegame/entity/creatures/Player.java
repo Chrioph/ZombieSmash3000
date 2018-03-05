@@ -191,7 +191,6 @@ public class Player extends Creature{
 				e.hurt(damage);
 				e.knockback();
 				e.setKnockbackCounter(7);
-				System.out.println(e.getKnockbackCounter());
 				return;
 			}
 		}

@@ -171,36 +171,36 @@ public abstract class Enemy extends Creature {
 		}
 	}
 	
-	public void knockback(int direction) {
+	public void knockback() {
 		xMove=0;
 		yMove=0;
-		if(direction==0) {
-			xMove=-5.0f;
-			yMove=-5.0f;
-		}
-		if(direction==1) {
-			xMove=-5.0f;
-			yMove=5.0f;
-		}
-		if(direction==2) {
-			xMove=5.0f;
-			yMove=-5.0f;
-		}
-		if(direction==3) {
+		if(playerDirection==0) {
 			xMove=5.0f;
 			yMove=5.0f;
 		}
-		if(direction==4) {
-			xMove=-5.0f;
-		}
-		if(direction==6) {
+		if(playerDirection==1) {
 			xMove=5.0f;
-		}
-		if(direction==7) {
 			yMove=-5.0f;
 		}
-		if(direction==8) {
+		if(playerDirection==2) {
+			xMove=-5.0f;
 			yMove=5.0f;
+		}
+		if(playerDirection==3) {
+			xMove=-5.0f;
+			yMove=-5.0f;
+		}
+		if(playerDirection==4) {
+			xMove=5.0f;
+		}
+		if(playerDirection==6) {
+			xMove=-5.0f;
+		}
+		if(playerDirection==7) {
+			yMove=5.0f;
+		}
+		if(playerDirection==8) {
+			yMove=-5.0f;
 		}
 		move();
 		System.out.println(knockbackCounter);
@@ -209,7 +209,7 @@ public abstract class Enemy extends Creature {
 	
 	protected void checkKnockback() {
 		if(knockbackCounter>0) {
-			knockback(playerDirection);
+			knockback();
 			knockbackCounter--;
 			System.out.println(knockbackCounter);
 		}

@@ -55,7 +55,6 @@ public class Zombie extends Enemy {
 	
 	public void tick() {
 		distToPlayer=Math.abs((int)(x-handler.getWorld().getEntityManager().getPlayer().getX() + y-handler.getWorld().getEntityManager().getPlayer().getY()));
-		generateMovement();
 		checkAttacks();
 		animDown.tick();
 		animUp.tick();
@@ -64,7 +63,8 @@ public class Zombie extends Enemy {
 		animADown.tick();
 		animALeft.tick();
 		animARight.tick();
-		
+		//generate is in the checkKnockback method
+		checkKnockback();
 		move();
 	}
 
