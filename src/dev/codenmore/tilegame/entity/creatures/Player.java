@@ -29,7 +29,7 @@ public class Player extends Creature{
 	private Animation animARight;
 	
 	private int knockbackCounter;
-	private int ammunition=5;
+	private int ammunition=50;
 	private int armor=4;
 	private int maxArmor=5;
 	private int rangedDamage=2;
@@ -94,6 +94,7 @@ public class Player extends Creature{
 		handler.getGameCamera().centerOnEntity(this);
 		
 		checkToggledRangeAttacks();
+
 		checkAttacks();
 		
 		
@@ -117,10 +118,16 @@ public class Player extends Creature{
 	}
 	
 	private void checkAttacks() {
-		attackTimer += System.currentTimeMillis() - lastAttackTimer;
-		lastAttackTimer=System.currentTimeMillis();
-		if ( attackTimer < attackCooldown)
+	    System.out.println(attackTimer);
+		if(attackTimer<attackCooldown) {
+            attackTimer += System.currentTimeMillis() - lastAttackTimer;
+            lastAttackTimer = System.currentTimeMillis();
+            return;
+        }
+        if (attackTimer>attackCooldown+30) {
+			attackTimer=0;
 			return;
+		}
 		if(inventory.isActive())
 			return;
 		Rectangle ar =new Rectangle();
@@ -178,8 +185,10 @@ public class Player extends Creature{
 					handler.getWorld().getEntityManager().addProjectile(arrow);
 					ammunition -= 1;
 					ar=arrow.getBounds();
-					
+
 				}
+				else
+				    return;
 				
 				
 		}

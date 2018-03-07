@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.entity.creatures.Creature;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
@@ -79,8 +80,9 @@ public class Zombie extends Enemy {
 		if(renderHurtAnimation())
 			handler.getWorld().getEntityManager().getPlayer().hurtAnimation(g);
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
-		g.fillRect((int)(x+headBounds.x-handler.getGameCamera().getxOffset()),(int)(y+headBounds.y-handler.getGameCamera().getyOffset()),headBounds.width,headBounds.height);
-		
+		if(Settings.getDebug()) {
+			g.fillRect((int)(x+headBounds.x-handler.getGameCamera().getxOffset()),(int)(y+headBounds.y-handler.getGameCamera().getyOffset()),headBounds.width,headBounds.height);
+		}
 	}
 	
 	
