@@ -230,7 +230,7 @@ public abstract class Enemy extends Creature {
 	
 	private void spawnItems() {
 
-		// Nur Zahlen im Bereich von 1 - 16 ebnutzen, da bei Schwierigkeit Easy nur Zhalen bis 16 generiert werden.
+		// Nur Zahlen im Bereich von 1 - 16 ebnutzen, da bei Schwierigkeit Easy nur Zhalen bis 16 generiert werden...
 		int[] arr= new int[7]; 
 		for(int i=0;i<6;i++) {
 			arr[i]=Utils.generateRandomInt(spawnrate);
