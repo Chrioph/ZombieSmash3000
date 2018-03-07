@@ -51,9 +51,9 @@ public class Player extends Creature{
 		health=10;
 		damage=3;
 		bounds.x=20;
-		bounds.y =28;
+		bounds.y =5;
 		bounds.width =22;
-		bounds.height =36;
+		bounds.height =59;
 		
 		
 		//Animation
@@ -184,6 +184,7 @@ public class Player extends Creature{
 				
 		}
 		attackTimer = 0;
+
 		for (Entity e : handler.getWorld().getEntityManager().getEntities()) {
 			if (e.equals(this))
 				continue;
@@ -198,7 +199,6 @@ public class Player extends Creature{
 	
 	//GameOver Fenster �ffnen
 	public void die() {
-		System.out.println("You Lose");
 	}
 	
 	public void hurtAnimation(Graphics g) {
@@ -243,6 +243,7 @@ public class Player extends Creature{
 	public void render(Graphics g) {
 		super.render(g);
 		int arSize = 50;
+		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 		if(Settings.getDebug()) {	
 			Rectangle ar=new Rectangle();
 			Rectangle cb = getCollisionBounds(0,0);
@@ -256,7 +257,8 @@ public class Player extends Creature{
 			g.setColor(Color.BLACK);	
 			g.fillRect(ar.x, ar.y, ar.width, ar.height);
 		}
-		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		g.setColor(Color.red);
+		g.fillRect((int)(bounds.x+x-handler.getGameCamera().getxOffset()),(int)(bounds.y+y-handler.getGameCamera().getyOffset()),(int)bounds.width,(int)bounds.height);
 	}
 	
 	public void knockback(int direction) {

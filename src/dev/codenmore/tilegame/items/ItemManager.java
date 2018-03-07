@@ -10,14 +10,13 @@ import dev.codenmore.tilegame.utils.Utils;
 public class ItemManager {
 	
 	private Handler handler;
-	private ArrayList<Item> items;
+	private ArrayList<Item> items = new ArrayList<Item>();
 	private int x;
 	private int y;
 	
 	
 	public ItemManager(Handler handler) {
 		this.handler=handler;
-		items = new ArrayList<Item>();
 
 	}
 
@@ -47,9 +46,10 @@ public class ItemManager {
 		while (!b) {
 			r1=Utils.generateRandomInt(200)-100;
 			r2=Utils.generateRandomInt(200)-100;
-			if (!i.collisionWithTile((int)(i.x + r1 ), (int) (i.y + r2 )))
-				b=true;
-			}
+			if (i.collisionWithTile((int)(i.x + r1 ), (int) (i.y + r2 )) || i.collisionWithTile((int)(i.x+i.bounds.x + r1 ), (int) (i.y+i.bounds.x + r2 )))
+				continue;
+			b=true;
+		}
 		i.setPostion((int)(i.x + x + r1  ),(int) (i.y+ y + r2 ));
 		items.add(i);
 	}

@@ -31,14 +31,12 @@ public class Settings {
                 scaleX = Double.parseDouble(properties.getProperty("ScaleX"));
                 scaleY = Double.parseDouble(properties.getProperty("ScaleY"));
             }catch(NumberFormatException numberE) {
-                System.out.println("Resolution was no Integer, fallback to default settings and delete old values");
-                properties.setProperty("resolutionX", "1920");
+               properties.setProperty("resolutionX", "1920");
                 properties.setProperty("resolutionY", "1080");
                 properties.setProperty("Scale", "1");
                 try {
                     properties.storeToXML(new FileOutputStream("settings.xml"),"");
                 }catch(Exception e2) {
-                    System.out.println("Failed saving settings: " + e2.getMessage());
                 }
                 width = 1920;
                 height = 1080;

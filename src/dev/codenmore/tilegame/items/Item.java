@@ -13,16 +13,22 @@ public class Item {
 	
 	//Handler
 
-	
+	//whenever a new item is created please increase the length of the ressources array in the class craftable items by one and add it to inventoryItems in the inventory class
+	//items used for crafting get ids up to 127, other items ids start at 128
 	public static Item[] items = new Item[256];
 	public static Item logItem = new Item(Assets.log,"Log",0);
 	public static Item rockItem = new Item(Assets.rock,"Rock",1);
-	public static Item swordItem = new Item(Assets.sword,"Sword",2);
-	public static Item heartItem = new Item(Assets.heart,"Heart",3);
-	public static Item arrowItem = new Item(Assets.arrow,"Arrow",4);
-	public static Item armorItem = new Item(Assets.armor,"Armor",5);
-	public static Item healthPlusItem = new Item(Assets.healthPlus,"Health Plus",6);
-	public static Item bowItem = new Item(Assets.bow,"Bow",7);
+	//public static CraftableItem woodItem = new CraftableItem(Assets.wood,"Wood", 3) ;
+	//public static CraftableItem solidWoodItem = new CraftableItem(Assets.solidWood,"Solid Wood", 4);
+
+
+	public static Item swordItem = new Item(Assets.sword,"Sword",128);
+	public static Item heartItem = new Item(Assets.heart,"Heart",129);
+	public static Item arrowItem = new Item(Assets.arrow,"Arrow",130);
+	public static Item armorItem = new Item(Assets.armor,"Armor",131);
+	public static Item healthPlusItem = new Item(Assets.healthPlus,"Health Plus",132);
+	public static Item bowItem = new Item(Assets.bow,"Bow",133);
+	public static Item seedItem = new Item(Assets.seeds, "Seed", 134);
 	
 	
 	//Class
@@ -55,22 +61,23 @@ public class Item {
 	
 	public void tick() {
 		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(this.getCollisionBounds(0,0))) {
-			if(!(this.getId()==5 && handler.getWorld().getEntityManager().getPlayer().getArmor()>=handler.getWorld().getEntityManager().getPlayer().getMaxArmor()) &&
-					!(this.getId()==3 && handler.getWorld().getEntityManager().getPlayer().getHealth()>=handler.getWorld().getEntityManager().getPlayer().getMaxHealth())	)
+			if((!(this.getId()==armorItem.getId() && handler.getWorld().getEntityManager().getPlayer().getArmor()>=handler.getWorld().getEntityManager().getPlayer().getMaxArmor()) &&
+					!(this.getId()==heartItem.getId() && handler.getWorld().getEntityManager().getPlayer().getHealth()>=handler.getWorld().getEntityManager().getPlayer().getMaxHealth())))
 				pickedUp=true;
-			if(this.getId()!=2 && this.getId()!=3 && this.getId()!=4&& this.getId()!=5 && this.getId()!=6&&this.getId()!=7)
+			if(this.getId()!=swordItem.getId() && this.getId()!=heartItem.getId() && this.getId()!=arrowItem.getId()
+					&& this.getId()!=armorItem.getId() && this.getId()!=healthPlusItem.getId() &&this.getId()!=bowItem.getId())
 				handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(this);
-			if(this.getId()==2)
+			if(this.getId()==swordItem.getId())
 				handler.getWorld().getEntityManager().getPlayer().setDamage(handler.getWorld().getEntityManager().getPlayer().getDamage()+1);
-			if(this.getId()==3&& pickedUp==true)
+			if(this.getId()==heartItem.getId()&& pickedUp==true)
 				handler.getWorld().getEntityManager().getPlayer().setHealth(handler.getWorld().getEntityManager().getPlayer().getHealth()+1);
-			if(this.getId()==4)
+			if(this.getId()==arrowItem.getId())
 				handler.getWorld().getEntityManager().getPlayer().setAmmunition(handler.getWorld().getEntityManager().getPlayer().getAmmunition()+1);
-			if(this.getId()==5 && pickedUp==true)
+			if(this.getId()==armorItem.getId() && pickedUp==true)
 				handler.getWorld().getEntityManager().getPlayer().setArmor(handler.getWorld().getEntityManager().getPlayer().getArmor()+1);
-			if(this.getId()==6 )
+			if(this.getId()==healthPlusItem.getId() )
 				handler.getWorld().getEntityManager().getPlayer().setMaxHealth(handler.getWorld().getEntityManager().getPlayer().getMaxHealth()+1);
-			if(this.getId()==7 )
+			if(this.getId()==bowItem.getId() )
 				handler.getWorld().getEntityManager().getPlayer().setRangedDamage(handler.getWorld().getEntityManager().getPlayer().getRangedDamage()+1);
 		}
 		

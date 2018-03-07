@@ -16,7 +16,7 @@ public class Assets {
 
 
 	public static BufferedImage player1,zombie, ogre, gravestone;
-	public static BufferedImage log, sword, bow, rock, tree, heart, armor, healthPlus;
+	public static BufferedImage log, sword, bow, rock, tree, heart, armor, healthPlus, seeds;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
 	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow,deathScreen,craftingScreen;
 	public static BufferedImage settingsBodyElement, settingsHeader;
@@ -90,6 +90,7 @@ public class Assets {
 		heart=     sheet.crop(width*7, height*3, width, height);
 		armor=     sheet.crop(width*8, 0, width, height);
 		healthPlus=sheet.crop(width*9, 0, width, height);
+		seeds=     sheet.crop(width*8, height*2, width,height);
 		
 		arrow     =   sheet.crop(width*3, height*6, width, height);
 		arrowRight=   sheet.crop(width*4, height*6, width, height);

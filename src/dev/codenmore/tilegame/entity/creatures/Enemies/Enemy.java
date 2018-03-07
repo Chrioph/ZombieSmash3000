@@ -203,7 +203,6 @@ public abstract class Enemy extends Creature {
 			yMove=-5.0f;
 		}
 		move();
-		System.out.println(knockbackCounter);
 		
 	}
 	
@@ -211,7 +210,6 @@ public abstract class Enemy extends Creature {
 		if(knockbackCounter>0) {
 			knockback();
 			knockbackCounter--;
-			System.out.println(knockbackCounter);
 		}
 		
 		if(!(knockbackCounter>0))

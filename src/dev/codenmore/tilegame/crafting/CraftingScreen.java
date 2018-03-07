@@ -70,7 +70,6 @@ public class CraftingScreen {
 		Text.drawString(g, "to craft", craftImageX+50, craftImageY+150+invListSpacing, true, Color.WHITE, Assets.font28);
 		int len = craftableItems.size();
 		if(len == 0) {
-			System.out.println("return");
 			return;
 		}
 		for(int i = -5;i < 6;i++){
@@ -109,6 +108,7 @@ public class CraftingScreen {
 				for (int i=0;i<craftableItems.get(selectedItem).getResources(j);i++) {
 					handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().get(j).
 					setCount(handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().get(j).getCount() - 1);;
+
 				}
 			}
 			else return;

@@ -26,7 +26,7 @@ public class Zombie extends Enemy {
 	private Animation animAUp;
 	private Animation animALeft;
 	private Animation animARight;
-	
+	private Rectangle headBounds=new Rectangle();
 	
 	
 	public Zombie(Handler handler , float x, float y) {
@@ -41,6 +41,11 @@ public class Zombie extends Enemy {
 		bounds.y =26;
 		bounds.width =28;
 		bounds.height =40;
+		headBounds.x=8;
+		headBounds.y=6;
+		headBounds.width=46;
+		headBounds.height=24;
+
 		
 		animDown = new Animation(500, Assets.zombie_down);
 		animUp = new Animation(500,Assets.zombie_up);
@@ -74,6 +79,7 @@ public class Zombie extends Enemy {
 		if(renderHurtAnimation())
 			handler.getWorld().getEntityManager().getPlayer().hurtAnimation(g);
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		g.fillRect((int)(x+headBounds.x-handler.getGameCamera().getxOffset()),(int)(y+headBounds.y-handler.getGameCamera().getyOffset()),headBounds.width,headBounds.height);
 		
 	}
 	
