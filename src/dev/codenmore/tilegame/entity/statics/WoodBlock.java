@@ -11,8 +11,6 @@ import java.awt.*;
 public class WoodBlock extends StaticEntity {
     public WoodBlock (Handler handler, float x , float y) {
         super(handler,x,y, Tile.TILEWIDTH,Tile.TILEHEIGHT);
-        System.out.println("Solidwodd");
-        bounds.x=0;
         bounds.y = 0;
         bounds.width=0;
         bounds.height =0;

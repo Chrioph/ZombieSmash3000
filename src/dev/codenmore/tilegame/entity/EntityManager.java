@@ -81,7 +81,7 @@ public class EntityManager {
 			e.render(g);
 		}
 		
-		
+
 		for(Entity e : projectiles) {
 			e.render(g);
 		}

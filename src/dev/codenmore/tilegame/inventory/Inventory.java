@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
+import dev.codenmore.tilegame.input.KeyManager;
 import dev.codenmore.tilegame.items.CraftableItem;
 import dev.codenmore.tilegame.items.Item;
 
@@ -62,6 +63,12 @@ public class Inventory {
 			 selectedItem= inventoryItems1.size()-1;
 		 else if (selectedItem >= inventoryItems1.size())
 			 selectedItem=0;
+
+		if (inventoryItems1.size()>0 && inventoryItems1.get(selectedItem).isPlaceable() && handler.getKeyManager().keyJustPressed(KeyEvent.VK_Q)){
+			active=!active;
+			handler.getWorld().getEntityManager().getPlayer().setPlacingItem(inventoryItems.get(selectedItem).getId());
+
+		}
 	}
 	
 	public void render(Graphics g){
