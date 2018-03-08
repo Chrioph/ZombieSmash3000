@@ -105,6 +105,7 @@ public class EntityManager {
 				it.remove();
 			
 		}
+
 		entities.sort(renderSorter);
 		
 		Iterator<Entity> it1 = projectiles.iterator();
@@ -120,12 +121,13 @@ public class EntityManager {
 		
 	}
 	public void render(Graphics g) {
-		for(Entity e : entities) {
-			e.render(g);
-		}
+
 		
 
 		for(Entity e : projectiles) {
+			e.render(g);
+		}
+		for(Entity e : entities) {
 			e.render(g);
 		}
 		player.postRender(g);

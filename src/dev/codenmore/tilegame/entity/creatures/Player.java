@@ -224,6 +224,16 @@ public class Player extends Creature{
 				return;
 			}
 		}
+		for (Entity e : handler.getWorld().getEntityManager().getProjectiles()) {
+			if (e.equals(this))
+				continue;
+			if ( e.getCollisionBounds(0, 0).intersects(ar)) {
+				e.hurt(damage);
+				e.knockback();
+				e.setKnockbackCounter(7);
+				return;
+			}
+		}
 	}
 	
 	//GameOver Fenster �ffnen
@@ -281,7 +291,7 @@ public class Player extends Creature{
 		int arSize = 50;
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 		System.out.println(placingItem);
-		renderPlacingItem(g,placingItem);
+		renderPlacingItem(g);
 
 		if(Settings.getDebug()) {	
 			Rectangle ar=new Rectangle();
@@ -300,7 +310,7 @@ public class Player extends Creature{
 		}
 
 	}
-	public void renderPlacingItem(Graphics g, int placingItem){
+	private void renderPlacingItem(Graphics g){
 		if(placingItem>0) {
 			if (playerDirection == 0) {
 				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x + DEFAULT_CREATURE_WIDTH*1.5 - handler.getGameCamera().getxOffset()), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64 - handler.getGameCamera().getyOffset()), 128, 128,null);
@@ -311,8 +321,7 @@ public class Player extends Creature{
 			} else if (playerDirection == 3) {
 				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x +DEFAULT_CREATURE_WIDTH/2 - 64 - handler.getGameCamera().getxOffset()), (int) ( y - DEFAULT_CREATURE_HEIGHT/2 - 128 - handler.getGameCamera().getyOffset()),128, 128, null);
 			}
-			if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_Q)){
-				placingItem=0;
+			if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_R)){
 				if (playerDirection == 0)
 					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x + DEFAULT_CREATURE_WIDTH*1.5f ), ( y + DEFAULT_CREATURE_HEIGHT/2 - 64)));
 				if (playerDirection == 1)
@@ -321,6 +330,9 @@ public class Player extends Creature{
 					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x - DEFAULT_CREATURE_WIDTH/2 - 128  ), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64)));
 				if (playerDirection == 3)
 					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x +DEFAULT_CREATURE_WIDTH/2 - 64 ), (int) ( y - DEFAULT_CREATURE_HEIGHT/2 - 128 )));
+                inventory.getInventoryItems().get(placingItem).setCount(inventory.getInventoryItems().get(placingItem).getCount()-1);
+				placingItem=0;
+
 			}
 		}
 	}

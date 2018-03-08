@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.entity.Entity;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.input.KeyManager;
@@ -54,6 +56,12 @@ public class Inventory {
 				addIfNotAlreadyAdded(inventoryItems.get(i));
 			}
 		}
+		Iterator<Item> it = displayInventoryItems.iterator();
+		while( it.hasNext() ) {
+			Item i= it.next();
+			if (i.getCount()<=0)
+				it.remove();
+		}
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_E))
 			active=!active;
 		if(!active)
@@ -69,11 +77,11 @@ public class Inventory {
 
 		if (displayInventoryItems.size()>0 && displayInventoryItems.get(selectedItem).isPlaceable() && handler.getKeyManager().keyJustPressed(KeyEvent.VK_Q)){
 			active=!active;
-			handler.getWorld().getEntityManager().getPlayer().setPlacingItem(inventoryItems.get(selectedItem).getId());
+			handler.getWorld().getEntityManager().getPlayer().setPlacingItem(displayInventoryItems.get(selectedItem).getId());
 
 		}
 	}
-	
+
 	public void render(Graphics g){
 		if(!active)
 			return;
