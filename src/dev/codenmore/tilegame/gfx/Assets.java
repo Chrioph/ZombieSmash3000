@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 	
-	public static BufferedImage dirt,grass,stone,finish,solidWood,wood;
+	public static BufferedImage dirt,grass,stone,finish,solidWood,wood,chest;
 
 	// Dungeon
 	public static BufferedImage dungeonWallStraightDown, dungeonWallStraightUp, dungeonWallLeftCorner;
@@ -28,9 +28,6 @@ public class Assets {
 	public static BufferedImage[] ogre_down , ogre_up, ogre_left, ogre_right, oaDown, oaLeft, oaRight, oaUp;
 	public static BufferedImage[] buttonStart, buttonSettings, buttonBack;
 	public static BufferedImage[] settingsMenuButton;
-	public static BufferedImage[] placingWood;
-	public static BufferedImage[] placingSolidWood;
-	public static BufferedImage[] placingTree;
 	
 	public static Font font56, font28, font40,font100;
 	
@@ -63,6 +60,7 @@ public class Assets {
 		grass =    sheet.crop(width*3, 0, width, height);
 		stone =    sheet.crop(0, height, width, height);
 		finish=    sheet.crop(width*8, height, width, height);
+		chest=     sheet.crop(width,height,width,height);
 
 		// Dungeon
 		dungeonWallLeft = dungeonWallsSheet.crop(0, height, width, height);
@@ -238,17 +236,6 @@ public class Assets {
 
 		//Item Placing Animation
 
-		placingWood=new BufferedImage[2];
-		placingWood[0]=wood;
-		placingWood[1]=sheet.crop(width*8,height*3, width,height);
-
-		placingSolidWood=new BufferedImage[2];
-		placingSolidWood[0]=solidWood;
-		placingSolidWood[1]=sheet.crop(width*8,height*3, width,height);
-
-		placingTree=new BufferedImage[2];
-		placingTree[0]=tree;
-		placingTree[1]=sheet.crop(width*8,height*3, width,height);
 	}
 		
 		

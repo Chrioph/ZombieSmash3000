@@ -81,10 +81,6 @@ public class Player extends Creature{
 		animADown= new Animation(400, Assets.aDown);
 		animALeft= new Animation(400, Assets.aLeft);
 		animARight= new Animation(400, Assets.aRight);
-
-		placingTree=new Animation(500,Assets.placingTree);
-		placingWood=new Animation(500,Assets.placingWood);
-		placingSolidWood=new Animation(500,Assets.placingSolidWood);
 		
 		inventory=new Inventory(handler);
 		craftingScreen=new CraftingScreen(handler);
@@ -104,9 +100,6 @@ public class Player extends Creature{
 		animAUp.tick();
 		animALeft.tick();
 		animARight.tick();
-		placingTree.tick();
-		placingWood.tick();
-		placingSolidWood.tick();
 		checkAlive();
 		if(!(knockbackCounter>0))
 			getInput();
@@ -224,6 +217,16 @@ public class Player extends Creature{
 				return;
 			}
 		}
+		for (Entity e : handler.getWorld().getEntityManager().getProjectiles()) {
+			if (e.equals(this))
+				continue;
+			if ( e.getCollisionBounds(0, 0).intersects(ar)) {
+				e.hurt(damage);
+				e.knockback();
+				e.setKnockbackCounter(7);
+				return;
+			}
+		}
 	}
 	
 	//GameOver Fenster �ffnen
@@ -281,7 +284,7 @@ public class Player extends Creature{
 		int arSize = 50;
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 		System.out.println(placingItem);
-		renderPlacingItem(g,placingItem);
+		renderPlacingItem(g);
 
 		if(Settings.getDebug()) {	
 			Rectangle ar=new Rectangle();
@@ -300,19 +303,23 @@ public class Player extends Creature{
 		}
 
 	}
-	public void renderPlacingItem(Graphics g, int placingItem){
+	private void renderPlacingItem(Graphics g){
 		if(placingItem>0) {
+			g.setColor(Color.PINK);
 			if (playerDirection == 0) {
-				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x + DEFAULT_CREATURE_WIDTH*1.5 - handler.getGameCamera().getxOffset()), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64 - handler.getGameCamera().getyOffset()), 128, 128,null);
+				g.fillRect((int) (x - 2 + DEFAULT_CREATURE_WIDTH*1.5 - handler.getGameCamera().getxOffset()), (int) ( y - 2 + DEFAULT_CREATURE_HEIGHT/2 - 64 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0,0).getWidth()+4, getCurrentPlacingEntity(0,0).getHeight()+4);
+				g.drawImage(getCurrentPlacementItem(),(int) (x + DEFAULT_CREATURE_WIDTH*1.5 - handler.getGameCamera().getxOffset()), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0,0).getWidth(), getCurrentPlacingEntity(0,0).getHeight(),null);
 			} else if (playerDirection == 1) {
-				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x + DEFAULT_CREATURE_WIDTH/2  -64 - handler.getGameCamera().getxOffset()), (int) ( y + DEFAULT_CREATURE_HEIGHT*1.5 - handler.getGameCamera().getyOffset()),128, 128,null);
+				g.fillRect((int) (x - 2 + DEFAULT_CREATURE_WIDTH/2  -64 - handler.getGameCamera().getxOffset()), (int) ( y - 2 + DEFAULT_CREATURE_HEIGHT*1.5 - handler.getGameCamera().getyOffset()),getCurrentPlacingEntity(0,0).getWidth()+4, getCurrentPlacingEntity(0,0).getHeight()+4);
+				g.drawImage(getCurrentPlacementItem(),(int) (x + DEFAULT_CREATURE_WIDTH/2  -64 - handler.getGameCamera().getxOffset()), (int) ( y + DEFAULT_CREATURE_HEIGHT*1.5 - handler.getGameCamera().getyOffset()),getCurrentPlacingEntity(0,0).getWidth(), getCurrentPlacingEntity(0,0).getHeight(),null);
 			} else if (playerDirection == 2) {
-				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x - DEFAULT_CREATURE_WIDTH/2 - 128 - handler.getGameCamera().getxOffset() ), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64 - handler.getGameCamera().getyOffset()),128, 128, null);
+				g.fillRect((int) (x - 2 - DEFAULT_CREATURE_WIDTH/2 - 128 - handler.getGameCamera().getxOffset() ), (int) ( y - 2 + DEFAULT_CREATURE_HEIGHT/2 - 64 - handler.getGameCamera().getyOffset()),getCurrentPlacingEntity(0,0).getWidth()+4, getCurrentPlacingEntity(0,0).getHeight()+4);
+				g.drawImage(getCurrentPlacementItem(),(int) (x - DEFAULT_CREATURE_WIDTH/2 - 128 - handler.getGameCamera().getxOffset() ), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64 - handler.getGameCamera().getyOffset()),getCurrentPlacingEntity(0,0).getWidth(), getCurrentPlacingEntity(0,0).getHeight(), null);
 			} else if (playerDirection == 3) {
-				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x +DEFAULT_CREATURE_WIDTH/2 - 64 - handler.getGameCamera().getxOffset()), (int) ( y - DEFAULT_CREATURE_HEIGHT/2 - 128 - handler.getGameCamera().getyOffset()),128, 128, null);
+				g.fillRect((int) (x - 2 + DEFAULT_CREATURE_WIDTH/2 - 64 - handler.getGameCamera().getxOffset()), (int) ( y - 2 - DEFAULT_CREATURE_HEIGHT/2 - 128 - handler.getGameCamera().getyOffset()),getCurrentPlacingEntity(0,0).getWidth()+4, getCurrentPlacingEntity(0,0).getHeight()+4);
+				g.drawImage(getCurrentPlacementItem(),(int) (x +DEFAULT_CREATURE_WIDTH/2 - 64 - handler.getGameCamera().getxOffset()), (int) ( y - DEFAULT_CREATURE_HEIGHT/2 - 128 - handler.getGameCamera().getyOffset()),getCurrentPlacingEntity(0,0).getWidth(), getCurrentPlacingEntity(0,0).getHeight(), null);
 			}
-			if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_Q)){
-				placingItem=0;
+			if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_R)){
 				if (playerDirection == 0)
 					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x + DEFAULT_CREATURE_WIDTH*1.5f ), ( y + DEFAULT_CREATURE_HEIGHT/2 - 64)));
 				if (playerDirection == 1)
@@ -321,6 +328,9 @@ public class Player extends Creature{
 					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x - DEFAULT_CREATURE_WIDTH/2 - 128  ), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64)));
 				if (playerDirection == 3)
 					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x +DEFAULT_CREATURE_WIDTH/2 - 64 ), (int) ( y - DEFAULT_CREATURE_HEIGHT/2 - 128 )));
+                inventory.getInventoryItems().get(placingItem).setCount(inventory.getInventoryItems().get(placingItem).getCount()-1);
+				placingItem=0;
+
 			}
 		}
 	}
@@ -410,15 +420,15 @@ public class Player extends Creature{
 			return Assets.player1LookingUp;
 	}
 
-	private BufferedImage getCurrentPlacementAnimationFrame(){
+	private BufferedImage getCurrentPlacementItem(){
 		if (placingItem== Item.seedItem.getId()){
-			return placingTree.getCurrentFrame();
+			return Assets.tree;
 		}
 		if (placingItem== CraftableItem.woodItem.getId()){
-			return placingWood.getCurrentFrame();
+			return Assets.wood;
 		}
 		if (placingItem== CraftableItem.solidWoodItem.getId()){
-			return placingSolidWood.getCurrentFrame();
+			return Assets.solidWood;
 		}
 		return null;
 	}

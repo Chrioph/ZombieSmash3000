@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.entity.Entity;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.input.KeyManager;
@@ -54,6 +56,12 @@ public class Inventory {
 				addIfNotAlreadyAdded(inventoryItems.get(i));
 			}
 		}
+		Iterator<Item> it = displayInventoryItems.iterator();
+		while( it.hasNext() ) {
+			Item i= it.next();
+			if (i.getCount()<=0)
+				it.remove();
+		}
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_E))
 			active=!active;
 		if(!active)
@@ -67,13 +75,13 @@ public class Inventory {
 		 else if (selectedItem >= displayInventoryItems.size())
 			 selectedItem=0;
 
-		if (displayInventoryItems.size()>0 && displayInventoryItems.get(selectedItem).isPlaceable() && handler.getKeyManager().keyJustPressed(KeyEvent.VK_Q)){
+		if (displayInventoryItems.size()>0 && displayInventoryItems.get(selectedItem).isPlaceable() && handler.getKeyManager().keyJustPressed(KeyEvent.VK_Q) && handler.getWorld().isPlaceable()){
 			active=!active;
-			handler.getWorld().getEntityManager().getPlayer().setPlacingItem(inventoryItems.get(selectedItem).getId());
+			handler.getWorld().getEntityManager().getPlayer().setPlacingItem(displayInventoryItems.get(selectedItem).getId());
 
 		}
 	}
-	
+
 	public void render(Graphics g){
 		if(!active)
 			return;
@@ -97,7 +105,7 @@ public class Inventory {
 		Item item = displayInventoryItems.get(selectedItem);
 		g.drawImage(item.getTexture(), invImageX, invImageY, invImageWidth, invImageHeight, null);
 		Text.drawString(g, Integer.toString(item.getCount()), invCountX, invCountY, true, Color.WHITE, Assets.font56);
-		if (displayInventoryItems.get(selectedItem).isPlaceable()) {
+		if (displayInventoryItems.get(selectedItem).isPlaceable()&& handler.getWorld().isPlaceable()) {
 			Text.drawString(g, "Press Q to", invImageX + 60, invImageY + 300, true, Color.WHITE, Assets.font56);
 			Text.drawString(g, "place item", invImageX + 60, invImageY + 300 + invListSpacing, true, Color.WHITE, Assets.font56);
 		}

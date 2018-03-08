@@ -165,6 +165,7 @@ public class WorldGenerator {
         homeworld.setEntityManager(homeWorldEnManager);
         homeWorld = homeworld;
         worlds.add(homeworld);
+        homeworld.setPlaceable(true);
         return homeworld;
     }
 

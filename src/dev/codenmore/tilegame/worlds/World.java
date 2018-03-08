@@ -26,8 +26,9 @@ public class World {
 	private int spawnX, spawnY;
 	private int id;
 	private String path;
+	private boolean placeable=false;
 
-	
+
 	//Entities
 	
 	private EntityManager entityManager; 
@@ -188,6 +189,14 @@ public class World {
 		dump += "[Player]\n";
 
 		entityManager.dump();
+	}
+
+	public boolean isPlaceable() {
+		return placeable;
+	}
+
+	public void setPlaceable(boolean placeable) {
+		this.placeable = placeable;
 	}
 }
 
