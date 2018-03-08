@@ -15,7 +15,7 @@ public class Assets {
 	public static BufferedImage dungeonWallSingleUp, dungeonWallSingleDown;
 
 
-	public static BufferedImage player1,zombie, ogre, gravestone;
+	public static BufferedImage zombie, ogre, gravestone;
 	public static BufferedImage log, sword, bow, rock, tree, heart, armor, healthPlus, seeds;
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
 	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow,deathScreen,craftingScreen;
@@ -23,10 +23,14 @@ public class Assets {
 	
 	private static final int width = 32,height =32;
 	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right, aDown, aLeft, aRight, aUp;;
+	public static BufferedImage player1LookingDown , player1LookingUp, player1LookingLeft, player1LookingRight;
 	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right, zaDown, zaLeft, zaRight, zaUp;
 	public static BufferedImage[] ogre_down , ogre_up, ogre_left, ogre_right, oaDown, oaLeft, oaRight, oaUp;
 	public static BufferedImage[] buttonStart, buttonSettings, buttonBack;
 	public static BufferedImage[] settingsMenuButton;
+	public static BufferedImage[] placingWood;
+	public static BufferedImage[] placingSolidWood;
+	public static BufferedImage[] placingTree;
 	
 	public static Font font56, font28, font40,font100;
 	
@@ -51,8 +55,7 @@ public class Assets {
 		deathScreen = sheet.crop(width*10, 0, width, height);
 		craftingScreen =ImageLoader.loadImage("/textures/CraftingScreen.png");
 		
-		
-		player1 = sheet.crop(width*2, height, width, height); 
+
 		
 		wood=      sheet.crop(width*10, height, width, height);
 		solidWood= sheet.crop(width*11, 0, width, height);
@@ -99,8 +102,11 @@ public class Assets {
 		arrowUp   =   sheet.crop(width*7, height*6, width, height);
 		
 		//Player 1
-		player1 =  sheet.crop(width*2, height, width, height); 
-		gravestone = sheet.crop(width*9, height, width, height);
+		player1LookingDown =sheet.crop(width*2, height, width, height);
+		player1LookingLeft =sheet.crop(width*2, height*5, width, height);
+		player1LookingUp   =sheet.crop(width*3, height*5, width, height);
+		player1LookingRight=sheet.crop(width*1, height*5, width, height);
+		gravestone         =sheet.crop(width*9, height, width, height);
 		
 		player1_down = new BufferedImage[2];
 		player1_down[0]=sheet.crop( width*3 , height, width, height);
@@ -228,6 +234,21 @@ public class Assets {
 		oaUp = new BufferedImage[2];
 		oaUp[0]=ogreSheet.crop( width*6 , 0, width*2, height*2);
 		oaUp[1]=ogreSheet.crop( width*6 , 0, width*2, height*2);
+
+
+		//Item Placing Animation
+
+		placingWood=new BufferedImage[2];
+		placingWood[0]=wood;
+		placingWood[1]=sheet.crop(width*8,height*3, width,height);
+
+		placingSolidWood=new BufferedImage[2];
+		placingSolidWood[0]=solidWood;
+		placingSolidWood[1]=sheet.crop(width*8,height*3, width,height);
+
+		placingTree=new BufferedImage[2];
+		placingTree[0]=tree;
+		placingTree[1]=sheet.crop(width*8,height*3, width,height);
 	}
 		
 		

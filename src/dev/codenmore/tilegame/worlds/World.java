@@ -171,6 +171,10 @@ public class World {
 	public int getHEight() {
 		return height;
 	}
+
+	public void setTile(int x, int y, int id){
+		tiles[x/128][y/128]= id;
+	}
 }
 
 

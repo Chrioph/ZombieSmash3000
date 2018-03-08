@@ -63,9 +63,12 @@ public abstract class Entity {
 				continue;
 			if ( e.getCollisionBounds(0f, 0f).intersects(getCollisionBounds(xOffset, yOffset)))
 				return true;
-			
-		
-			
+		}
+		for (Entity e: handler.getWorld().getEntityManager().getProjectiles()) {
+			if (e.equals(this))
+				continue;
+			if ( e.getCollisionBounds(0f, 0f).intersects(getCollisionBounds(xOffset, yOffset)))
+				return true;
 		}
 		return false;
 	}

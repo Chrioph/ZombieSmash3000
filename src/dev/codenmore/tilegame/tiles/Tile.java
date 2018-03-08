@@ -9,14 +9,11 @@ import java.awt.image.BufferedImage;
 public class Tile {
 	//STATIC
 	
-	
 	public static Tile[] tiles= new Tile[256];
 	public static Tile grassTile=new GrassTile(0);
 	public static Tile stoneTile=new StoneTile(2);
 	public static Tile dirtTile=new DirtTile(1);
 	public static Tile finishTile=new FinishTile(3);
-	public static Tile solidWoodTile=new SolidWoodTile(4);
-	public static Tile woodTile=new WoodTile(5);
 	public static Tile dungeonFloor = new dungeonFloorTile(6);
 	public static Tile dungeonWallTile = new dungeonWallTile(7);
 	
@@ -30,7 +27,6 @@ public class Tile {
 	public Tile(BufferedImage texture, int id) {
 		this.id=id;
 		this.texture=texture;
-		
 		tiles[id]=this;
 	}
 	
@@ -51,7 +47,9 @@ public class Tile {
 	public int getId() {
 		return id;
 	}
-	 public boolean isFinish() {
+	public boolean isFinish() {
 		 return false;
 	 }
+
+
 }

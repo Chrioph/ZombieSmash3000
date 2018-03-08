@@ -16,8 +16,8 @@ public class EntityManager {
 	private Player player;
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> projectiles;
+	private ArrayList<Entity> queue;
 	private Comparator<Entity> renderSorter = new Comparator<Entity>() {
-		@Override
 		public int compare(Entity a, Entity b) {
 			if (a.getY() + a.getHeight() <b.getY() + b.getHeight())
 				return -1;
@@ -26,18 +26,33 @@ public class EntityManager {
 						
 		}
 	};
-	
-	
+
+
+
+
 	public EntityManager(Handler handler, Player player) {
 		this.handler=handler;
 		this.player=player;
 		entities = new ArrayList<Entity>();
 		entities.add(player);
 		projectiles= new ArrayList<Entity>();
+		queue= new ArrayList<Entity>();
 	}
 	
 	
 	public void tick() {
+		if(queue.size()>0) {
+			Iterator<Entity> it2 = entities.iterator();
+			while (it2.hasNext()) {
+
+				Entity e = it2.next();
+				projectiles.add(e);
+
+			}
+		}
+
+		queue=new ArrayList<Entity>();
+
 		Iterator<Entity> it = entities.iterator();
 		while( it.hasNext() ) {
 			
@@ -81,6 +96,8 @@ public class EntityManager {
 	public void addProjectile(Entity e) {
 		projectiles.add(e);
 	}
+
+	public void addToQueue(Entity e) {queue.add(e);}
 	
 	
 	public void applyMods(ArrayList<Mod> mods)
@@ -124,6 +141,14 @@ public class EntityManager {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	public ArrayList<Entity> getQueue() {
+		return queue;
+	}
+
+	public void setQueue(ArrayList<Entity> queue) {
+		this.queue = queue;
 	}
 
 

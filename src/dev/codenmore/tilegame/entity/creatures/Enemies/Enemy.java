@@ -151,6 +151,7 @@ public abstract class Enemy extends Creature {
 			return;
 		getMovement();
 		movementTimer=0;
+		movementCooldown=Utils.generateRandomInt(1500)+500;
 	}
 	
 	protected void checkAttacks() {

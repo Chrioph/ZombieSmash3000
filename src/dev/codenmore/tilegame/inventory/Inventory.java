@@ -38,6 +38,7 @@ public class Inventory {
 		inventoryItems.add(Item.rockItem);
 		inventoryItems.add(CraftableItem.woodItem);
 		inventoryItems.add(CraftableItem.solidWoodItem);
+		inventoryItems.add(Item.seedItem);
 		inventoryItems1 = new ArrayList<Item>();
 
 	}
@@ -86,6 +87,10 @@ public class Inventory {
 		Item item = inventoryItems1.get(selectedItem);
 		g.drawImage(item.getTexture(), invImageX, invImageY, invImageWidth, invImageHeight, null);
 		Text.drawString(g, Integer.toString(item.getCount()), invCountX, invCountY, true, Color.WHITE, Assets.font56);
+		if (inventoryItems1.get(selectedItem).isPlaceable()) {
+			Text.drawString(g, "Press Q to", invImageX + 60, invImageY + 300, true, Color.WHITE, Assets.font56);
+			Text.drawString(g, "place item", invImageX + 60, invImageY + 300 + invListSpacing, true, Color.WHITE, Assets.font56);
+		}
 	}
 	
 	//Inventory Methods

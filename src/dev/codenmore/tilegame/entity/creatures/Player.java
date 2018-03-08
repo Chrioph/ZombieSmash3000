@@ -12,9 +12,16 @@ import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.crafting.CraftingScreen;
 import dev.codenmore.tilegame.entity.Entity;
+import dev.codenmore.tilegame.entity.statics.SolidWoodBlock;
+import dev.codenmore.tilegame.entity.statics.StaticEntity;
+import dev.codenmore.tilegame.entity.statics.Tree;
+import dev.codenmore.tilegame.entity.statics.WoodBlock;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.inventory.Inventory;
+import dev.codenmore.tilegame.items.CraftableItem;
+import dev.codenmore.tilegame.items.Item;
+import dev.codenmore.tilegame.tiles.Tile;
 
 
 public class Player extends Creature{
@@ -27,15 +34,22 @@ public class Player extends Creature{
 	private Animation animAUp;
 	private Animation animALeft;
 	private Animation animARight;
+	private Animation placingWood;
+	private Animation placingSolidWood;
+	private Animation placingTree;
 	
 	private int knockbackCounter;
-	private int ammunition=50;
+	private int ammunition=5;
 	private int armor=4;
 	private int maxArmor=5;
 	private int rangedDamage=2;
 	private boolean isDead=false;
 	private int enemyDirection;
-	
+	private int playerDirection=1;
+
+
+
+	private int placingItem=0;
 
 	private boolean rangedToggled=false;
 	
@@ -67,6 +81,10 @@ public class Player extends Creature{
 		animADown= new Animation(400, Assets.aDown);
 		animALeft= new Animation(400, Assets.aLeft);
 		animARight= new Animation(400, Assets.aRight);
+
+		placingTree=new Animation(500,Assets.placingTree);
+		placingWood=new Animation(500,Assets.placingWood);
+		placingSolidWood=new Animation(500,Assets.placingSolidWood);
 		
 		inventory=new Inventory(handler);
 		craftingScreen=new CraftingScreen(handler);
@@ -86,6 +104,9 @@ public class Player extends Creature{
 		animAUp.tick();
 		animALeft.tick();
 		animARight.tick();
+		placingTree.tick();
+		placingWood.tick();
+		placingSolidWood.tick();
 		checkAlive();
 		if(!(knockbackCounter>0))
 			getInput();
@@ -118,7 +139,6 @@ public class Player extends Creature{
 	}
 	
 	private void checkAttacks() {
-	    System.out.println(attackTimer);
 		if(attackTimer<attackCooldown) {
             attackTimer += System.currentTimeMillis() - lastAttackTimer;
             lastAttackTimer = System.currentTimeMillis();
@@ -128,7 +148,7 @@ public class Player extends Creature{
 			attackTimer=0;
 			return;
 		}
-		if(inventory.isActive())
+		if(inventory.isActive()||craftingScreen.isActive())
 			return;
 		Rectangle ar =new Rectangle();
 		if(rangedToggled==false) {
@@ -227,15 +247,22 @@ public class Player extends Creature{
 			return;
 		xAttack=0;
 		yAttack=0;
-		if (handler.getKeyManager().up)
-			yMove=-speed;
-		if (handler.getKeyManager().down)
-			yMove=speed;
-		if (handler.getKeyManager().right)
-			xMove=speed;
-		if (handler.getKeyManager().left)
-			xMove=-speed;
-		
+		if (handler.getKeyManager().up) {
+			yMove = -speed;
+			playerDirection = 3;
+		}
+		if (handler.getKeyManager().down) {
+			yMove = speed;
+			playerDirection = 1;
+		}
+		if (handler.getKeyManager().right) {
+			xMove = speed;
+			playerDirection = 0;
+		}
+		if (handler.getKeyManager().left) {
+			xMove = -speed;
+			playerDirection = 2;
+		}
 		
 		if (handler.getKeyManager().aUp)
 			yAttack=-1;
@@ -253,6 +280,8 @@ public class Player extends Creature{
 		super.render(g);
 		int arSize = 50;
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
+		renderPlacingItem(g,placingItem);
+
 		if(Settings.getDebug()) {	
 			Rectangle ar=new Rectangle();
 			Rectangle cb = getCollisionBounds(0,0);
@@ -265,10 +294,37 @@ public class Player extends Creature{
 			g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
 			g.setColor(Color.BLACK);	
 			g.fillRect(ar.x, ar.y, ar.width, ar.height);
+			g.setColor(Color.red);
+			g.fillRect((int)(bounds.x+x-handler.getGameCamera().getxOffset()),(int)(bounds.y+y-handler.getGameCamera().getyOffset()),(int)bounds.width,(int)bounds.height);
 		}
-		g.setColor(Color.red);
-		g.fillRect((int)(bounds.x+x-handler.getGameCamera().getxOffset()),(int)(bounds.y+y-handler.getGameCamera().getyOffset()),(int)bounds.width,(int)bounds.height);
+
 	}
+	public void renderPlacingItem(Graphics g, int placingItem){
+		if(placingItem>0) {
+			if (playerDirection == 0) {
+				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x + DEFAULT_CREATURE_WIDTH*1.5 - handler.getGameCamera().getxOffset()), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64 - handler.getGameCamera().getyOffset()), 128, 128,null);
+			} else if (playerDirection == 1) {
+				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x + DEFAULT_CREATURE_WIDTH/2  -64 - handler.getGameCamera().getxOffset()), (int) ( y + DEFAULT_CREATURE_HEIGHT*1.5 - handler.getGameCamera().getyOffset()),128, 128,null);
+			} else if (playerDirection == 2) {
+				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x - DEFAULT_CREATURE_WIDTH/2 - 128 - handler.getGameCamera().getxOffset() ), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64 - handler.getGameCamera().getyOffset()),128, 128, null);
+			} else if (playerDirection == 3) {
+				g.drawImage(getCurrentPlacementAnimationFrame(),(int) (x +DEFAULT_CREATURE_WIDTH/2 - 64 - handler.getGameCamera().getxOffset()), (int) ( y - DEFAULT_CREATURE_HEIGHT/2 - 128 - handler.getGameCamera().getyOffset()),128, 128, null);
+			}
+			if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_Q)){
+				placingItem=0;
+				if (playerDirection == 0)
+					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x + DEFAULT_CREATURE_WIDTH*1.5f ), ( y + DEFAULT_CREATURE_HEIGHT/2 - 64)));
+				if (playerDirection == 1)
+					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x + DEFAULT_CREATURE_WIDTH/2  -64), (int) ( y + DEFAULT_CREATURE_HEIGHT*1.5f)));
+				if (playerDirection == 2)
+					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x - DEFAULT_CREATURE_WIDTH/2 - 128  ), (int) ( y + DEFAULT_CREATURE_HEIGHT/2 - 64)));
+				if (playerDirection == 3)
+					handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x +DEFAULT_CREATURE_WIDTH/2 - 64 ), (int) ( y - DEFAULT_CREATURE_HEIGHT/2 - 128 )));
+			}
+		}
+	}
+
+
 	
 	public void knockback(int direction) {
 		xMove=0;
@@ -343,9 +399,39 @@ public class Player extends Creature{
 			return animADown.getCurrentFrame();
 		
 		
-		else return Assets.player1;
+		if(playerDirection==0)
+			return Assets.player1LookingRight;
+		if(playerDirection==1)
+			return Assets.player1LookingDown;
+		if(playerDirection==2)
+			return Assets.player1LookingLeft;
+		else
+			return Assets.player1LookingUp;
 	}
-	
+
+	private BufferedImage getCurrentPlacementAnimationFrame(){
+		if (placingItem== Item.seedItem.getId()){
+			return placingTree.getCurrentFrame();
+		}
+		if (placingItem== CraftableItem.woodItem.getId()){
+			return placingWood.getCurrentFrame();
+		}
+		if (placingItem== CraftableItem.solidWoodItem.getId()){
+			return placingSolidWood.getCurrentFrame();
+		}
+		return null;
+	}
+
+	private StaticEntity getCurrentPlacingEntity(float x, float y){
+		if (placingItem== Item.seedItem.getId())
+			return new Tree(handler, x,y);
+		if (placingItem== CraftableItem.woodItem.getId())
+			return new WoodBlock(handler, x,y);
+		if (placingItem== CraftableItem.solidWoodItem.getId())
+			return new SolidWoodBlock(handler, x,y);
+		else return null;
+	}
+
 	public Arrow getArrow() {
 		return arrow;
 	}
@@ -439,7 +525,16 @@ public class Player extends Creature{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
+	public void setPlacingItem(int id){
+		placingItem=id;
+	}
+
+	public int getPlacingItem() {
+		return placingItem;
+	}
+
+	public void setPlacingitem(int id){
+		placingItem=id;
+	}
 
 }

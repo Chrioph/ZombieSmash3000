@@ -16,19 +16,19 @@ public class Item {
 	//whenever a new item is created please increase the length of the ressources array in the class craftable items by one and add it to inventoryItems in the inventory class
 	//items used for crafting get ids up to 127, other items ids start at 128
 	public static Item[] items = new Item[256];
-	public static Item logItem = new Item(Assets.log,"Log",0);
-	public static Item rockItem = new Item(Assets.rock,"Rock",1);
-	//public static CraftableItem woodItem = new CraftableItem(Assets.wood,"Wood", 3) ;
-	//public static CraftableItem solidWoodItem = new CraftableItem(Assets.solidWood,"Solid Wood", 4);
+	public static Item logItem = new Item(Assets.log,"Log",0, false);
+	public static Item rockItem = new Item(Assets.rock,"Rock",1, false);
+	//public static CraftableItem woodItem = new CraftableItem(Assets.wood,"Wood", 2) ;
+	//public static CraftableItem solidWoodItem = new CraftableItem(Assets.solidWood,"Solid Wood", 3);
 
 
-	public static Item swordItem = new Item(Assets.sword,"Sword",128);
-	public static Item heartItem = new Item(Assets.heart,"Heart",129);
-	public static Item arrowItem = new Item(Assets.arrow,"Arrow",130);
-	public static Item armorItem = new Item(Assets.armor,"Armor",131);
-	public static Item healthPlusItem = new Item(Assets.healthPlus,"Health Plus",132);
-	public static Item bowItem = new Item(Assets.bow,"Bow",133);
-	public static Item seedItem = new Item(Assets.seeds, "Seed", 134);
+	public static Item swordItem = new Item(Assets.sword,"Sword",128, false);
+	public static Item heartItem = new Item(Assets.heart,"Heart",129, false);
+	public static Item arrowItem = new Item(Assets.arrow,"Arrow",130, false);
+	public static Item armorItem = new Item(Assets.armor,"Armor",131, false);
+	public static Item healthPlusItem = new Item(Assets.healthPlus,"Health Plus",132, false);
+	public static Item bowItem = new Item(Assets.bow,"Bow",133, false);
+	public static Item seedItem = new Item(Assets.seeds, "Seed", 134, true);
 	
 	
 	//Class
@@ -39,14 +39,16 @@ public class Item {
 	protected BufferedImage texture;
 	protected String name;
 	protected final int id;
+	protected boolean placeable;
 	
 	protected Rectangle bounds;
 	
 	protected int  x , y , count;
 	protected boolean pickedUp=false;
 	
-	public Item(BufferedImage texture, String name, int id) {
+	public Item(BufferedImage texture, String name, int id, boolean placeable) {
 		this.texture=texture;
+		this.placeable=placeable;
 		this.name=name;
 		this.id=id;
 		count=0;
@@ -106,7 +108,7 @@ public class Item {
 	public Item createNew(int count) {
 		
 	
-		Item i= new Item(texture,name,id);
+		Item i= new Item(texture,name,id,placeable);
 		i.setCount(count);
 		i.setPickedUp(true);
 		return i;
@@ -114,7 +116,7 @@ public class Item {
 	}
 	
 	public Item createNew() {
-		Item i= new Item(texture,name,id);
+		Item i= new Item(texture,name,id,placeable);
 		return i;
 		
 	}
@@ -135,7 +137,9 @@ public class Item {
 	
 	//Getters and Setters
 	
-	
+	public boolean isPlaceable(){
+	    return placeable;
+    }
 	
 	public Handler getHandler() {
 		return handler;
