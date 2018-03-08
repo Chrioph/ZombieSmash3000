@@ -33,6 +33,8 @@ public class Tree extends StaticEntity{
 	}
 	if (1==Utils.generateRandomInt(2))
 		handler.getWorld().getItemManager().addItem(Item.seedItem.createNew(1), (int) x ,(int)  y );
+	if (1==Utils.generateRandomInt(5))
+		handler.getWorld().getItemManager().addItem(Item.seedItem.createNew(1), (int) x ,(int)  y );
 	}
 	
 	public void render(Graphics g) {

@@ -11,6 +11,7 @@ public class CraftableItem extends Item{
 	private int[] resources;
 	public static CraftableItem woodItem = new CraftableItem(Assets.wood,"Wood", 2, true) ;
 	public static CraftableItem solidWoodItem = new CraftableItem(Assets.solidWood,"Solid Wood", 3, true);
+	public static CraftableItem chestItem = new CraftableItem(Assets.chest,"Chest", 5, true);
 
 	public CraftableItem(BufferedImage texture, String name, int id, boolean placeable) {
 		super(texture, name, id, placeable);

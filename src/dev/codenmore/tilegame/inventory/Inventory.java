@@ -75,7 +75,7 @@ public class Inventory {
 		 else if (selectedItem >= displayInventoryItems.size())
 			 selectedItem=0;
 
-		if (displayInventoryItems.size()>0 && displayInventoryItems.get(selectedItem).isPlaceable() && handler.getKeyManager().keyJustPressed(KeyEvent.VK_Q)){
+		if (displayInventoryItems.size()>0 && displayInventoryItems.get(selectedItem).isPlaceable() && handler.getKeyManager().keyJustPressed(KeyEvent.VK_Q) && handler.getWorld().isPlaceable()){
 			active=!active;
 			handler.getWorld().getEntityManager().getPlayer().setPlacingItem(displayInventoryItems.get(selectedItem).getId());
 
@@ -105,7 +105,7 @@ public class Inventory {
 		Item item = displayInventoryItems.get(selectedItem);
 		g.drawImage(item.getTexture(), invImageX, invImageY, invImageWidth, invImageHeight, null);
 		Text.drawString(g, Integer.toString(item.getCount()), invCountX, invCountY, true, Color.WHITE, Assets.font56);
-		if (displayInventoryItems.get(selectedItem).isPlaceable()) {
+		if (displayInventoryItems.get(selectedItem).isPlaceable()&& handler.getWorld().isPlaceable()) {
 			Text.drawString(g, "Press Q to", invImageX + 60, invImageY + 300, true, Color.WHITE, Assets.font56);
 			Text.drawString(g, "place item", invImageX + 60, invImageY + 300 + invListSpacing, true, Color.WHITE, Assets.font56);
 		}
