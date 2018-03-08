@@ -103,10 +103,10 @@ public class SettingsState extends State{
 
 
 		gameUiManager.addObject(new UIList(530, 250, 590, 100,"Difficulty", new ArrayList<UIListElement>() {{
-			add(new UIListElement(0, 0, 570, 80, "Easy", () -> handler.getGame().getWorldGenerator().setDifficulty("EASY")));
-			add(new UIListElement(0, 0, 570, 80, "Normal", () -> handler.getGame().getWorldGenerator().setDifficulty("NORMAL")));
-			add(new UIListElement(0, 0, 570, 80, "Hard", () -> handler.getGame().getWorldGenerator().setDifficulty("HARD")));
-		}}, false));
+			add(new UIListElement(0, 0, 570, 80, "Easy", Assets.dropDownElement, () -> handler.getGame().getWorldGenerator().setDifficulty("EASY")));
+			add(new UIListElement(0, 0, 570, 80, "Normal", Assets.dropDownElement, () -> handler.getGame().getWorldGenerator().setDifficulty("NORMAL")));
+			add(new UIListElement(0, 0, 570, 80, "Hard", Assets.dropDownElement, () -> handler.getGame().getWorldGenerator().setDifficulty("HARD")));
+		}}, false, Assets.dropDown, true));
 
 
 
@@ -127,19 +127,19 @@ public class SettingsState extends State{
 
 		displayUiManager.addObject(new UIList(530, 250, 590, 100,"Resolution", new ArrayList<UIListElement>() {{
 			//@TODO: get list of available resolutions from some api, for now static values
-			add(new UIListElement(0, 0, 570, 80, "1920x1080", () -> {
+			add(new UIListElement(0, 0, 570, 80, "1920x1080", Assets.dropDownElement, () -> {
 				// Change resolution to 1920x1080
 				handler.getGame().resizeDisplay(1920, 1080);
 			}));
-			add(new UIListElement(0, 0, 570, 80, "1280x720", () -> {
+			add(new UIListElement(0, 0, 570, 80, "1280x720", Assets.dropDownElement, () -> {
 				// Change resolution to 1280x720
 				handler.getGame().resizeDisplay(1280, 720);
 			}));
-			add(new UIListElement(0, 0, 570, 80, "1680x1050", () -> {
+			add(new UIListElement(0, 0, 570, 80, "1680x1050", Assets.dropDownElement, () -> {
 				// Change resolution to 1680x1050
 				handler.getGame().resizeDisplay(1680, 1050);
 			}));
-		}}, false));
+		}}, false, Assets.dropDown, true));
 
 		Page displaySettingsPage = new Page("Display", 2);
 		displaySettingsPage.setUiManager(displayUiManager);

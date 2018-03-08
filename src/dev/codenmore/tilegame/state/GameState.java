@@ -57,23 +57,30 @@ public class GameState extends State {
         uiManager = new UIManager(handler);
         handler.getMouseManager().setUIManager(uiManager);
 
-        uiManager.addObject(new UIImage(600, 200, 650, 750, Assets.settingsBodyElement));
-        uiManager.addObject(new UIList(600, 200, 65, 75, "nextlevel", new ArrayList<UIListElement>() {{
-            add(new UIListElement(10, 10, 45, 30, "Next Level", () -> {
+        uiManager.addObject(new UIImage(635, 165, 650, 750, Assets.settingsBodyElement));
+        UIList myList = new UIList(635, 165, 650, 750, "nextlevel", new ArrayList<UIListElement>() {{
+            add(new UIListElement(10, 10, 610, 230, "Next Level", Assets.nextLevelSelectionOption, () -> {
 
                 handler.setWorld(handler.getNextWorld());
                 handler.getWorld().start();
                 nextLevelSelection = false;
                 isPaused = false;
             }));
-            add(new UIListElement(10, 10, 45, 30, "Homeworld", () -> {
+            add(new UIListElement(10, 10, 610, 230, "Homeworld", Assets.nextLevelSelectionOption, () -> {
                 handler.setWorld(handler.getHomeWorld());
                 handler.getHomeWorld().start();
                 nextLevelSelection = false;
                 isPaused = false;
             }));
+            add(new UIListElement(10, 10, 610, 230, "Quit", Assets.nextLevelSelectionOption, () -> {
+                handler.getGame().close();
+            }));
 
-        }}, true));
+        }}, true, Assets.settingsBodyElement, false);
+        myList.setPaddingX(20);
+        myList.setPaddingY(20);
+        myList.setSpacing(10);
+        uiManager.addObject(myList);
 
 
         hud = new HUD(handler);
@@ -84,21 +91,22 @@ public class GameState extends State {
     @Override
     public void tick() {
         uiManager.tick();
-        if (!handler.getWorld().getEntityManager().getPlayer().isDead() && !isPaused)
+        if (!handler.getWorld().getEntityManager().getPlayer().isDead() && !isPaused) {
             handler.getWorld().tick();
-        listenExit();
-        listenSave();
-        listenLoad();
-        if (handler.getWorld().getEntityManager().getPlayer().collisionWithFinish(
-                (int) (handler.getWorld().getEntityManager().getPlayer().getX() / 128),
-                (int) (handler.getWorld().getEntityManager().getPlayer().getY() / 128))) {
-            World nextWorld;
-            if ((nextWorld = this.worldGen.getNextWorld()) != null) {
-                handler.setNextWorld(nextWorld);
-                isPaused = true;
-                nextLevelSelection = true;
-            }
+            listenExit();
+            listenSave();
+            listenLoad();
+            if (handler.getWorld().getEntityManager().getPlayer().collisionWithFinish(
+                    (int) (handler.getWorld().getEntityManager().getPlayer().getX() / 128),
+                    (int) (handler.getWorld().getEntityManager().getPlayer().getY() / 128))) {
+                World nextWorld = this.worldGen.getNextWorld();
+                if (nextWorld != null) {
+                    handler.setNextWorld(nextWorld);
+                    isPaused = true;
+                    nextLevelSelection = true;
+                }
 
+            }
         }
 
         // if whole game is paused, dont tick world or exit

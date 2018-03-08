@@ -20,7 +20,7 @@ public class Assets {
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
 	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow,deathScreen,craftingScreen;
 	public static BufferedImage settingsBodyElement, settingsHeader;
-	public static BufferedImage dropDown, dropDownElement;
+	public static BufferedImage dropDown, dropDownElement, nextLevelSelectionOption;
 
 	
 	private static final int width = 32,height =32;
@@ -48,6 +48,7 @@ public class Assets {
 		settingsBodyElement = ImageLoader.loadImage("/textures/SettingsBodyElement.png");
 		dropDown = ImageLoader.loadImage("/textures/UIDropdown.png");
 		dropDownElement = ImageLoader.loadImage("/textures/UIDropdownOption.png");
+        nextLevelSelectionOption = ImageLoader.loadImage("/textures/NextLevelSelectionOption.png");
 		settingsHeader = ImageLoader.loadImage("/textures/SettingsSubPageHead.png");
 		settingsMenuButton = new BufferedImage[2];
 		settingsMenuButton[0] = ImageLoader.loadImage("/textures/SettingsChoiceButton.png");

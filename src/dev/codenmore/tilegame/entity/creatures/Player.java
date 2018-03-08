@@ -283,7 +283,7 @@ public class Player extends Creature{
 		super.render(g);
 		int arSize = 50;
 		g.drawImage(getCurrentAnimationFrame(),(int)(x-handler.getGameCamera().getxOffset()),(int)(y-handler.getGameCamera().getyOffset()),width,height,null);
-		System.out.println(placingItem);
+
 		renderPlacingItem(g);
 
 		if(Settings.getDebug()) {	

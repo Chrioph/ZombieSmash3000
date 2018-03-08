@@ -13,6 +13,26 @@ public class UIListElement extends UIObject{
     private ArrayList<UIObject> elements;
     private String text;
     private boolean isVisible;
+    private int offsetX = 10;
+    private int offsetY = 0;
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public void setOffsetX(int offsetX) {
+        this.offsetX = offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public void setOffsetY(int offsetY) {
+        this.offsetY = offsetY;
+    }
+
+    private BufferedImage backgroundImage;
 
     /**
      *
@@ -23,10 +43,11 @@ public class UIListElement extends UIObject{
      * @param text
      * @param clicker
      */
-    public UIListElement(float x, float y , int width, int height,String text, ClickListener clicker) {
+    public UIListElement(float x, float y , int width, int height,String text, BufferedImage image, ClickListener clicker) {
         super (x,y,width, height);
         this.clicker=clicker;
         this.text = text;
+        this.backgroundImage = image;
         isVisible = false;
     }
 
@@ -65,6 +86,14 @@ public class UIListElement extends UIObject{
     public void toggleVisible()
     {
         isVisible=!isVisible;
+    }
+
+    public BufferedImage getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(BufferedImage backgroundImage) {
+        this.backgroundImage = backgroundImage;
     }
 
 

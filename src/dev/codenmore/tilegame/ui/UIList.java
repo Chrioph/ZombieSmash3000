@@ -13,9 +13,36 @@ public class UIList extends UIObject{
     private BufferedImage[] images;
     private boolean opened;
     private boolean alwaysOpen;
+    private boolean showPlaceholder;
+    private BufferedImage backgroundImage;
     private String placeholder;
     private ClickListener clicker;
     private ArrayList<UIListElement> elements;
+
+    public int getPaddingX() {
+        return paddingX;
+    }
+
+    public void setPaddingX(int paddingX) {
+        this.paddingX = paddingX;
+    }
+
+    public int getPaddingY() {
+        return paddingY;
+    }
+
+    public void setPaddingY(int paddingY) {
+        this.paddingY = paddingY;
+    }
+
+    private int paddingX = 10;
+    private int paddingY = 0;
+
+    public void setSpacing(int spacing) {
+        this.spacing = spacing;
+    }
+
+    private int spacing = 0;
 
     /**
      *
@@ -26,10 +53,12 @@ public class UIList extends UIObject{
      * @param placeholder
      * @param options
      */
-    public UIList(float x, float y , int width, int height, String placeholder, ArrayList<UIListElement> options, boolean alwaysExtended) {
+    public UIList(float x, float y , int width, int height, String placeholder, ArrayList<UIListElement> options, boolean alwaysExtended, BufferedImage image, boolean showPlaceholder) {
         super (x,y,width, height);
         this.placeholder = placeholder;
         this.alwaysOpen = alwaysExtended;
+        this.backgroundImage = image;
+        this.showPlaceholder = showPlaceholder;
         opened = false;
         elements = options;
         if(alwaysExtended) {
@@ -46,19 +75,23 @@ public class UIList extends UIObject{
     @Override
     public void render(Graphics g) {
         super.render(g);
+        int pos = 0;
         g.setFont(Assets.font40);
-        g.drawImage(Assets.dropDown, (int)x, (int)y, 590, 100, null);
-        g.drawString(placeholder,(int) x+590/2-placeholder.length()*15,(int) y+100/2+10);
+        g.drawImage(this.backgroundImage, (int)x, (int)y, width, height, null);
+        if(showPlaceholder) {
+            g.drawString(placeholder,(int) x+width/2-placeholder.length()*15,(int) y+height/2+10);
+            pos = 1;
+        }
+
         if(opened || alwaysOpen) {
-            int pos = 1;
-
-
             for(UIListElement element : elements) {
-                element.setX(x+10);
-                element.setY(y+10 + 70*pos);
+                element.setOffsetX(paddingX);
+                element.setOffsetY(paddingY);
+                element.setX(x+element.getOffsetX());
+                element.setY(y +element.getOffsetY() + (element.getHeight()+spacing)*pos);
                 element.updateBounds();
-                g.drawImage(Assets.dropDownElement, (int)x+10, (int)y+10+70*pos, 570, 80, null);
-                g.drawString(element.getText(),(int) element.getX()+20,(int) element.getY()+50);
+                g.drawImage(element.getBackgroundImage(), (int)element.getX(), (int)element.getY(), element.getWidth(), element.getHeight(), null);
+                g.drawString(element.getText(),(int) element.getX()+element.getWidth()/2-element.getText().length()*13,(int) element.getY()+element.getHeight()/2+10);
                 pos++;
             }
         }
