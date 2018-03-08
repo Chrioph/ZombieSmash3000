@@ -10,13 +10,23 @@ import dev.codenmore.tilegame.entity.Entity;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.tiles.Tile;
 
+/**
+ * Apparently arrows are creatures
+ */
 public class Arrow extends Creature {
-
 
 
     private int direction;
     private Rectangle bounds1;
 
+    /**
+     * Constructor
+     * @param handler
+     * @param x
+     * @param y
+     * @param direction
+     * @param damage
+     */
     public Arrow(Handler handler, float x, float y, int direction, int damage) {
         super(handler, x, y, DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT);
         bounds1 = new Rectangle();
@@ -27,6 +37,7 @@ public class Arrow extends Creature {
         bounds.y = 26;
         bounds.width = 56;
         bounds.height = 14;
+        // TODO: move this in function
         if (direction == 1) {
             bounds.x = 24;
             bounds.y = 4;
@@ -65,13 +76,20 @@ public class Arrow extends Creature {
         }
     }
 
+
+    /**
+     * Arrow has own tick logic
+     */
     @Override
     public void tick() {
         getMovement();
         move();
     }
 
-
+    /**
+     * Render arrow depending on flight direction
+     * @param g
+     */
     @Override
     public void render(Graphics g) {
         super.render(g);
@@ -87,15 +105,20 @@ public class Arrow extends Creature {
             g.setColor(Color.PINK);
             g.fillRect((int) (bounds1.x - handler.getGameCamera().getxOffset() + x), (int) (bounds1.y - handler.getGameCamera().getyOffset() + y), bounds1.width, bounds1.height);
         }
-
     }
 
+    /**
+     * Called on death
+     */
     @Override
     public void die() {
 
         this.active = false;
     }
 
+    /**
+     * Movement logic
+     */
     public void move() {
 
         if (!checkEntityCollision(xMove, 0f))
@@ -117,6 +140,9 @@ public class Arrow extends Creature {
 
     }
 
+    /**
+     * Calculates amount of movement
+     */
     private void getMovement() {
         xMove = 0;
         yMove = 0;
@@ -131,6 +157,9 @@ public class Arrow extends Creature {
     }
 
 
+    /**
+     * Vertical movement
+     */
     public void moveY() {
 
         if (yMove > 0) {                //Moving down
@@ -156,6 +185,9 @@ public class Arrow extends Creature {
 
     }
 
+    /**
+     * Horizontal movement
+     */
     public void moveX() {
 
         if (xMove > 0) {                //Moving right
