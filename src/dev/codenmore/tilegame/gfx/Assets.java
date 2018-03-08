@@ -238,17 +238,6 @@ public class Assets {
 
 		//Item Placing Animation
 
-		placingWood=new BufferedImage[2];
-		placingWood[0]=wood;
-		placingWood[1]=sheet.crop(width*8,height*3, width,height);
-
-		placingSolidWood=new BufferedImage[2];
-		placingSolidWood[0]=solidWood;
-		placingSolidWood[1]=sheet.crop(width*8,height*3, width,height);
-
-		placingTree=new BufferedImage[2];
-		placingTree[0]=tree;
-		placingTree[1]=sheet.crop(width*8,height*3, width,height);
 	}
 		
 		
