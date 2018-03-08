@@ -20,6 +20,8 @@ public class Assets {
 	public static BufferedImage arrow, arrowRight, arrowDown, arrowLeft, arrowUp;
 	public static BufferedImage inventoryScreen,settingsBackground,HUDWindow,deathScreen,craftingScreen;
 	public static BufferedImage settingsBodyElement, settingsHeader;
+	public static BufferedImage dropDown, dropDownElement;
+
 	
 	private static final int width = 32,height =32;
 	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right, aDown, aLeft, aRight, aUp;;
@@ -44,6 +46,8 @@ public class Assets {
 		HUDWindow = ImageLoader.loadImage("/textures/HUDWindow.png");
 		settingsBackground = ImageLoader.loadImage("/textures/Settings_Screen2.png");
 		settingsBodyElement = ImageLoader.loadImage("/textures/SettingsBodyElement.png");
+		dropDown = ImageLoader.loadImage("/textures/UIDropdown.png");
+		dropDownElement = ImageLoader.loadImage("/textures/UIDropdownOption.png");
 		settingsHeader = ImageLoader.loadImage("/textures/SettingsSubPageHead.png");
 		settingsMenuButton = new BufferedImage[2];
 		settingsMenuButton[0] = ImageLoader.loadImage("/textures/SettingsChoiceButton.png");

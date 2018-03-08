@@ -102,10 +102,10 @@ public class SettingsState extends State{
 		gameUiManager.addObject(new UIImage(1160, 220, 650, 750, Assets.settingsBodyElement));
 
 
-		gameUiManager.addObject(new UIList(550, 270, "Difficulty".length() * 30, 60,"Difficulty", new ArrayList<UIListElement>() {{
-			add(new UIListElement(0, 0, 200, 40, "Easy", () -> handler.getGame().getWorldGenerator().setDifficulty("EASY")));
-			add(new UIListElement(0, 0, 200, 40, "Normal", () -> handler.getGame().getWorldGenerator().setDifficulty("NORMAL")));
-			add(new UIListElement(0, 0, 200, 40, "Hard", () -> handler.getGame().getWorldGenerator().setDifficulty("HARD")));
+		gameUiManager.addObject(new UIList(530, 250, 590, 100,"Difficulty", new ArrayList<UIListElement>() {{
+			add(new UIListElement(0, 0, 570, 80, "Easy", () -> handler.getGame().getWorldGenerator().setDifficulty("EASY")));
+			add(new UIListElement(0, 0, 570, 80, "Normal", () -> handler.getGame().getWorldGenerator().setDifficulty("NORMAL")));
+			add(new UIListElement(0, 0, 570, 80, "Hard", () -> handler.getGame().getWorldGenerator().setDifficulty("HARD")));
 		}}, false));
 
 
@@ -125,17 +125,17 @@ public class SettingsState extends State{
 		displayUiManager.addObject(new UIImage(500, 220, 650, 750, Assets.settingsBodyElement));
 		displayUiManager.addObject(new UIImage(1160, 220, 650, 750, Assets.settingsBodyElement));
 
-		displayUiManager.addObject(new UIList(550, 270, "Resolution".length() * 30, 60,"Resolution", new ArrayList<UIListElement>() {{
+		displayUiManager.addObject(new UIList(530, 250, 590, 100,"Resolution", new ArrayList<UIListElement>() {{
 			//@TODO: get list of available resolutions from some api, for now static values
-			add(new UIListElement(0, 0, 200, 40, "1920x1080", () -> {
+			add(new UIListElement(0, 0, 570, 80, "1920x1080", () -> {
 				// Change resolution to 1920x1080
 				handler.getGame().resizeDisplay(1920, 1080);
 			}));
-			add(new UIListElement(0, 0, 200, 40, "1280x720", () -> {
+			add(new UIListElement(0, 0, 570, 80, "1280x720", () -> {
 				// Change resolution to 1280x720
 				handler.getGame().resizeDisplay(1280, 720);
 			}));
-			add(new UIListElement(0, 0, 200, 40, "1680x1050", () -> {
+			add(new UIListElement(0, 0, 570, 80, "1680x1050", () -> {
 				// Change resolution to 1680x1050
 				handler.getGame().resizeDisplay(1680, 1050);
 			}));

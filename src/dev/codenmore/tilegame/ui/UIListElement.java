@@ -12,6 +12,7 @@ public class UIListElement extends UIObject{
     private ClickListener clicker;
     private ArrayList<UIObject> elements;
     private String text;
+    private boolean isVisible;
 
     /**
      *
@@ -26,7 +27,7 @@ public class UIListElement extends UIObject{
         super (x,y,width, height);
         this.clicker=clicker;
         this.text = text;
-        this.width = text.length() * 30;
+        isVisible = false;
     }
 
     @Override
@@ -46,12 +47,24 @@ public class UIListElement extends UIObject{
 
     @Override
     public void onClick() {
-        clicker.onClick();
+        if(isVisible) {
+            clicker.onClick();
+        }
     }
 
     public String getText()
     {
         return this.text;
+    }
+
+    public boolean isVisible()
+    {
+        return isVisible;
+    }
+
+    public void toggleVisible()
+    {
+        isVisible=!isVisible;
     }
 
 

@@ -32,6 +32,10 @@ public class UIList extends UIObject{
         this.alwaysOpen = alwaysExtended;
         opened = false;
         elements = options;
+        if(alwaysExtended) {
+            toggleElementsVisible();
+        }
+
     }
 
     @Override
@@ -43,21 +47,20 @@ public class UIList extends UIObject{
     public void render(Graphics g) {
         super.render(g);
         g.setFont(Assets.font40);
+        g.drawImage(Assets.dropDown, (int)x, (int)y, 590, 100, null);
+        g.drawString(placeholder,(int) x+590/2-placeholder.length()*15,(int) y+100/2+10);
         if(opened || alwaysOpen) {
-            int pos = 2;
-            g.drawRect((int)x,(int)y-height/2+20 + (elements.size() * height),placeholder.length() * 30,height);
-            g.drawString(placeholder,(int) x,(int) y+40);
+            int pos = 1;
+
+
             for(UIListElement element : elements) {
-                element.setX(x);
-                element.setY(y + height*pos);
+                element.setX(x+10);
+                element.setY(y+10 + 70*pos);
                 element.updateBounds();
-                g.drawRect((int)element.getX(),(int) element.getY()-element.getHeight()/2+20,element.getWidth(),element.getHeight());
-                g.drawString(element.getText(),(int) element.getX(),(int) element.getY()+40);
+                g.drawImage(Assets.dropDownElement, (int)x+10, (int)y+10+70*pos, 570, 80, null);
+                g.drawString(element.getText(),(int) element.getX()+20,(int) element.getY()+50);
                 pos++;
             }
-        }else {
-            g.drawRect((int)x,(int)y-height/2+20,placeholder.length() * 30,height);
-            g.drawString(placeholder,(int) x,(int) y+40);
         }
 
     }
@@ -65,6 +68,16 @@ public class UIList extends UIObject{
     @Override
     public void onClick() {
         opened = !opened;
+        if(!alwaysOpen) {
+            toggleElementsVisible();
+        }
+    }
+
+    private void toggleElementsVisible()
+    {
+        for(UIListElement element : elements) {
+            element.toggleVisible();
+        }
     }
 
 
