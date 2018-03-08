@@ -21,7 +21,7 @@ public class WoodBlock extends StaticEntity {
     }
 
     public void die() {
-        handler.getWorld().getItemManager().addItem(CraftableItem.woodItem.createNew(1),(int) x,(int)  y );
+        handler.getWorld().getItemManager().addItem(CraftableItem.woodItem.createNew(1),(int) x,(int) y, true);
     }
     public void render(Graphics g) {
         g.drawImage(Assets.wood, (int) (x-handler.getGameCamera().getxOffset()) ,(int) (y-handler.getGameCamera().getyOffset()), width, height, null);

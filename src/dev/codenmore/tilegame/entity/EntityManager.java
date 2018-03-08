@@ -64,7 +64,6 @@ public class EntityManager {
 			for(int i = 0; i < dump.getLength(); i++) {
 				if (dump.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					Element ent = (Element) dump.item(i);
-
 					try {
 						Class<?> clazz = Class.forName(ent.getElementsByTagName("class").item(0).getTextContent());
 						Constructor<?> constructor = clazz.getConstructor(Handler.class, float.class, float.class);
@@ -76,10 +75,43 @@ public class EntityManager {
 					} catch (Exception e) {
 						System.out.println(e.getMessage() + " not found");
 					}
+				}
 			}
+	}
 
+	public void fillProjectilesFromDump(NodeList dump)
+	{
+		// first clear current entities
+		projectiles.clear();
+		for(int i = 0; i < dump.getLength(); i++) {
+			if (dump.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				Element ent = (Element) dump.item(i);
+				try {
+
+					float xCoord = Float.parseFloat(ent.getElementsByTagName("x").item(0).getTextContent());
+					float yCoord = Float.parseFloat(ent.getElementsByTagName("y").item(0).getTextContent());
+					boolean isArrow = ent.getElementsByTagName("isArrow").item(0).getTextContent().equals("true");
+					Object instance;
+					if(isArrow) {
+						int direction = Integer.parseInt(ent.getElementsByTagName("direction").item(0).getTextContent());
+						int damage = Integer.parseInt(ent.getElementsByTagName("damage").item(0).getTextContent());
+						Class<?> clazz = Class.forName(ent.getElementsByTagName("class").item(0).getTextContent());
+						Constructor<?> constructor = clazz.getConstructor(Handler.class, float.class, float.class, int.class, int.class);
+						instance = constructor.newInstance(handler, xCoord, yCoord, direction, damage);
+					}else {
+						Class<?> clazz = Class.forName(ent.getElementsByTagName("class").item(0).getTextContent());
+						Constructor<?> constructor = clazz.getConstructor(Handler.class, float.class, float.class);
+						instance = constructor.newInstance(handler, xCoord, yCoord);
+					}
+
+
+
+					entities.add((Entity) instance);
+				} catch (Exception e) {
+					System.out.println(e.getMessage() + " not found");
+				}
 			}
-
+		}
 	}
 	
 	

@@ -1,6 +1,8 @@
 package dev.codenmore.tilegame.saves;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.entity.Entity;
+import dev.codenmore.tilegame.entity.creatures.Arrow;
 import dev.codenmore.tilegame.entity.creatures.Player;
 import dev.codenmore.tilegame.items.Item;
 import dev.codenmore.tilegame.worlds.WorldGenerator;
@@ -20,6 +22,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SaveManager {
 
@@ -62,12 +65,17 @@ public class SaveManager {
             Element rootEle = dom.createElement("save");
             dom.appendChild(rootEle);
             e = dom.createElement("CurrentWorld");
+
             e2 = dom.createElement("Id");
             e2.appendChild(dom.createTextNode(String.valueOf(handler.getWorld().getId())));
             e.appendChild(e2);
+
+
+            // Fill world save with entities
             e2 = dom.createElement("Entities");
 
             String currentWorldDump = handler.getWorld().getEntityManager().dump();
+
             if(!currentWorldDump.equals("")) {
                 for(String entity : currentWorldDump.split("\n")) {
                     String[] entityParts = entity.split(";");
@@ -95,6 +103,77 @@ public class SaveManager {
             e.appendChild(e2);
             rootEle.appendChild(e);
 
+
+
+            // Fill world save with drops
+            e2 = dom.createElement("drops");
+            ArrayList<Item> itemDrops = handler.getWorld().getItemManager().getItems();
+            for(Item drop : itemDrops) {
+                Element drp = dom.createElement("Drop");
+                Element drp2;
+
+                drp2 = dom.createElement("id");
+                drp2.appendChild(dom.createTextNode(String.valueOf(drop.getId())));
+                drp.appendChild(drp2);
+
+                drp2 = dom.createElement("x");
+                drp2.appendChild(dom.createTextNode(String.valueOf(drop.getX())));
+                drp.appendChild(drp2);
+
+                drp2 = dom.createElement("y");
+                drp2.appendChild(dom.createTextNode(String.valueOf(drop.getY())));
+                drp.appendChild(drp2);
+
+                e2.appendChild(drp);
+            }
+
+            e.appendChild(e2);
+            rootEle.appendChild(e);
+
+            // Fill world save with projectiles
+            e2 = dom.createElement("projectiles");
+            ArrayList<Entity> projectiles = handler.getWorld().getEntityManager().getProjectiles();
+            for(Entity projectile : projectiles) {
+                Element drp = dom.createElement("Projectile");
+                Element drp2;
+
+                drp2 = dom.createElement("class");
+                drp2.appendChild(dom.createTextNode(projectile.getClass().getName()));
+                drp.appendChild(drp2);
+
+                drp2 = dom.createElement("x");
+                drp2.appendChild(dom.createTextNode(String.valueOf(projectile.getX())));
+                drp.appendChild(drp2);
+
+                drp2 = dom.createElement("y");
+                drp2.appendChild(dom.createTextNode(String.valueOf(projectile.getY())));
+                drp.appendChild(drp2);
+
+                if(projectile instanceof Arrow) {
+                    drp2 = dom.createElement("direction");
+                    drp2.appendChild(dom.createTextNode(String.valueOf(((Arrow) projectile).getDirection())));
+                    drp.appendChild(drp2);
+
+                    drp2 = dom.createElement("damage");
+                    drp2.appendChild(dom.createTextNode(String.valueOf(((Arrow) projectile).getDamage())));
+                    drp.appendChild(drp2);
+
+                    drp2 = dom.createElement("isArrow");
+                    drp2.appendChild(dom.createTextNode("true"));
+                    drp.appendChild(drp2);
+                }else {
+                    drp2 = dom.createElement("isArrow");
+                    drp2.appendChild(dom.createTextNode("false"));
+                    drp.appendChild(drp2);
+                }
+
+                e2.appendChild(drp);
+            }
+
+            e.appendChild(e2);
+            rootEle.appendChild(e);
+
+            // Save Player info
             Player player = handler.getWorld().getEntityManager().getPlayer();
 
             e = dom.createElement("Player");
@@ -154,9 +233,6 @@ public class SaveManager {
             e = dom.createElement("Homeworld");
             e2 = dom.createElement("Entities");
 
-            System.out.println("test");
-            System.out.println(handler.getHomeWorld().getEntityManager().dump());
-
             String homeWorldDump = handler.getHomeWorld().getEntityManager().dump();
             if(!homeWorldDump.equals("")) {
                 for(String entity : homeWorldDump.split("\n")) {
@@ -180,6 +256,72 @@ public class SaveManager {
 
                     e2.appendChild(ent);
                 }
+            }
+
+            e.appendChild(e2);
+            rootEle.appendChild(e);
+
+            // Fill world save with projectiles
+            e2 = dom.createElement("projectiles");
+            ArrayList<Entity> homeProjectiles = handler.getHomeWorld().getEntityManager().getProjectiles();
+            for(Entity projectile : homeProjectiles) {
+                Element drp = dom.createElement("Projectile");
+                Element drp2;
+
+                drp2 = dom.createElement("class");
+                drp2.appendChild(dom.createTextNode(projectile.getClass().getName()));
+                drp.appendChild(drp2);
+
+                drp2 = dom.createElement("x");
+                drp2.appendChild(dom.createTextNode(String.valueOf(projectile.getX())));
+                drp.appendChild(drp2);
+
+                drp2 = dom.createElement("y");
+                drp2.appendChild(dom.createTextNode(String.valueOf(projectile.getY())));
+                drp.appendChild(drp2);
+
+                if(projectile instanceof Arrow) {
+                    drp2 = dom.createElement("direction");
+                    drp2.appendChild(dom.createTextNode(String.valueOf(((Arrow) projectile).getDirection())));
+                    drp.appendChild(drp2);
+
+                    drp2 = dom.createElement("damage");
+                    drp2.appendChild(dom.createTextNode(String.valueOf(((Arrow) projectile).getDamage())));
+                    drp.appendChild(drp2);
+
+                    drp2 = dom.createElement("isArrow");
+                    drp2.appendChild(dom.createTextNode("true"));
+                    drp.appendChild(drp2);
+                }else {
+                    drp2 = dom.createElement("isArrow");
+                    drp2.appendChild(dom.createTextNode("false"));
+                    drp.appendChild(drp2);
+                }
+
+                e2.appendChild(drp);
+            }
+
+            e.appendChild(e2);
+            rootEle.appendChild(e);
+
+
+            e2 = dom.createElement("drops");
+            ArrayList<Item> homeworldItemDrops = handler.getHomeWorld().getItemManager().getItems();
+            for(Item drop : homeworldItemDrops) {
+                Element drp = dom.createElement("Drop");
+                Element drp2;
+
+                drp2 = dom.createElement("id");
+                drp2.appendChild(dom.createTextNode(String.valueOf(drop.getId())));
+                drp.appendChild(drp2);
+
+                drp2 = dom.createElement("x");
+                drp2.appendChild(dom.createTextNode(String.valueOf(drop.getX())));
+                drp.appendChild(drp2);
+
+                drp2 = dom.createElement("y");
+                drp2.appendChild(dom.createTextNode(String.valueOf(drop.getY())));
+                drp.appendChild(drp2);
             }
 
             e.appendChild(e2);
@@ -219,14 +361,39 @@ public class SaveManager {
 
             Element currWorld = (Element)document.getElementsByTagName("CurrentWorld").item(0);
             String currWorldId = currWorld.getElementsByTagName("Id").item(0).getTextContent();
-            NodeList currWorldEntities = currWorld.getElementsByTagName("Entities").item(0).getChildNodes();
             worldGen.setWorld(Integer.parseInt(currWorldId));
+
+            // Fill world with entities
+            NodeList currWorldEntities = currWorld.getElementsByTagName("Entities").item(0).getChildNodes();
             worldGen.getCurrentWorld().getEntityManager().fillFromDump(currWorldEntities);
+
+            // Fill world with drops
+            NodeList currWorldDrops = currWorld.getElementsByTagName("drops").item(0).getChildNodes();
+            worldGen.getCurrentWorld().getItemManager().fillFromDump(currWorldDrops);
+
+            // Fill world with projectiles
+            NodeList currWorldProjectiles = currWorld.getElementsByTagName("projectiles").item(0).getChildNodes();
+            worldGen.getCurrentWorld().getEntityManager().fillProjectilesFromDump(currWorldProjectiles);
+
+            // set world
             handler.setWorld(worldGen.getCurrentWorld());
 
             Element homeworld = (Element)document.getElementsByTagName("Homeworld").item(0);
+
+            // Fill homeworld with entities
             NodeList homeworldEntities = homeworld.getElementsByTagName("Entities").item(0).getChildNodes();
             worldGen.getHomeWorld().getEntityManager().fillFromDump(homeworldEntities);
+
+            // Fill homeworld with drops
+            NodeList homeworldDrops = homeworld.getElementsByTagName("drops").item(0).getChildNodes();
+            worldGen.getHomeWorld().getItemManager().fillFromDump(homeworldDrops);
+
+            // Fill homeworld with projectiles
+            NodeList homeWorldProjectiles = homeworld.getElementsByTagName("projectiles").item(0).getChildNodes();
+            worldGen.getHomeWorld().getEntityManager().fillProjectilesFromDump(homeWorldProjectiles);
+
+
+
 
             Element playerElement = (Element)document.getElementsByTagName("Player").item(0);
             String playerX = playerElement.getElementsByTagName("x").item(0).getTextContent();

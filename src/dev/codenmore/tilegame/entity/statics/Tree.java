@@ -28,10 +28,10 @@ public class Tree extends StaticEntity{
 	public void die() {
 		
 	for(int i=0;i<Utils.generateRandomInt(2)+1;i++) {
-		handler.getWorld().getItemManager().addItem(Item.logItem.createNew(1), (int) x ,(int)  y );
+		handler.getWorld().getItemManager().addItem(Item.logItem.createNew(1), (int) x ,(int) y, true);
 	}
 	if (1==Utils.generateRandomInt(2))
-		handler.getWorld().getItemManager().addItem(Item.seedItem.createNew(1), (int) x ,(int)  y );
+		handler.getWorld().getItemManager().addItem(Item.seedItem.createNew(1), (int) x ,(int) y, true);
 	}
 	
 	public void render(Graphics g) {

@@ -183,25 +183,25 @@ public class Player extends Creature{
 		else 
 			if(ammunition > 0){
 				if (handler.getKeyManager().aRight) {
-					arrow = new Arrow(handler,(int) x+40 ,(int) (y), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 0 , rangedDamage );
+					arrow = new Arrow(handler,(int) x+40 ,(int) (y), 0 , rangedDamage );
 					handler.getWorld().getEntityManager().addProjectile(arrow);
 					ammunition -= 1;
 					ar=arrow.getBounds();
 				}
 				else if (handler.getKeyManager().aDown) {
-					arrow = new Arrow(handler,(int) x ,(int) (y + 64), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 1 , rangedDamage );
+					arrow = new Arrow(handler,(int) x ,(int) (y + 64), 1 , rangedDamage );
 					handler.getWorld().getEntityManager().addProjectile(arrow);
 					ammunition -= 1;
 					ar=arrow.getBounds();
 				}
 				else if (handler.getKeyManager().aLeft) {
-					arrow = new Arrow(handler,(int) x-40 ,(int) (y), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 2 , rangedDamage );
+					arrow = new Arrow(handler,(int) x-40 ,(int) (y), 2 , rangedDamage );
 					handler.getWorld().getEntityManager().addProjectile(arrow);
 					ammunition -= 1;
 					ar=arrow.getBounds();
 				}
 				else if (handler.getKeyManager().aUp) {
-					arrow = new Arrow(handler,(int) x ,(int) (y - 49), DEFAULT_CREATURE_WIDTH, DEFAULT_CREATURE_HEIGHT, 3 , rangedDamage );
+					arrow = new Arrow(handler,(int) x ,(int) (y - 49), 3 , rangedDamage );
 					handler.getWorld().getEntityManager().addProjectile(arrow);
 					ammunition -= 1;
 					ar=arrow.getBounds();

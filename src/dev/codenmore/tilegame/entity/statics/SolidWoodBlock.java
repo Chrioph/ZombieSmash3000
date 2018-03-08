@@ -21,7 +21,7 @@ public class SolidWoodBlock extends StaticEntity {
     }
 
     public void die() {
-        handler.getWorld().getItemManager().addItem(CraftableItem.solidWoodItem.createNew(1),(int) x,(int)  y );
+        handler.getWorld().getItemManager().addItem(CraftableItem.solidWoodItem.createNew(1),(int) x,(int) y, true);
     }
     public void render(Graphics g) {
         g.drawImage(Assets.solidWood, (int) (x-handler.getGameCamera().getxOffset()) ,(int) (y-handler.getGameCamera().getyOffset()), width, height, null);

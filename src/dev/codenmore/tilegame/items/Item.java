@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.entity.creatures.Player;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.utils.Utils;
 
@@ -62,25 +63,26 @@ public class Item {
 	
 	
 	public void tick() {
-		if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(this.getCollisionBounds(0,0))) {
-			if((!(this.getId()==armorItem.getId() && handler.getWorld().getEntityManager().getPlayer().getArmor()>=handler.getWorld().getEntityManager().getPlayer().getMaxArmor()) &&
-					!(this.getId()==heartItem.getId() && handler.getWorld().getEntityManager().getPlayer().getHealth()>=handler.getWorld().getEntityManager().getPlayer().getMaxHealth())))
+		Player player = handler.getWorld().getEntityManager().getPlayer();
+		if(player.getCollisionBounds(0f, 0f).intersects(this.getCollisionBounds(0,0))) {
+			if((!(this.getId()==armorItem.getId() && player.getArmor()>=player.getMaxArmor()) &&
+					!(this.getId()==heartItem.getId() && player.getHealth()>=player.getMaxHealth())))
 				pickedUp=true;
 			if(this.getId()!=swordItem.getId() && this.getId()!=heartItem.getId() && this.getId()!=arrowItem.getId()
 					&& this.getId()!=armorItem.getId() && this.getId()!=healthPlusItem.getId() &&this.getId()!=bowItem.getId())
-				handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(this);
+				player.getInventory().addItem(this);
 			if(this.getId()==swordItem.getId())
-				handler.getWorld().getEntityManager().getPlayer().setDamage(handler.getWorld().getEntityManager().getPlayer().getDamage()+1);
+				player.setDamage(player.getDamage()+1);
 			if(this.getId()==heartItem.getId()&& pickedUp==true)
-				handler.getWorld().getEntityManager().getPlayer().setHealth(handler.getWorld().getEntityManager().getPlayer().getHealth()+1);
+				player.setHealth(player.getHealth()+1);
 			if(this.getId()==arrowItem.getId())
-				handler.getWorld().getEntityManager().getPlayer().setAmmunition(handler.getWorld().getEntityManager().getPlayer().getAmmunition()+1);
+				player.setAmmunition(player.getAmmunition()+1);
 			if(this.getId()==armorItem.getId() && pickedUp==true)
-				handler.getWorld().getEntityManager().getPlayer().setArmor(handler.getWorld().getEntityManager().getPlayer().getArmor()+1);
+				player.setArmor(player.getArmor()+1);
 			if(this.getId()==healthPlusItem.getId() )
-				handler.getWorld().getEntityManager().getPlayer().setMaxHealth(handler.getWorld().getEntityManager().getPlayer().getMaxHealth()+1);
+				player.setMaxHealth(player.getMaxHealth()+1);
 			if(this.getId()==bowItem.getId() )
-				handler.getWorld().getEntityManager().getPlayer().setRangedDamage(handler.getWorld().getEntityManager().getPlayer().getRangedDamage()+1);
+				player.setRangedDamage(player.getRangedDamage()+1);
 		}
 		
 	}
@@ -98,7 +100,7 @@ public class Item {
 
 	
 	
-	public void setPostion(int x, int y ) {
+	public void setPosition(int x, int y ) {
 		this.x=x;
 		this.y=y;
 		bounds.x=x;
