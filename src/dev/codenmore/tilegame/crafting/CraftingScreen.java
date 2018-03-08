@@ -113,7 +113,8 @@ public class CraftingScreen {
 			}
 			else return;
 		}
-		handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(craftableItems.get(selectedItem));
+		Item itemToAdd = craftableItems.get(selectedItem).createNew(1);
+		handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(itemToAdd);
 	
 	}
 	

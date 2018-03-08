@@ -106,7 +106,7 @@ public class SettingsState extends State{
 			add(new UIListElement(0, 0, 200, 40, "Easy", () -> handler.getGame().getWorldGenerator().setDifficulty("EASY")));
 			add(new UIListElement(0, 0, 200, 40, "Normal", () -> handler.getGame().getWorldGenerator().setDifficulty("NORMAL")));
 			add(new UIListElement(0, 0, 200, 40, "Hard", () -> handler.getGame().getWorldGenerator().setDifficulty("HARD")));
-		}}));
+		}}, false));
 
 
 
@@ -139,7 +139,7 @@ public class SettingsState extends State{
 				// Change resolution to 1680x1050
 				handler.getGame().resizeDisplay(1680, 1050);
 			}));
-		}}));
+		}}, false));
 
 		Page displaySettingsPage = new Page("Display", 2);
 		displaySettingsPage.setUiManager(displayUiManager);

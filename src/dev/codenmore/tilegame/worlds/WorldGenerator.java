@@ -26,7 +26,12 @@ public class WorldGenerator {
     private ArrayList<Mod> difficultyMods;
     private ArrayList<World> worlds;
 
+    public World getCurrentWorld() {
+        return currentWorld;
+    }
+
     private World currentWorld;
+    private World homeWorld;
 
     private enum Difficulty {
         EASY, NORMAL, HARD;
@@ -64,6 +69,7 @@ public class WorldGenerator {
     {
         world1();
         world2();
+        homeworld();
     }
 
     private World world1(){
@@ -75,6 +81,7 @@ public class WorldGenerator {
         }
 
         EntityManager world1EnManager = new EntityManager(handler, player);
+
 
         world1EnManager.addEntity(new Tree(handler, 300, 450));
         world1EnManager.addEntity(new Tree(handler, 2000, 1300));
@@ -148,6 +155,36 @@ public class WorldGenerator {
         applyMods();
 
         return world2;
+    }
+
+    private World homeworld()
+    {
+        World homeworld = new World(99999, handler, "/worlds/homeworld.txt");
+        EntityManager homeWorldEnManager = new EntityManager(handler, player);
+
+        homeworld.setEntityManager(homeWorldEnManager);
+        homeWorld = homeworld;
+        worlds.add(homeworld);
+        return homeworld;
+    }
+
+    /**
+     * Set current world by id
+     * @param id
+     */
+    public void setWorld(int id)
+    {
+        for(World w : worlds) {
+            if(w.getId() == id) {
+                currentWorld = w;
+                break;
+            }
+        }
+    }
+
+    public World getHomeWorld()
+    {
+        return homeWorld;
     }
 
     /**

@@ -25,13 +25,13 @@ public class Tree extends StaticEntity{
 		
 	}
 	
-public void die() {
+	public void die() {
 		
 	for(int i=0;i<Utils.generateRandomInt(2)+1;i++) {
-		handler.getWorld().getItemManager().addItem(Item.logItem.createNew(), (int) x ,(int)  y );
+		handler.getWorld().getItemManager().addItem(Item.logItem.createNew(1), (int) x ,(int)  y );
 	}
 	if (1==Utils.generateRandomInt(2))
-		handler.getWorld().getItemManager().addItem(Item.seedItem.createNew(), (int) x ,(int)  y );
+		handler.getWorld().getItemManager().addItem(Item.seedItem.createNew(1), (int) x ,(int)  y );
 	}
 	
 	public void render(Graphics g) {

@@ -31,6 +31,14 @@ public abstract class Entity {
 		health =DEFAULT_HEALTH;
 		bounds = new Rectangle(0,0, width , height);
 	}
+
+	public String dump() {
+		String dump = "";
+		// just save type of entity and position
+		dump += this.getClass().getName() + ";" + this.x + "/" + this.y;
+
+		return dump;
+	}
 	
 	public abstract void tick();
 	

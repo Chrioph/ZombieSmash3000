@@ -1,6 +1,7 @@
 package dev.codenmore.tilegame.entity;
 
 import java.awt.Graphics;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -9,6 +10,9 @@ import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.entity.creatures.Enemies.Enemy;
 import dev.codenmore.tilegame.entity.creatures.Player;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class EntityManager {
 
@@ -37,6 +41,45 @@ public class EntityManager {
 		entities.add(player);
 		projectiles= new ArrayList<Entity>();
 		queue= new ArrayList<Entity>();
+	}
+
+	public String dump()
+	{
+		StringBuilder dump = new StringBuilder("");
+
+		for(Entity e : entities) {
+			if(!(e instanceof Player)) {
+				dump.append(e.dump()).append("\n");
+			}
+		}
+		return dump.toString();
+	}
+
+	public void fillFromDump(NodeList dump)
+	{
+		// first clear current entities
+		Player myPlayer = this.getPlayer();
+		entities.clear();
+		entities.add(myPlayer);
+			for(int i = 0; i < dump.getLength(); i++) {
+				if (dump.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					Element ent = (Element) dump.item(i);
+
+					try {
+						Class<?> clazz = Class.forName(ent.getElementsByTagName("class").item(0).getTextContent());
+						Constructor<?> constructor = clazz.getConstructor(Handler.class, float.class, float.class);
+						float xCoord = Float.parseFloat(ent.getElementsByTagName("x").item(0).getTextContent());
+						float yCoord = Float.parseFloat(ent.getElementsByTagName("y").item(0).getTextContent());
+						Object instance = constructor.newInstance(handler, xCoord, yCoord);
+
+						entities.add((Entity) instance);
+					} catch (Exception e) {
+						System.out.println(e.getMessage() + " not found");
+					}
+			}
+
+			}
+
 	}
 	
 	

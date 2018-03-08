@@ -9,7 +9,7 @@ public class CraftableItem extends Item{
 	
 	private int len = 4;
 	private int[] resources;
-	public static CraftableItem woodItem = new CraftableItem(Assets.wood,"Wood", 3, true) ;
+	public static CraftableItem woodItem = new CraftableItem(Assets.wood,"Wood", 3, true);
 	public static CraftableItem solidWoodItem = new CraftableItem(Assets.solidWood,"Solid Wood", 4, true);
 
 	public CraftableItem(BufferedImage texture, String name, int id, boolean placeable) {

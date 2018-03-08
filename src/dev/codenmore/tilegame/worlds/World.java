@@ -25,6 +25,7 @@ public class World {
 	private int [][] tiles;
 	private int spawnX, spawnY;
 	private int id;
+	private String path;
 
 	
 	//Entities
@@ -41,7 +42,7 @@ public class World {
 		this.handler=handler;
 		
 		itemManager = new ItemManager ( handler);
-		
+		this.path = path;
 		loadWorld(path);
 		
 	}
@@ -174,6 +175,19 @@ public class World {
 
 	public void setTile(int x, int y, int id){
 		tiles[x/128][y/128]= id;
+	}
+
+	public String getPath()
+	{
+		return path;
+	}
+
+	public void save()
+	{
+		String dump = "";
+		dump += "[Player]\n";
+
+		entityManager.dump();
 	}
 }
 

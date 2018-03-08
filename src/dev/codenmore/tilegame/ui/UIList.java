@@ -12,6 +12,7 @@ public class UIList extends UIObject{
 
     private BufferedImage[] images;
     private boolean opened;
+    private boolean alwaysOpen;
     private String placeholder;
     private ClickListener clicker;
     private ArrayList<UIListElement> elements;
@@ -25,9 +26,10 @@ public class UIList extends UIObject{
      * @param placeholder
      * @param options
      */
-    public UIList(float x, float y , int width, int height, String placeholder, ArrayList<UIListElement> options) {
+    public UIList(float x, float y , int width, int height, String placeholder, ArrayList<UIListElement> options, boolean alwaysExtended) {
         super (x,y,width, height);
         this.placeholder = placeholder;
+        this.alwaysOpen = alwaysExtended;
         opened = false;
         elements = options;
     }
@@ -41,7 +43,7 @@ public class UIList extends UIObject{
     public void render(Graphics g) {
         super.render(g);
         g.setFont(Assets.font40);
-        if(opened) {
+        if(opened || alwaysOpen) {
             int pos = 2;
             g.drawRect((int)x,(int)y-height/2+20 + (elements.size() * height),placeholder.length() * 30,height);
             g.drawString(placeholder,(int) x,(int) y+40);

@@ -110,7 +110,6 @@ public class Item {
 	
 		Item i= new Item(texture,name,id,placeable);
 		i.setCount(count);
-		i.setPickedUp(true);
 		return i;
 		
 	}

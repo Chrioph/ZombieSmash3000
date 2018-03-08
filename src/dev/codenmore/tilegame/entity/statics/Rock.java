@@ -28,7 +28,7 @@ public class Rock extends StaticEntity{
 	public void die() {
 		
 		for(int i=0;i<Utils.generateRandomInt(2)+1;i++) {
-			handler.getWorld().getItemManager().addItem(Item.rockItem.createNew(),(int) x,(int)  y );
+			handler.getWorld().getItemManager().addItem(Item.rockItem.createNew(1),(int) x,(int)  y );
 		}
 	}
 	
