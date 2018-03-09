@@ -5,23 +5,65 @@ import java.util.ArrayList;
 
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Maths.Matrix4f;
+import dev.codenmore.tilegame.Maths.Vector3f;
 import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.Settings;
+import dev.codenmore.tilegame.gfx.Assets;
+import dev.codenmore.tilegame.gfx.Shader;
+import dev.codenmore.tilegame.gfx.Texture;
+import dev.codenmore.tilegame.gfx.VertexArray;
 
 public abstract class Entity {
 	
 	protected float x,y;
+
 	protected int width, height;
+
 	protected Handler handler;
 	protected Rectangle bounds;
 	protected int health;
 	protected boolean active=true;
 	protected int knockbackCounter;
+
+
+	// OpenGL
+	private VertexArray mesh;
+	private Texture texture;
+	private float SIZE = 1.0f;
+	private Vector3f position = new Vector3f();
+	private float rot;
 	
 
 	public static final int DEFAULT_HEALTH = 10;
 	
 	public Entity(Handler handler, float x,float y, int width, int height) {
+
+		if(Settings.getOpenGl()) {
+			float[] vertices = new float[] {
+					-SIZE / 2.0f, -SIZE / 2.0f, 0.2f,
+					-SIZE / 2.0f,  SIZE / 2.0f, 0.2f,
+					SIZE / 2.0f,  SIZE / 2.0f, 0.2f,
+					SIZE / 2.0f, -SIZE / 2.0f, 0.2f
+			};
+
+			byte[] indices = new byte[] {
+					0, 1, 2,
+					2, 3, 0
+			};
+
+			float[] tcs = new float[] {
+					0, 1,
+					0, 0,
+					1, 0,
+					1, 1
+			};
+
+
+			mesh = new VertexArray(vertices, indices, tcs);
+			texture = new Texture(Assets.player1LookingDown);
+		}
+
 
 		this.x=x;
 		this.y=y;
@@ -50,6 +92,16 @@ public abstract class Entity {
 		}
 
 	}
+
+	public void renderOpenGL()
+	{
+		Shader.ENTITY.enable();
+		//Shader.ENTITY.setUniformMat4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rot)));
+		texture.bind();
+		mesh.render();
+		Shader.ENTITY.disable();
+	}
+
 	public void knockback() {
 		
 	}
@@ -159,6 +211,8 @@ public abstract class Entity {
 	public void setKnockbackCounter(int knockbackCounter) {
 		this.knockbackCounter = knockbackCounter;
 	}
+
+
 	
 
 }

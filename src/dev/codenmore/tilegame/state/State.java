@@ -31,7 +31,7 @@ public abstract class State {
 	
 	public abstract void render(Graphics g);
 
-	public abstract void renderOpenGL(long window);
+	public abstract void renderOpenGL();
 	
 
 }

@@ -1,6 +1,7 @@
 package dev.codenmore.tilegame.ui;
 
 import dev.codenmore.tilegame.Settings;
+import dev.codenmore.tilegame.input.InputHandler;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -37,6 +38,10 @@ public abstract class UIObject {
 	
 	public void render(Graphics g) {
 	}
+
+	public void renderOpenGL() {
+
+	}
 	
 	public abstract void onClick();
 	
@@ -48,6 +53,18 @@ public abstract class UIObject {
 	}
 	
 	public void onMouseRelease(MouseEvent e) {
+		if (hovering)
+			onClick();
+	}
+
+	public void onMouseMoveGL() {
+		if (bounds.contains(InputHandler.posX, InputHandler.posY))
+			hovering=true;
+		else
+			hovering=false;
+	}
+
+	public void onMouseReleaseGL() {
 		if (hovering)
 			onClick();
 	}

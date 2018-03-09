@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.input.InputHandler;
 
 public class UIManager {
 
@@ -33,12 +34,26 @@ public class UIManager {
 		for(UIObject o: tmpObjects)
 			o.render(g);
 	}
+
+	public void renderOpenGL() {
+		for(UIObject o: objects)
+			o.renderOpenGL();
+		for(UIObject o: tmpObjects)
+			o.renderOpenGL();
+	}
 	
 	public void onMouseMove(MouseEvent e) {
 		for(UIObject o: objects)
 			o.onMouseMove(e);
 		for(UIObject o: tmpObjects)
 			o.onMouseMove(e);
+	}
+
+	public void onMouseMoveGL() {
+		for(UIObject o: objects)
+			o.onMouseMoveGL();
+		for(UIObject o: tmpObjects)
+			o.onMouseMoveGL();
 	}
 	
 	public void onMouseRelease(MouseEvent e) {
@@ -47,6 +62,15 @@ public class UIManager {
 				o.onMouseRelease(e);
 			for(UIObject o: tmpObjects)
 				o.onMouseRelease(e);
+		}
+	}
+
+	public void onMouseReleaseGL() {
+		if(InputHandler.mouseButtonReleased(1)) {
+			for(UIObject o: objects)
+				o.onMouseReleaseGL();
+			for(UIObject o: tmpObjects)
+				o.onMouseReleaseGL();
 		}
 	}
 

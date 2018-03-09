@@ -38,4 +38,9 @@ public class HUD {
 			Text.drawString(g, String.valueOf(handler.getGame().getDisplayFPS()), 1880, 20, true, Color.WHITE, Assets.font40);
 		}
 	}
+
+	public void renderOpenGL()
+	{
+
+	}
 }

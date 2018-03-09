@@ -18,7 +18,9 @@ import java.nio.*;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.system.MemoryStack.*;
+import org.lwjgl.glfw.GLFWVidMode;
 import static org.lwjgl.system.MemoryUtil.*;
 /**
  * Display class creates frame with given settings (size etc)
@@ -31,6 +33,9 @@ public class Display {
     private int width;
     private int height;
 
+	//OpenGl
+	private long window;
+
     /**
      * Constructor
      *
@@ -42,7 +47,12 @@ public class Display {
         this.width = width;
         this.height = height;
         this.title = title;
-        createDisplay();
+		// OpenGl
+		if(Settings.getOpenGl()) {
+			createDisplayOpenGl();
+		}else {
+			createDisplay();
+		}
 
     }
 
@@ -76,31 +86,7 @@ public class Display {
         return frame;
     }
 
-	private JFrame frame;
-	private Canvas  canvas;
-	private String title;
-	private int width ;
-	private int height ;
 
-	//OpenGl
-	private long window;
-
-	public Display(String title , int width, int height) {
-		this.width=width;
-		this.height=height;
-		this.title= title;
-
-		// OpenGl
-		if(Settings.getOpenGl()) {
-			createDisplayOpenGl();
-		}else {
-			createDisplay();
-		}
-
-
-
-
-	}
 
 	public void destroy()
 	{
@@ -109,23 +95,6 @@ public class Display {
 
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
-	}
-
-	private void createDisplay(){
-
-		frame = new JFrame(title);
-		frame.setSize(width, height);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		canvas = new Canvas();
-		canvas.setPreferredSize(new Dimension(width,height));
-		canvas.setMaximumSize(new Dimension(width,height));
-		canvas.setMinimumSize(new Dimension(width,height));
-		canvas.setFocusable(false);
-		frame.add(canvas);
-		frame.pack();
 	}
 
 	private void createDisplayOpenGl()
@@ -146,6 +115,7 @@ public class Display {
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
+        //
 
 		// Create the window
 		window = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -159,20 +129,21 @@ public class Display {
 		});
 
 		glfwMakeContextCurrent(window);
+        glfwShowWindow(window);
+
+
+
 		GL.createCapabilities();
+        glEnable(GL_DEPTH_TEST);
+        glActiveTexture(GL_TEXTURE1);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 	}
 
 	public long getWindow()
 	{
 		return window;
-	}
-
-	public Canvas getCanvas() {
-		return this.canvas;
-	}
-
-	public JFrame getFrame() {
-		return frame;
 	}
 
     /**

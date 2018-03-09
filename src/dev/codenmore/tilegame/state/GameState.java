@@ -137,6 +137,20 @@ public class GameState extends State {
 
     }
 
+    @Override
+    public void renderOpenGL() {
+        handler.getWorld().renderOpenGL();
+        hud.renderOpenGL();
+        if(timeLastSave != 0 && (System.currentTimeMillis() - timeLastSave) < 3000) {
+            // TODO: Render saved and loaded text with opengl
+        }
+        if(timeLastLoad != 0 && (System.currentTimeMillis() - timeLastLoad) < 3000) {
+        }
+        if (nextLevelSelection) {
+            uiManager.renderOpenGL();
+        }
+    }
+
     private void checkPlayerDie(Graphics g) {
         if (handler.getWorld().getEntityManager().getPlayer().isDead()) {
             if (!b) {

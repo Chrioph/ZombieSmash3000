@@ -106,6 +106,10 @@ public class World {
 		entityManager.render(g);
 		
 	}
+
+	public void renderOpenGL(){
+
+	}
 	
 	
 	public Tile getTile(int x, int y) {

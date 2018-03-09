@@ -55,6 +55,11 @@ public class MenuState extends State {
 		
 	}
 
+	@Override
+	public void renderOpenGL() {
+		uiManager.renderOpenGL();
+	}
+
 	private void listenExit() {
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
 			handler.getGame().close();

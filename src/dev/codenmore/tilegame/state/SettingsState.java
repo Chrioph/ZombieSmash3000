@@ -93,6 +93,11 @@ public class SettingsState extends State{
 		
 	}
 
+	@Override
+	public void renderOpenGL() {
+
+	}
+
 	public void initializeGameSettingsPage()
 	{
 		UIManager gameUiManager = new UIManager(handler);
