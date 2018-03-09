@@ -5,7 +5,11 @@ import java.util.ArrayList;
 
 import dev.codenmore.tilegame.Game;
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.gfx.Assets;
+import dev.codenmore.tilegame.gfx.Shader;
+import dev.codenmore.tilegame.gfx.Texture;
+import dev.codenmore.tilegame.gfx.VertexArray;
 import dev.codenmore.tilegame.state.elements.Page;
 import dev.codenmore.tilegame.ui.*;
 
@@ -15,11 +19,37 @@ public class SettingsState extends State{
 	private Page activePage;
 	private boolean activePageChanged;
 	private ArrayList<Page> pages;
+
+	private VertexArray mesh;
+	private float SIZE = 1.0f;
 	
 	
 	
 	public SettingsState(Handler handler) {
 		super (handler);
+		if(Settings.getOpenGl()) {
+			float[] vertices = new float[] {
+					-SIZE / 2.0f, -SIZE / 2.0f, 0.2f,
+					-SIZE / 2.0f,  SIZE / 2.0f, 0.2f,
+					SIZE / 2.0f,  SIZE / 2.0f, 0.2f,
+					SIZE / 2.0f, -SIZE / 2.0f, 0.2f
+			};
+
+			byte[] indices = new byte[] {
+					0, 1, 2,
+					2, 3, 0
+			};
+
+			float[] tcs = new float[] {
+					0, 1,
+					0, 0,
+					1, 0,
+					1, 1
+			};
+
+
+			mesh = new VertexArray(vertices, indices, tcs);
+		}
 		activePageChanged = false;
 
 		pages = new ArrayList<Page>();
@@ -89,13 +119,17 @@ public class SettingsState extends State{
 			}
 			activePageChanged = false;
 		}
-
-		
 	}
 
 	@Override
 	public void renderOpenGL() {
-
+		// render Background
+		Texture bgTexture = new Texture(Assets.settingsBackground);
+		Shader.BG.enable();
+		//Shader.ENTITY.setUniformMat4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rot)));
+		bgTexture.bind();
+		mesh.render();
+		Shader.BG.disable();
 	}
 
 	public void initializeGameSettingsPage()

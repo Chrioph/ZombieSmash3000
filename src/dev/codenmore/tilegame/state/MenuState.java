@@ -2,6 +2,8 @@ package dev.codenmore.tilegame.state;
 
 import java.awt.Color;
 
+import dev.codenmore.tilegame.Settings;
+import dev.codenmore.tilegame.input.InputHandler;
 import dev.codenmore.tilegame.ui.ClickListener;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -20,6 +22,9 @@ public class MenuState extends State {
 		super (handler);
 		uiManager = new UIManager(handler);
 		handler.getMouseManager().setUIManager(uiManager);
+		if(Settings.getOpenGl()) {
+			InputHandler.setUiManager(uiManager);
+		}
 		
 		uiManager.addObject(new UIImageButton(  1920 / 2 - 256 ,  1080 / 2 - 128 ,  512 ,  256, Assets.buttonStart, new ClickListener() {
 			
@@ -27,6 +32,9 @@ public class MenuState extends State {
 			@Override
 			public void onClick() {
 				handler.getMouseManager().setUIManager(null);
+				if(Settings.getOpenGl()) {
+					InputHandler.setUiManager(null);
+				}
 				State.setState(new GameState(handler));
 				
 			}
@@ -37,6 +45,9 @@ public class MenuState extends State {
 			@Override
 			public void onClick() {
 				handler.getMouseManager().setUIManager(null);
+				if(Settings.getOpenGl()) {
+					InputHandler.setUiManager(null);
+				}
 				State.setState(new SettingsState(handler));
 			}
 		}));

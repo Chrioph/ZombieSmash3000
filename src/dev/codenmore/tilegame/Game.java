@@ -15,6 +15,7 @@ import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.GameCamera;
 import dev.codenmore.tilegame.gfx.Shader;
 import dev.codenmore.tilegame.gfx.Text;
+import dev.codenmore.tilegame.input.InputHandler;
 import dev.codenmore.tilegame.input.KeyManager;
 import dev.codenmore.tilegame.input.MouseManager;
 
@@ -104,6 +105,9 @@ public class Game implements Runnable {
 
 
         Assets.init();
+        if(Settings.getOpenGl()) {
+            InputHandler.init(window);
+        }
 
         initGameComponents();
 
@@ -130,6 +134,9 @@ public class Game implements Runnable {
             restartTick = false;
         }
         keyManager.tick();
+        if(Settings.getOpenGl()) {
+            InputHandler.tick();
+        }
         if (State.getState() != null)
             State.getState().tick();
 

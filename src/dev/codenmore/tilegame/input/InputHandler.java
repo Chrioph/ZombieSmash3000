@@ -32,7 +32,7 @@ public class InputHandler {
     private static int NO_STATE = -1;
 
 
-    protected static GLFWKeyCallback keyboard = new GLFWKeyCallback()
+    public static GLFWKeyCallback keyboard = new GLFWKeyCallback()
     {
         @Override
         public void invoke(long window, int key, int scancode, int action, int mods)
@@ -42,7 +42,7 @@ public class InputHandler {
         }
     };
 
-    protected static GLFWMouseButtonCallback mouse = new GLFWMouseButtonCallback()
+    public static GLFWMouseButtonCallback mouse = new GLFWMouseButtonCallback()
     {
         @Override
         public void invoke(long window, int button, int action, int mods)
@@ -56,7 +56,7 @@ public class InputHandler {
         }
     };
 
-    protected static GLFWCursorPosCallback cursor = new GLFWCursorPosCallback() {
+    public static GLFWCursorPosCallback cursor = new GLFWCursorPosCallback() {
         @Override
         public void invoke(long window, double xpos, double ypos) {
             posX = xpos;
@@ -77,21 +77,23 @@ public class InputHandler {
             uiManager.onMouseMoveGL();
     }
 
-    protected static void init(long window, UIManager uiman)
+    public static void init(long window)
     {
         InputHandler.window = window;
-        uiManager = uiman;
 
         resetKeyboard();
         resetMouse();
     }
 
-    protected static void tick()
+    public static void tick()
     {
         resetKeyboard();
         resetMouse();
 
         glfwPollEvents();
+    }
+    public static void setUiManager(UIManager uiman) {
+        uiManager = uiman;
     }
 
     private static void resetKeyboard()

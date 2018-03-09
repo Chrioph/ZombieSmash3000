@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import dev.codenmore.tilegame.Settings;
 
+import dev.codenmore.tilegame.input.InputHandler;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
@@ -132,7 +133,9 @@ public class Display {
         glfwShowWindow(window);
 
 
-
+        glfwSetKeyCallback(window, InputHandler.keyboard);
+        glfwSetCursorPosCallback(window, InputHandler.cursor);
+        glfwSetMouseButtonCallback(window, InputHandler.mouse);
 		GL.createCapabilities();
         glEnable(GL_DEPTH_TEST);
         glActiveTexture(GL_TEXTURE1);

@@ -1,6 +1,8 @@
 package dev.codenmore.tilegame.ui;
 
 import dev.codenmore.tilegame.Settings;
+import dev.codenmore.tilegame.gfx.Texture;
+import dev.codenmore.tilegame.gfx.VertexArray;
 import dev.codenmore.tilegame.input.InputHandler;
 
 import java.awt.*;
@@ -12,6 +14,10 @@ public abstract class UIObject {
 	protected int width, height;
 	protected boolean hovering =false;
 	protected Rectangle bounds;
+
+	protected VertexArray mesh;
+	protected float SIZE = 1.0f;
+
 	
 	public boolean isHovering() {
 		return hovering;
@@ -22,6 +28,30 @@ public abstract class UIObject {
 	}
 
 	public UIObject(float x , float y , int width, int height) {
+
+		if(Settings.getOpenGl()) {
+			float[] vertices = new float[] {
+					-SIZE / 2.0f, -SIZE / 2.0f, 0.2f,
+					-SIZE / 2.0f,  SIZE / 2.0f, 0.2f,
+					SIZE / 2.0f,  SIZE / 2.0f, 0.2f,
+					SIZE / 2.0f, -SIZE / 2.0f, 0.2f
+			};
+
+			byte[] indices = new byte[] {
+					0, 1, 2,
+					2, 3, 0
+			};
+
+			float[] tcs = new float[] {
+					2, 1,
+					1, 1,
+					1, 2,
+					1, 1
+			};
+
+			mesh = new VertexArray(vertices, indices, tcs);
+		}
+
 		this.x=x;
 		this.y=y;
 		this.width=width;

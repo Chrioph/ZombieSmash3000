@@ -1,5 +1,7 @@
 package dev.codenmore.tilegame.ui;
 
+import dev.codenmore.tilegame.Maths.Matrix4f;
+import dev.codenmore.tilegame.Maths.Vector3f;
 import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.gfx.Shader;
 import dev.codenmore.tilegame.gfx.Texture;
@@ -15,6 +17,7 @@ public class UIImageButton extends UIObject{
 	private ClickListener clicker;
 	private VertexArray mesh;
 	private Texture[] textures;
+	private Vector3f position;
 	
 	public UIImageButton(float x, float y , int width, int height, BufferedImage[] images, ClickListener clicker) {
 		super (x,y,width, height);
@@ -41,7 +44,7 @@ public class UIImageButton extends UIObject{
 			};
 
 			mesh = new VertexArray(vertices, indices, tcs);
-
+			position = new Vector3f(1f, 1f, 0f);
 			textures = new Texture[2];
 			textures[0] = new Texture(images[0]);
 			textures[1] = new Texture(images[1]);
@@ -67,7 +70,7 @@ public class UIImageButton extends UIObject{
 	{
 		super.renderOpenGL();
 		Shader.ENTITY.enable();
-
+		Shader.ENTITY.setUniformMat4f("ml_matrix", Matrix4f.translate(position));
 		if(hovering) {
 			textures[1].bind();
 		}else {

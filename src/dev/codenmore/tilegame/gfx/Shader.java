@@ -27,6 +27,7 @@ public class Shader {
 
     public static void loadAll() {
         ENTITY = new Shader("/shaders/entity.vert", "/shaders/entity.frag");
+        BG = new Shader("/shaders/entity.vert", "/shaders/entity.frag");
     }
 
     public int getUniform(String name) {
