@@ -1,6 +1,7 @@
 package dev.codenmore.tilegame.inventory;
 
 import dev.codenmore.tilegame.Handler;
+import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.items.CraftableItem;
@@ -40,6 +41,7 @@ public class ChestInventory {
     public ChestInventory(Handler handler,Rectangle openingHitbox) {
         this.handler=handler;
         this.openingHitbox=openingHitbox;
+        this.openingHitbox=getCollisionBounds(0f,0f);
         inventoryItems = new ArrayList<Item>();
         inventoryItems.add(Item.logItem);
         inventoryItems.add(Item.rockItem);
@@ -71,6 +73,7 @@ public class ChestInventory {
         }
 
         if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f).intersects(openingHitbox)&&handler.getKeyManager().keyJustPressed(KeyEvent.VK_E)){
+            System.out.println("Player in opening area");
             handler.getWorld().getEntityManager().getPlayer().getInventory().setActive(false);
             active=!active;
         }
@@ -112,10 +115,6 @@ public class ChestInventory {
             selectedItem= displayInventoryItems.size()-1;
         else if (selectedItem >= displayInventoryItems.size())
             selectedItem=0;
-
-
-
-
     }
 
     public void render(Graphics g){
@@ -150,8 +149,10 @@ public class ChestInventory {
         g.drawImage(item.getTexture(), invImageX, invImageY, invImageWidth, invImageHeight, null);
         Text.drawString(g, Integer.toString(item.getCount()), invCountX, invCountY, true, Color.WHITE, Assets.font56);
 
-
-
+        if (Settings.getDebug()){
+            g.setColor(Color.ORANGE);
+            g.fillRect(openingHitbox.x,openingHitbox.y,openingHitbox.width,openingHitbox.height);
+        }
     }
 
     //Inventory Methods
@@ -231,5 +232,8 @@ public class ChestInventory {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+    public Rectangle getCollisionBounds(float xOffset, float yOffset) {
+        return new Rectangle ((int) (openingHitbox.x + xOffset - handler.getGameCamera().getxOffset()),(int) (openingHitbox.y + yOffset - handler.getGameCamera().getyOffset()), openingHitbox.width, openingHitbox.height );
     }
 }

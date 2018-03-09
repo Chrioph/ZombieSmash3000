@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 public class Chest extends StaticEntity {
     private int capacity , capacityUsed=0;
     private ChestInventory chestInventory;
+    private Rectangle openingBounds= new Rectangle();
 
     public Chest (Handler handler, float x , float y) {
         super(handler,x,y, Tile.TILEWIDTH,Tile.TILEHEIGHT);
@@ -20,12 +21,17 @@ public class Chest extends StaticEntity {
         bounds.x=6;
         bounds.y = 28;
         bounds.width=53*2;
-        bounds.height =20;
-        chestInventory=new ChestInventory(handler, getCollisionBounds(0f,30f));
+        bounds.height =40;
+        openingBounds.x= (int) x + 6;
+        openingBounds.y =(int) y + 68;
+        openingBounds.width=53*2;
+        openingBounds.height =70;
+        chestInventory=new ChestInventory(handler, openingBounds);
     }
     public void tick() {
-        checkChestOpening();
         chestInventory.tick();
+        if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f).intersects(openingBounds)&&handler.getKeyManager().keyJustPressed(KeyEvent.VK_E))
+            handler.getWorld().getEntityManager().getPlayer().getInventory().setActive(false);
     }
 
     public void die() {
@@ -38,11 +44,7 @@ public class Chest extends StaticEntity {
             g.fillRect((int)(x+bounds.x-handler.getGameCamera().getxOffset()), (int)(y+bounds.y-handler.getGameCamera().getyOffset() + 30),bounds.width,bounds.height);
         }
     }
-    private void checkChestOpening(){
-        if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f).intersects(this.getCollisionBounds(0f, 30f))&&handler.getKeyManager().keyJustPressed(KeyEvent.VK_E)){
-            handler.getWorld().getEntityManager().getPlayer().getInventory().setActive(false);
-        }
-    }
+
 
     protected boolean isChest(){
         return true;

@@ -286,7 +286,7 @@ public abstract class Enemy extends Creature {
         for (int i = 0; i < 6; i++) {
             arr[i] = Utils.generateRandomInt(spawnrate);
         }
-        if (arr[0] == 3 || arr[0] == 5 || arr[0] == 6 || arr[0] == 15)
+        if (arr[0] == 3 || arr[0] == 5 )
             handler.getWorld().getItemManager().addItem(Item.swordItem.createNew(1), (int) x, (int) y, true);
 
         if (arr[1] == 3 || arr[1] == 5 || arr[1] == 6 || arr[1] == 2 || arr[1] == 15 || arr[1] == 16 || arr[1] == 12)
@@ -303,7 +303,7 @@ public abstract class Enemy extends Creature {
         if (arr[4] == 7 || arr[4] == 13)
             handler.getWorld().getItemManager().addItem(Item.healthPlusItem.createNew(1), (int) x, (int) y, true);
 
-        if (arr[5] == 3 || arr[5] == 12)
+        if (arr[5] == 3 )
             handler.getWorld().getItemManager().addItem(Item.bowItem.createNew(1), (int) x, (int) y, true);
     }
 
