@@ -15,6 +15,7 @@ import dev.codenmore.tilegame.entity.statics.Rock;
 import dev.codenmore.tilegame.entity.statics.Tree;
 import dev.codenmore.tilegame.items.ItemManager;
 import dev.codenmore.tilegame.tiles.Tile;
+import dev.codenmore.tilegame.tiles.dungeon.dungeonWallTile;
 import dev.codenmore.tilegame.utils.Utils;
 
 public class World {
@@ -24,8 +25,10 @@ public class World {
 	private int [][] tiles;
 	private int spawnX, spawnY;
 	private int id;
+	private String path;
+	private boolean placeable=false;
 
-	
+
 	//Entities
 	
 	private EntityManager entityManager; 
@@ -40,7 +43,7 @@ public class World {
 		this.handler=handler;
 		
 		itemManager = new ItemManager ( handler);
-		
+		this.path = path;
 		loadWorld(path);
 		
 	}
@@ -64,7 +67,8 @@ public class World {
 	}
 	
 	public void render ( Graphics g) {
-		
+
+		Tile tmpTile;
 		int xStart=(int) Math.max(0, handler.getGameCamera().getxOffset()/Tile.TILEWIDTH );
 		int xEnd=(int) Math.min(width,( handler.getGameCamera().getxOffset()+1920 )/Tile.TILEWIDTH+1);
 		int yStart=(int) Math.max(0,  handler.getGameCamera().getyOffset()/Tile.TILEHEIGHT );
@@ -72,7 +76,27 @@ public class World {
 		
 		for (int y=yStart; y<yEnd;y++) {
 			for (int x=xStart;x<xEnd;x++) {
-				getTile(x,y).render(g,(int) (x*Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),(int) (y*Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()));
+				tmpTile = getTile(x,y);
+				if(tmpTile instanceof dungeonWallTile) {
+					int[][] surrTiles = new int [3][3];
+					if(x-1 >=0) {
+						surrTiles[0][1] = tiles[x-1][y];
+					}
+					if(y-1 >=0) {
+						surrTiles[1][0] = tiles[x][y-1];
+					}
+					if(x+1 < tiles.length) {
+						surrTiles[2][1] = tiles[x+1][y];
+					}
+					if(y+1 < tiles[0].length) {
+						surrTiles[1][2] = tiles[x][y+1];
+					}
+					dungeonWallTile tmpTile2 = (dungeonWallTile) tmpTile;
+					tmpTile2.render(g,(int) (x*Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),(int) (y*Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()), surrTiles);
+				}else {
+					tmpTile.render(g,(int) (x*Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),(int) (y*Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()));
+				}
+
 			}
 		}
 		//items
@@ -115,7 +139,9 @@ public class World {
 		}
 		
 	}
-		
+
+	public void reset()
+	{}
 	
 	public Handler getHandler() {
 		return handler;
@@ -146,6 +172,31 @@ public class World {
 	
 	public int getHEight() {
 		return height;
+	}
+
+	public void setTile(int x, int y, int id){
+		tiles[x/128][y/128]= id;
+	}
+
+	public String getPath()
+	{
+		return path;
+	}
+
+	public void save()
+	{
+		String dump = "";
+		dump += "[Player]\n";
+
+		entityManager.dump();
+	}
+
+	public boolean isPlaceable() {
+		return placeable;
+	}
+
+	public void setPlaceable(boolean placeable) {
+		this.placeable = placeable;
 	}
 }
 

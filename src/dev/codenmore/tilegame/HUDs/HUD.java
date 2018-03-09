@@ -15,7 +15,7 @@ public class HUD {
 	}
 	
 	public void render(Graphics g) {
-		if (!handler.getWorld().getEntityManager().getPlayer().getInventory().isActive()) {
+		if (!handler.getWorld().getEntityManager().getPlayer().getInventory().isActive()&&!handler.getWorld().getEntityManager().getPlayer().getCraftingScreen().isActive()) {
 			g.drawImage(Assets.HUDWindow, 5, 5, 750, 120, null);
 			g.drawImage(Assets.heart, 30, 50,64,64, null);
 			g.drawImage(Assets.sword, 144, 50,48,48, null);

@@ -50,9 +50,13 @@ public class Game implements Runnable{
 	private int displayFPS = 0;
 	private Dimension newDisplaySize = null;
 
+	private boolean restartRender = false;
+	private boolean restartTick = false;
+
+
 	//OpenGL
 	private long window;
-	
+
 	//States
 	public State gameState;
 	public State menuState;
@@ -98,23 +102,54 @@ public class Game implements Runnable{
 
 
 		Assets.init();
-		
+
+		initGameComponents();
+
+		State.setState(new MenuState(handler));
+	}
+
+	private void initGameComponents()
+	{
 		handler = new Handler(this);
 		camera= new GameCamera(handler, 0, 0);
 		worldGen = new WorldGenerator(handler, new Player(handler,0,0));
+	}
 
-		
-		
-		State.setState(new MenuState(handler));
+	private void destroyGameComponents()
+	{
+		handler.destroy();
+		worldGen.resetWorlds();
+		State.setState(null);
 	}
 	
 	private void tick() {
+		if(restartTick) {
+			destroyGameComponents();
+			initGameComponents();
+			State.setState(new MenuState(handler));
+			restartTick = false;
+		}
 		keyManager.tick();
 		if (State.getState() != null)
 			State.getState().tick();
 
 	}
 	private void render () {
+		if(restartRender) {
+			restartRender = false;
+			return;
+		}
+		if(newDisplaySize != null) {
+			changeDisplaySize();
+		}
+		bs = display.getCanvas().getBufferStrategy();
+		if(bs == null || afterScale) {
+			display.getCanvas().createBufferStrategy(3);
+			afterScale = false;
+			return;
+		}
+		Graphics graphics = bs.getDrawGraphics();
+		Graphics2D g = (Graphics2D) graphics;
 		if(Settings.getOpenGl()) {
 			renderOpenGl();
 		}else {
@@ -171,7 +206,7 @@ public class Game implements Runnable{
 		}else {
 			loop();
 		}
-		
+
 	}
 
 	private void loopOpenGL()
@@ -234,6 +269,7 @@ public class Game implements Runnable{
 		}
 
 
+		display.killDisplay();
 		stop();
 	}
 	
@@ -301,6 +337,7 @@ public class Game implements Runnable{
 		newDisplaySize = null;
 	}
 
+
 	public void resizeDisplay(int width, int height)
 	{
 		newDisplaySize = new Dimension(width, height);
@@ -312,6 +349,15 @@ public class Game implements Runnable{
 		return displayFPS;
 	}
 	
+	public void close() {
+		running=false;
+	}
+
+	public void restart()
+	{
+		restartRender = true;
+		restartTick = true;
+	}
 }
 	
 

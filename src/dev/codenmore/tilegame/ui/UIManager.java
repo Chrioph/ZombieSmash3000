@@ -42,10 +42,12 @@ public class UIManager {
 	}
 	
 	public void onMouseRelease(MouseEvent e) {
-		for(UIObject o: objects)
-			o.onMouseRelease(e);
-		for(UIObject o: tmpObjects)
-			o.onMouseRelease(e);
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			for(UIObject o: objects)
+				o.onMouseRelease(e);
+			for(UIObject o: tmpObjects)
+				o.onMouseRelease(e);
+		}
 	}
 
 	public void updateAllBounds()

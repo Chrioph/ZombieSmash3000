@@ -12,9 +12,37 @@ public class UIList extends UIObject{
 
     private BufferedImage[] images;
     private boolean opened;
+    private boolean alwaysOpen;
+    private boolean showPlaceholder;
+    private BufferedImage backgroundImage;
     private String placeholder;
     private ClickListener clicker;
     private ArrayList<UIListElement> elements;
+
+    public int getPaddingX() {
+        return paddingX;
+    }
+
+    public void setPaddingX(int paddingX) {
+        this.paddingX = paddingX;
+    }
+
+    public int getPaddingY() {
+        return paddingY;
+    }
+
+    public void setPaddingY(int paddingY) {
+        this.paddingY = paddingY;
+    }
+
+    private int paddingX = 10;
+    private int paddingY = 0;
+
+    public void setSpacing(int spacing) {
+        this.spacing = spacing;
+    }
+
+    private int spacing = 0;
 
     /**
      *
@@ -25,11 +53,18 @@ public class UIList extends UIObject{
      * @param placeholder
      * @param options
      */
-    public UIList(float x, float y , int width, int height, String placeholder, ArrayList<UIListElement> options) {
+    public UIList(float x, float y , int width, int height, String placeholder, ArrayList<UIListElement> options, boolean alwaysExtended, BufferedImage image, boolean showPlaceholder) {
         super (x,y,width, height);
         this.placeholder = placeholder;
+        this.alwaysOpen = alwaysExtended;
+        this.backgroundImage = image;
+        this.showPlaceholder = showPlaceholder;
         opened = false;
         elements = options;
+        if(alwaysExtended) {
+            toggleElementsVisible();
+        }
+
     }
 
     @Override
@@ -40,22 +75,25 @@ public class UIList extends UIObject{
     @Override
     public void render(Graphics g) {
         super.render(g);
+        int pos = 0;
         g.setFont(Assets.font40);
-        if(opened) {
-            int pos = 2;
-            g.drawRect((int)x,(int)y-height/2+20 + (elements.size() * height),placeholder.length() * 30,height);
-            g.drawString(placeholder,(int) x,(int) y+40);
+        g.drawImage(this.backgroundImage, (int)x, (int)y, width, height, null);
+        if(showPlaceholder) {
+            g.drawString(placeholder,(int) x+width/2-placeholder.length()*15,(int) y+height/2+10);
+            pos = 1;
+        }
+
+        if(opened || alwaysOpen) {
             for(UIListElement element : elements) {
-                element.setX(x);
-                element.setY(y + height*pos);
+                element.setOffsetX(paddingX);
+                element.setOffsetY(paddingY);
+                element.setX(x+element.getOffsetX());
+                element.setY(y +element.getOffsetY() + (element.getHeight()+spacing)*pos);
                 element.updateBounds();
-                g.drawRect((int)element.getX(),(int) element.getY()-element.getHeight()/2+20,element.getWidth(),element.getHeight());
-                g.drawString(element.getText(),(int) element.getX(),(int) element.getY()+40);
+                g.drawImage(element.getBackgroundImage(), (int)element.getX(), (int)element.getY(), element.getWidth(), element.getHeight(), null);
+                g.drawString(element.getText(),(int) element.getX()+element.getWidth()/2-element.getText().length()*13,(int) element.getY()+element.getHeight()/2+10);
                 pos++;
             }
-        }else {
-            g.drawRect((int)x,(int)y-height/2+20,placeholder.length() * 30,height);
-            g.drawString(placeholder,(int) x,(int) y+40);
         }
 
     }
@@ -63,6 +101,16 @@ public class UIList extends UIObject{
     @Override
     public void onClick() {
         opened = !opened;
+        if(!alwaysOpen) {
+            toggleElementsVisible();
+        }
+    }
+
+    private void toggleElementsVisible()
+    {
+        for(UIListElement element : elements) {
+            element.toggleVisible();
+        }
     }
 
 

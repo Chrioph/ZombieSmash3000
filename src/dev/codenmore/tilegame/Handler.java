@@ -9,6 +9,8 @@ public class Handler {
 	
 	private Game game;
 	private World world;
+	private World nextWorld;
+	private World homeWorld;
 	
 	public Handler(Game game){
 		
@@ -52,6 +54,30 @@ public class Handler {
 
 	public void setWorld(World world) {
 		this.world = world;
+	}
+
+	public World getHomeWorld() {
+		return homeWorld;
+	}
+
+	public void setHomeWorld(World world) {
+		this.homeWorld = world;
+	}
+
+	public World getNextWorld() {
+		return nextWorld;
+	}
+
+	public void setNextWorld(World world) {
+		this.nextWorld = world;
+	}
+
+	public void destroy()
+	{
+		this.game = null;
+		this.world.getEntityManager().getPlayer().getInventory().destroy();
+		this.world = null;
+		this.homeWorld = null;
 	}
 	
 	

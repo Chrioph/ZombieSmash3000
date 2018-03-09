@@ -5,6 +5,7 @@ import dev.codenmore.tilegame.Modifiers.DamageMod;
 import dev.codenmore.tilegame.Modifiers.HPMod;
 import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.Modifiers.SpeedMod;
+import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.entity.EntityManager;
 import dev.codenmore.tilegame.entity.creatures.Enemies.Ogre;
 import dev.codenmore.tilegame.entity.creatures.Enemies.Zombie;
@@ -25,7 +26,12 @@ public class WorldGenerator {
     private ArrayList<Mod> difficultyMods;
     private ArrayList<World> worlds;
 
+    public World getCurrentWorld() {
+        return currentWorld;
+    }
+
     private World currentWorld;
+    private World homeWorld;
 
     private enum Difficulty {
         EASY, NORMAL, HARD;
@@ -55,13 +61,27 @@ public class WorldGenerator {
         difficultyMods = new ArrayList<Mod>();
         worlds = new ArrayList<World>();
 
+        initializeWorlds();
+
+    }
+
+    private void initializeWorlds()
+    {
         world1();
         world2();
+        homeworld();
     }
 
     private World world1(){
-        World world1 = new World(1, handler,"/worlds/world2.txt");
+        World world1;
+        if(Settings.getRenderDungeon()) {
+            world1 = new World(1, handler,"/worlds/dungeon2.txt");
+        }else {
+            world1 = new World(1, handler,"/worlds/world2.txt");
+        }
+
         EntityManager world1EnManager = new EntityManager(handler, player);
+
 
         world1EnManager.addEntity(new Tree(handler, 300, 450));
         world1EnManager.addEntity(new Tree(handler, 2000, 1300));
@@ -137,6 +157,37 @@ public class WorldGenerator {
         return world2;
     }
 
+    private World homeworld()
+    {
+        World homeworld = new World(99999, handler, "/worlds/homeworld.txt");
+        EntityManager homeWorldEnManager = new EntityManager(handler, player);
+
+        homeworld.setEntityManager(homeWorldEnManager);
+        homeWorld = homeworld;
+        worlds.add(homeworld);
+        homeworld.setPlaceable(true);
+        return homeworld;
+    }
+
+    /**
+     * Set current world by id
+     * @param id
+     */
+    public void setWorld(int id)
+    {
+        for(World w : worlds) {
+            if(w.getId() == id) {
+                currentWorld = w;
+                break;
+            }
+        }
+    }
+
+    public World getHomeWorld()
+    {
+        return homeWorld;
+    }
+
     /**
      * If there is a difficulty with the given name, resets difficulty modifications with modifications from chosen difficulty
      * @param diff
@@ -151,6 +202,12 @@ public class WorldGenerator {
             }
         }
         applyMods();
+    }
+
+    public void resetWorlds()
+    {
+        worlds.clear();
+        initializeWorlds();
     }
 
 

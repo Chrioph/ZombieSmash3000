@@ -18,12 +18,14 @@ public class Launcher {
 		{
 			if(arg.equals("--debug")) {
 				Settings.setDebug(true);
+			}else if(arg.equals("--dungeon")) {
+				Settings.setRenderDungeon(true);
 			}else if(arg.equals("--opengl")) {
-				Settings.setOpenGl(true);
-			}
+                Settings.setOpenGl(true);
+            }
 		}
 	}
-	
+
 	
 	
 

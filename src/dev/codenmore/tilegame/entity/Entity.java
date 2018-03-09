@@ -16,6 +16,7 @@ public abstract class Entity {
 	protected Rectangle bounds;
 	protected int health;
 	protected boolean active=true;
+	protected int knockbackCounter;
 	
 
 	public static final int DEFAULT_HEALTH = 10;
@@ -30,6 +31,14 @@ public abstract class Entity {
 		health =DEFAULT_HEALTH;
 		bounds = new Rectangle(0,0, width , height);
 	}
+
+	public String dump() {
+		String dump = "";
+		// just save type of entity and position
+		dump += this.getClass().getName() + ";" + this.x + "/" + this.y;
+
+		return dump;
+	}
 	
 	public abstract void tick();
 	
@@ -40,6 +49,9 @@ public abstract class Entity {
 			g.fillRect(collBounds.x,collBounds.y, bounds.width, bounds.height);
 		}
 
+	}
+	public void knockback() {
+		
 	}
 	
 	public abstract void die();
@@ -59,9 +71,12 @@ public abstract class Entity {
 				continue;
 			if ( e.getCollisionBounds(0f, 0f).intersects(getCollisionBounds(xOffset, yOffset)))
 				return true;
-			
-		
-			
+		}
+		for (Entity e: handler.getWorld().getEntityManager().getProjectiles()) {
+			if (e.equals(this))
+				continue;
+			if ( e.getCollisionBounds(0f, 0f).intersects(getCollisionBounds(xOffset, yOffset)))
+				return true;
 		}
 		return false;
 	}
@@ -133,6 +148,16 @@ public abstract class Entity {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	
+
+	public int getKnockbackCounter() {
+		return knockbackCounter;
+	}
+
+	public void setKnockbackCounter(int knockbackCounter) {
+		this.knockbackCounter = knockbackCounter;
 	}
 	
 

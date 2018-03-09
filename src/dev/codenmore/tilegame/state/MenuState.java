@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import dev.codenmore.tilegame.ui.ClickListener;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 
 import dev.codenmore.tilegame.Game;
 import dev.codenmore.tilegame.Handler;
@@ -43,6 +44,7 @@ public class MenuState extends State {
 	
 	@Override
 	public void tick() {
+		listenExit();
 		uiManager.tick();
 		
 	}
@@ -53,4 +55,9 @@ public class MenuState extends State {
 		
 	}
 
+	private void listenExit() {
+		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
+			handler.getGame().close();
+		}
+	}
 }
