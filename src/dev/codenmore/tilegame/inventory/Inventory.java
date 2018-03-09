@@ -24,6 +24,10 @@ public class Inventory {
 	private ArrayList<Item> inventoryItems;
 	private ArrayList<Item> displayInventoryItems;
 
+
+
+	private boolean openable=true;
+
 	private int invX=192, invY=108, invWidth=1920-192*2, invHeight=1080-108*2,
 			invListCenterX = invX + invWidth/3-1, invListCenterY= invY + invHeight / 2 + 5*(invHeight/384),
 			invListSpacing=68;
@@ -54,6 +58,8 @@ public class Inventory {
 
 
 	public void tick() {
+		if(!openable)
+			return;
 		synchronizeDisplayInventoryItems ();
 		Iterator<Item> it = displayInventoryItems.iterator();
 		while( it.hasNext() ) {
@@ -215,5 +221,11 @@ public class Inventory {
 		this.displayInventoryItems = displayInventoryItems;
 	}
 
+	public boolean isOpenable() {
+		return openable;
+	}
 
+	public void setOpenable(boolean openable) {
+		this.openable = openable;
+	}
 }

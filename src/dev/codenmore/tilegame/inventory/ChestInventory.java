@@ -41,7 +41,6 @@ public class ChestInventory {
     public ChestInventory(Handler handler,Rectangle openingHitbox) {
         this.handler=handler;
         this.openingHitbox=openingHitbox;
-        this.openingHitbox=getCollisionBounds(0f,0f);
         inventoryItems = new ArrayList<Item>();
         inventoryItems.add(Item.logItem);
         inventoryItems.add(Item.rockItem);
@@ -74,7 +73,7 @@ public class ChestInventory {
 
         if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f).intersects(openingHitbox)&&handler.getKeyManager().keyJustPressed(KeyEvent.VK_E)){
             System.out.println("Player in opening area");
-            handler.getWorld().getEntityManager().getPlayer().getInventory().setActive(false);
+            handler.getWorld().getEntityManager().getPlayer().getInventory().setOpenable(!active);
             active=!active;
         }
 
@@ -118,6 +117,10 @@ public class ChestInventory {
     }
 
     public void render(Graphics g){
+        if (Settings.getDebug()){
+            g.setColor(Color.ORANGE);
+            g.fillRect(getCollisionBounds(0f,0f).x,getCollisionBounds(0f,0f).y,openingHitbox.width,openingHitbox.height);
+        }
         if(!active)
             return;
 
@@ -149,10 +152,7 @@ public class ChestInventory {
         g.drawImage(item.getTexture(), invImageX, invImageY, invImageWidth, invImageHeight, null);
         Text.drawString(g, Integer.toString(item.getCount()), invCountX, invCountY, true, Color.WHITE, Assets.font56);
 
-        if (Settings.getDebug()){
-            g.setColor(Color.ORANGE);
-            g.fillRect(openingHitbox.x,openingHitbox.y,openingHitbox.width,openingHitbox.height);
-        }
+
     }
 
     //Inventory Methods
