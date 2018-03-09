@@ -30,8 +30,7 @@ public class Chest extends StaticEntity {
     }
     public void tick() {
         chestInventory.tick();
-        if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f,0f).intersects(openingBounds)&&handler.getKeyManager().keyJustPressed(KeyEvent.VK_E))
-            handler.getWorld().getEntityManager().getPlayer().getInventory().setActive(false);
+
     }
 
     public void die() {
