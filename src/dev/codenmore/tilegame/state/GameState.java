@@ -121,7 +121,8 @@ public class GameState extends State {
     public void render(Graphics g) {
         // TODO Auto-generated method stub
         handler.getWorld().render(g);
-        hud.render(g);
+        if(!handler.getWorld().getEntityManager().getPlayer().isInputDisabled())
+            hud.render(g);
         if(timeLastSave != 0 && (System.currentTimeMillis() - timeLastSave) < 3000) {
             g.setFont(Assets.font28);
             g.drawString("Saved!", 1920-130, 1080-20);

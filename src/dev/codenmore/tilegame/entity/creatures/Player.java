@@ -18,6 +18,7 @@ import dev.codenmore.tilegame.entity.statics.Tree;
 import dev.codenmore.tilegame.entity.statics.WoodBlock;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
+import dev.codenmore.tilegame.inventory.ChestInventory;
 import dev.codenmore.tilegame.inventory.Inventory;
 import dev.codenmore.tilegame.items.CraftableItem;
 import dev.codenmore.tilegame.items.Item;
@@ -39,9 +40,6 @@ public class Player extends Creature {
     private Animation animAUp;
     private Animation animALeft;
     private Animation animARight;
-    private Animation placingWood;
-    private Animation placingSolidWood;
-    private Animation placingTree;
 
     private int knockbackCounter;
     private int ammunition = 5;
@@ -51,6 +49,10 @@ public class Player extends Creature {
     private boolean isDead = false;
     private int enemyDirection;
     private int playerDirection = 1;
+
+
+
+    private boolean inputDisabled;
 
 
     private int placingItem = 0;
@@ -139,7 +141,7 @@ public class Player extends Creature {
     }
 
     private void checkToggledRangeAttacks() {
-        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)&&!inputDisabled) {
             rangedToggled = !rangedToggled;
         }
 
@@ -156,6 +158,8 @@ public class Player extends Creature {
             return;
         }
         if (inventory.isActive() || craftingScreen.isActive())
+            return;
+        if(inputDisabled)
             return;
         Rectangle ar = new Rectangle();
         if (rangedToggled == false) {
@@ -247,6 +251,9 @@ public class Player extends Creature {
 
 
     private void getInput() {
+        if (inputDisabled)
+            return;
+
         xMove = 0;
         yMove = 0;
 
@@ -380,7 +387,8 @@ public class Player extends Creature {
 
     public void postRender(Graphics g) {
         inventory.render(g);
-        craftingScreen.render(g);
+        if (!inputDisabled)
+            craftingScreen.render(g);
     }
 
     public boolean isPlayer() {
@@ -554,5 +562,11 @@ public class Player extends Creature {
     public void setPlacingitem(int id) {
         placingItem = id;
     }
+    public boolean isInputDisabled() {
+        return inputDisabled;
+    }
 
+    public void setInputDisabled(boolean inputDisabled) {
+        this.inputDisabled = inputDisabled;
+    }
 }

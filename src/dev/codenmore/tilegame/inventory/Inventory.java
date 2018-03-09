@@ -23,20 +23,22 @@ public class Inventory {
 	private boolean active=false;
 	private ArrayList<Item> inventoryItems;
 	private ArrayList<Item> displayInventoryItems;
-	
+
 	private int invX=192, invY=108, invWidth=1920-192*2, invHeight=1080-108*2,
 			invListCenterX = invX + invWidth/3-1, invListCenterY= invY + invHeight / 2 + 5*(invHeight/384),
 			invListSpacing=68;
-	
-	private int invImageX = 1380, 
+
+	private int invImageX = 1380,
 			invImageY= 190,
-			invImageWidth= 128, 
+			invImageWidth= 128,
 			invImageHeight=128;
-	
+
 	private int invCountX=  1450, invCountY= 388;
-	
+
 	private int selectedItem=0;
-	
+
+
+
 	public Inventory(Handler handler) {
 		this.handler=handler;
 		inventoryItems = new ArrayList<Item>();
@@ -45,17 +47,14 @@ public class Inventory {
 		inventoryItems.add(CraftableItem.woodItem);
 		inventoryItems.add(CraftableItem.solidWoodItem);
         inventoryItems.add(Item.seedItem);
+		inventoryItems.add(CraftableItem.chestItem);
 		displayInventoryItems = new ArrayList<Item>();
 
 	}
-	
-	
+
+
 	public void tick() {
-		for(int i=0; i< inventoryItems.size();i++){
-			if(inventoryItems.get(i).getCount()>0) {
-				addIfNotAlreadyAdded(inventoryItems.get(i));
-			}
-		}
+		synchronizeDisplayInventoryItems ();
 		Iterator<Item> it = displayInventoryItems.iterator();
 		while( it.hasNext() ) {
 			Item i= it.next();
@@ -82,10 +81,18 @@ public class Inventory {
 		}
 	}
 
+	private void synchronizeDisplayInventoryItems(){
+		for(int i=0; i< inventoryItems.size();i++){
+			if(inventoryItems.get(i).getCount()>0) {
+				addIfNotAlreadyAdded(inventoryItems.get(i));
+			}
+		}
+	}
+
 	public void render(Graphics g){
 		if(!active)
 			return;
-		
+
 		g.drawImage(Assets.inventoryScreen, invX, invY, invWidth, invHeight, null);
 		int len = displayInventoryItems.size();
 		if(len == 0)
@@ -110,9 +117,9 @@ public class Inventory {
 			Text.drawString(g, "place item", invImageX + 60, invImageY + 300 + invListSpacing, true, Color.WHITE, Assets.font56);
 		}
 	}
-	
+
 	//Inventory Methods
-	
+
 	public void addItem(Item item) {
 		for (Item i: inventoryItems) {
 			if(i.getId()==item.getId()){
@@ -159,8 +166,18 @@ public class Inventory {
 	}
 
 
+	public Item getInventoryItemByID(int id){
+		Iterator<Item> it = inventoryItems.iterator();
+			while (it.hasNext()) {
+				Item i = it.next();
+				if (i.getId() == id)
+					return i;
+			}
+		return null;
+	}
+
 	//Getters and Setters
-	
+
 	public ArrayList<Item> getInventoryItems() {
 		return inventoryItems;
 	}
@@ -184,5 +201,19 @@ public class Inventory {
 	public void setHandler(Handler handler) {
 		this.handler = handler;
 	}
-	
+
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public ArrayList<Item> getDisplayInventoryItems() {
+		return displayInventoryItems;
+	}
+
+	public void setDisplayInventoryItems(ArrayList<Item> displayInventoryItems) {
+		this.displayInventoryItems = displayInventoryItems;
+	}
+
+
 }

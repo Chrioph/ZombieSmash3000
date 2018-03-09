@@ -10,6 +10,7 @@ import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.entity.creatures.Enemies.Enemy;
 import dev.codenmore.tilegame.entity.creatures.Player;
+import dev.codenmore.tilegame.entity.statics.Chest;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -21,6 +22,7 @@ public class EntityManager {
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> projectiles;
 	private ArrayList<Entity> queue;
+	private ArrayList<Entity>  chests;
 	private Comparator<Entity> renderSorter = new Comparator<Entity>() {
 		public int compare(Entity a, Entity b) {
 			if (a.getY() + a.getHeight() <b.getY() + b.getHeight())
@@ -37,6 +39,7 @@ public class EntityManager {
 	public EntityManager(Handler handler, Player player) {
 		this.handler=handler;
 		this.player=player;
+		chests =  new ArrayList<Entity>();
 		entities = new ArrayList<Entity>();
 		entities.add(player);
 		projectiles= new ArrayList<Entity>();
@@ -106,7 +109,7 @@ public class EntityManager {
 
 
 
-					entities.add((Entity) instance);
+					projectiles.add((Entity) instance);
 				} catch (Exception e) {
 					System.out.println(e.getMessage() + " not found");
 				}
@@ -122,7 +125,6 @@ public class EntityManager {
 
 				Entity e = it2.next();
 				projectiles.add(e);
-
 			}
 		}
 
@@ -147,7 +149,7 @@ public class EntityManager {
 			e.tick();
 			if (!e.isActive())
 				it1.remove();
-			
+
 		}
 		projectiles.sort(renderSorter);
 		
@@ -156,22 +158,30 @@ public class EntityManager {
 
 		
 
-		for(Entity e : projectiles) {
+			for(Entity e : projectiles) {
 			e.render(g);
 		}
 		for(Entity e : entities) {
 			e.render(g);
 		}
 		player.postRender(g);
+		for(Entity e : chests){
+			e.postrender(g);
+		}
 
 	}
 
+
 	public void addEntity(Entity e) {
 		entities.add(e);
+		if(e.isChest())
+			chests.add(e);
 	}
 	
 	public void addProjectile(Entity e) {
 		projectiles.add(e);
+		if(e.isChest())
+			chests.add(e);
 	}
 
 	public void addToQueue(Entity e) {queue.add(e);}

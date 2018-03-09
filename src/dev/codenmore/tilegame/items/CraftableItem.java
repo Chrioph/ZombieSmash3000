@@ -28,7 +28,12 @@ public class CraftableItem extends Item{
 		if (this.getId()==3) {
 			resources[logItem.getId()]=3;
 		}
-		
+		if(this.id==5) {
+			resources[logItem.getId()]=1;
+			resources[rockItem.getId()]=0;
+			resources[woodItem.getId()]=0;
+			resources[solidWoodItem.getId()]=0;
+		}
 	}
 
 	public int getResources(int i) {

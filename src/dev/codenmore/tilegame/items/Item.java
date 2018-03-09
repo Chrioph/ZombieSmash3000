@@ -14,7 +14,7 @@ public class Item {
 	
 	//Handler
 
-	//whenever a new item is created please increase the length of the ressources array in the class craftable items by one and add it to inventoryItems in the inventory class
+	//whenever a new item(usd for crafting) is created please increase the length of the ressources array in the class craftable items by one and add it to inventoryItems in the inventory class
 	//items used for crafting or items which are placeable get ids up to 127, other items ids start at 128
 	public static Item[] items = new Item[256];
 	public static Item logItem = new Item(Assets.log,"Log",0, false);
@@ -22,6 +22,7 @@ public class Item {
 	//public static CraftableItem woodItem = new CraftableItem(Assets.wood,"Wood", 2) ;
 	//public static CraftableItem solidWoodItem = new CraftableItem(Assets.solidWood,"Solid Wood", 3);
 	public static Item seedItem = new Item(Assets.seeds, "Seed", 4, true);
+	//public static CraftableItem chestItem = new CraftableItem(Assets.chest,"Chest", 5, true);
 
 
 	public static Item swordItem = new Item(Assets.sword,"Sword",128, false);

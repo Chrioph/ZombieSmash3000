@@ -92,6 +92,13 @@ public abstract class Entity {
 		return new Rectangle ((int) (x+bounds.x + xOffset - handler.getGameCamera().getxOffset()),(int) (y +bounds.y + yOffset - handler.getGameCamera().getyOffset()), bounds.width, bounds.height );
 	}
 
+	protected void postrender(Graphics g){
+
+	}
+
+	protected boolean isChest(){
+		return false;
+	}
 	
 	
 	public Rectangle getBounds() {

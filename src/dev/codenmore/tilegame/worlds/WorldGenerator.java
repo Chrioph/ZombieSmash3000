@@ -10,6 +10,7 @@ import dev.codenmore.tilegame.entity.EntityManager;
 import dev.codenmore.tilegame.entity.creatures.Enemies.Ogre;
 import dev.codenmore.tilegame.entity.creatures.Enemies.Zombie;
 import dev.codenmore.tilegame.entity.creatures.Player;
+import dev.codenmore.tilegame.entity.statics.Chest;
 import dev.codenmore.tilegame.entity.statics.Rock;
 import dev.codenmore.tilegame.entity.statics.Tree;
 
@@ -81,7 +82,7 @@ public class WorldGenerator {
         }
 
         EntityManager world1EnManager = new EntityManager(handler, player);
-
+        world1EnManager.addEntity((new Chest(handler, 400 , 400)));
 
         world1EnManager.addEntity(new Tree(handler, 300, 450));
         world1EnManager.addEntity(new Tree(handler, 2000, 1300));

@@ -65,7 +65,7 @@ public class Assets {
 		grass =    sheet.crop(width*3, 0, width, height);
 		stone =    sheet.crop(0, height, width, height);
 		finish=    sheet.crop(width*8, height, width, height);
-		chest=     sheet.crop(width,height,width,height);
+		chest=     sheet.crop(width*9,height*2,width*2,height*2);
 
 		// Dungeon
 		dungeonWallLeft = dungeonWallsSheet.crop(0, height, width, height);

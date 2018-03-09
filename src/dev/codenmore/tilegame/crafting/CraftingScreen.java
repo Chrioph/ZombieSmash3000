@@ -49,11 +49,14 @@ public class CraftingScreen {
         inventoryItems = new ArrayList<Item>();
         inventoryItems.add(Item.logItem);
         inventoryItems.add(Item.rockItem);
+        inventoryItems.add(CraftableItem.woodItem);
+        inventoryItems.add(CraftableItem.solidWoodItem);
 
 
         craftableItems = new ArrayList<CraftableItem>();
         craftableItems.add(CraftableItem.woodItem);
         craftableItems.add(CraftableItem.solidWoodItem);
+        craftableItems.add(CraftableItem.chestItem);
     }
 
     /**
@@ -132,19 +135,19 @@ public class CraftingScreen {
                             setCount(handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().get(j).getCount() - 1);
                     ;
 
-                }
-            } else return;
-        }
-        Item itemToAdd = craftableItems.get(selectedItem).createNew(1);
-        handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(itemToAdd);
-
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+				}
+			}
+			else return;
+		}
+		Item itemToAdd = craftableItems.get(selectedItem).createNew(1);
+		handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(itemToAdd);
+	
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 }
