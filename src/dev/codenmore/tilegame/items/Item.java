@@ -4,13 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.entity.creatures.Player;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.utils.Utils;
 
-public class Item {
+public class Item implements Serializable {
 	
 	//Handler
 
@@ -38,7 +39,7 @@ public class Item {
 	public static final int ITEMWIDTH=64, ITEMHEIGHT=64;
 	
 	protected Handler handler;
-	protected BufferedImage texture;
+	protected transient BufferedImage texture;
 	protected String name;
 	protected final int id;
 	protected boolean placeable;

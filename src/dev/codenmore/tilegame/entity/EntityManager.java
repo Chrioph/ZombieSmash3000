@@ -1,6 +1,7 @@
 package dev.codenmore.tilegame.entity;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,7 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class EntityManager {
+public class EntityManager implements Serializable{
 
 	private Handler handler;
 	private Player player;
@@ -39,9 +40,23 @@ public class EntityManager {
 	public EntityManager(Handler handler, Player player) {
 		this.handler=handler;
 		this.player=player;
+		initArrays();
+		entities.add(player);
+
+	}
+
+	/**
+	 * No args constructor for serialization
+	 */
+	public EntityManager()
+	{
+		initArrays();
+	}
+
+	private void initArrays()
+	{
 		chests =  new ArrayList<Entity>();
 		entities = new ArrayList<Entity>();
-		entities.add(player);
 		projectiles= new ArrayList<Entity>();
 		queue= new ArrayList<Entity>();
 	}

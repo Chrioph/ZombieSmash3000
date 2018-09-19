@@ -127,14 +127,12 @@ public class CraftingScreen {
      * Uses resources to craft an item and adds it to the player inventory
      */
     private void craftItem() {
+        ArrayList<Item> InventoryItems = handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems();
         for (int j = 0; j < craftableItems.get(selectedItem).getLen(); j++) {
             if (craftableItems.get(selectedItem).getResources(j) <=
-                    handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().get(j).getCount()) {
+                    InventoryItems.get(j).getCount()) {
                 for (int i = 0; i < craftableItems.get(selectedItem).getResources(j); i++) {
-                    handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().get(j).
-                            setCount(handler.getWorld().getEntityManager().getPlayer().getInventory().getInventoryItems().get(j).getCount() - 1);
-                    ;
-
+                    InventoryItems.get(j).setCount(InventoryItems.get(j).getCount() - 1);
 				}
 			}
 			else return;

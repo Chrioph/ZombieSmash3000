@@ -170,15 +170,13 @@ public class GameState extends State {
 
     private void listenSave() {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_F5)) {
-
-            timeLastSave = saveManager.save();
+            handler.getGame().save();
         }
     }
 
     private void listenLoad() {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_F6)) {
-
-            timeLastLoad = saveManager.load();
+            handler.getGame().load();
         }
     }
 

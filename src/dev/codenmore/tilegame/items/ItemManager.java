@@ -1,6 +1,7 @@
 package dev.codenmore.tilegame.items;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,7 +14,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ItemManager {
+public class ItemManager implements Serializable {
 	
 	private Handler handler;
 	private ArrayList<Item> items = new ArrayList<Item>();

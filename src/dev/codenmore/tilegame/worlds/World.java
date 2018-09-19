@@ -1,6 +1,7 @@
 package dev.codenmore.tilegame.worlds;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import dev.codenmore.tilegame.Handler;
@@ -18,7 +19,7 @@ import dev.codenmore.tilegame.tiles.Tile;
 import dev.codenmore.tilegame.tiles.dungeon.dungeonWallTile;
 import dev.codenmore.tilegame.utils.Utils;
 
-public class World {
+public class World implements Serializable{
 
 	private Handler handler;
 	private int width, height;
@@ -46,6 +47,12 @@ public class World {
 		this.path = path;
 		loadWorld(path);
 		
+	}
+
+	/**
+	 * No args constructor for serialization
+	 */
+	public World() {
 	}
 
 	public void start()

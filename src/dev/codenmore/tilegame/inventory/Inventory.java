@@ -3,6 +3,7 @@ package dev.codenmore.tilegame.inventory;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -17,7 +18,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Inventory {
+public class Inventory implements Serializable{
 	
 	private Handler handler;
 	private boolean active=false;

@@ -32,14 +32,6 @@ public class Player extends Creature {
     /**
      * TODO: Maybe move these to creature top class
      */
-    private Animation animDown;
-    private Animation animUp;
-    private Animation animLeft;
-    private Animation animRight;
-    private Animation animADown;
-    private Animation animAUp;
-    private Animation animALeft;
-    private Animation animARight;
 
     private int knockbackCounter;
     private int ammunition = 5;
@@ -63,7 +55,7 @@ public class Player extends Creature {
     private Arrow arrow;
 
     private Inventory inventory;
-    private CraftingScreen craftingScreen;
+    private transient CraftingScreen craftingScreen;
 
     /**
      * Constructor
@@ -83,8 +75,22 @@ public class Player extends Creature {
         bounds.height = 59;
 
 
-        //Animation
+        inventory = new Inventory(handler);
+        craftingScreen = new CraftingScreen(handler);
+    }
 
+    /**
+     * Constructor for serialization
+     */
+    public Player() {
+        super();
+        craftingScreen = new CraftingScreen(handler);
+    }
+
+    /**
+     *
+     */
+    protected void loadAnimations() {
         animDown = new Animation(500, Assets.player1_down);
         animUp = new Animation(500, Assets.player1_up);
         animLeft = new Animation(500, Assets.player1_left);
@@ -95,8 +101,7 @@ public class Player extends Creature {
         animALeft = new Animation(400, Assets.aLeft);
         animARight = new Animation(400, Assets.aRight);
 
-        inventory = new Inventory(handler);
-        craftingScreen = new CraftingScreen(handler);
+        idle = Assets.player1LookingDown;
     }
 
     /**

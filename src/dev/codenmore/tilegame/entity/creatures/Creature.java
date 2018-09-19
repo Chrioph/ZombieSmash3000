@@ -8,8 +8,10 @@ import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.Modifiers.SpeedMod;
 import dev.codenmore.tilegame.Modifiers.itemspawnMod;
 import dev.codenmore.tilegame.entity.Entity;
+import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.tiles.Tile;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -33,6 +35,10 @@ public abstract class Creature extends Entity {
     protected int spawnrate;
     protected int maxHealth;
 
+    protected transient BufferedImage idle;
+
+    protected transient Animation animDown, animUp, animLeft, animRight, animADown, animAUp, animALeft, animARight;
+
     protected ArrayList<Mod> mods;
 
     /**
@@ -51,6 +57,12 @@ public abstract class Creature extends Entity {
         speed = DEFAULT_SPEED;
         xMove = 0;
         yMove = 0;
+
+        loadAnimations();
+    }
+
+    public Creature() {
+        loadAnimations();
     }
 
     /**
@@ -174,6 +186,8 @@ public abstract class Creature extends Entity {
         return handler.getWorld().getTile(x, y).isSolid();
 
     }
+
+    protected abstract void loadAnimations();
 
 
     //GETTER and SETTERS

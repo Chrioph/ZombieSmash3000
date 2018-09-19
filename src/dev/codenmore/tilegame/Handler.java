@@ -5,9 +5,11 @@ import dev.codenmore.tilegame.input.KeyManager;
 import dev.codenmore.tilegame.input.MouseManager;
 import dev.codenmore.tilegame.worlds.World;
 
-public class Handler {
+import java.io.Serializable;
+
+public class Handler implements Serializable {
 	
-	private Game game;
+	private transient Game game;
 	private World world;
 	private World nextWorld;
 	private World homeWorld;

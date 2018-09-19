@@ -93,20 +93,20 @@ public class WorldGenerator {
         world1EnManager.addEntity(new Rock(handler, 2450, 900 ));
         world1EnManager.addEntity(new Rock(handler, 2450, 850 ));
 
-//        world1EnManager.addEntity(new Zombie(handler, 1500, 1500 ));
-//        world1EnManager.addEntity(new Zombie(handler, 1500, 1750 ));
-//        world1EnManager.addEntity(new Zombie(handler, 1000, 750 ));
-//        world1EnManager.addEntity(new Zombie(handler, 200, 450 ));
-//        world1EnManager.addEntity(new Zombie(handler, 500, 170 ));
-//        world1EnManager.addEntity(new Zombie(handler, 1000, 1900 ));
-//        world1EnManager.addEntity(new Zombie(handler, 500, 1500 ));
-//        world1EnManager.addEntity(new Zombie(handler, 1570, 750 ));
-//        world1EnManager.addEntity(new Zombie(handler, 1300, 750 ));
-//        world1EnManager.addEntity(new Zombie(handler, 1200, 450 ));
-//        world1EnManager.addEntity(new Zombie(handler, 500, 1700 ));
-//        world1EnManager.addEntity(new Zombie(handler, 100, 1900 ));
-//        world1EnManager.addEntity(new Ogre(handler, 1200, 1900 ));
-//        world1EnManager.addEntity(new Ogre(handler, 1600, 1900 ));
+        world1EnManager.addEntity(new Zombie(handler, 1500, 1500 ));
+        world1EnManager.addEntity(new Zombie(handler, 1500, 1750 ));
+        world1EnManager.addEntity(new Zombie(handler, 1000, 750 ));
+        world1EnManager.addEntity(new Zombie(handler, 200, 450 ));
+        world1EnManager.addEntity(new Zombie(handler, 500, 170 ));
+        world1EnManager.addEntity(new Zombie(handler, 1000, 1900 ));
+        world1EnManager.addEntity(new Zombie(handler, 500, 1500 ));
+        world1EnManager.addEntity(new Zombie(handler, 1570, 750 ));
+        world1EnManager.addEntity(new Zombie(handler, 1300, 750 ));
+        world1EnManager.addEntity(new Zombie(handler, 1200, 450 ));
+        world1EnManager.addEntity(new Zombie(handler, 500, 1700 ));
+        world1EnManager.addEntity(new Zombie(handler, 100, 1900 ));
+        world1EnManager.addEntity(new Ogre(handler, 1200, 1900 ));
+        world1EnManager.addEntity(new Ogre(handler, 1600, 1900 ));
 
 
 

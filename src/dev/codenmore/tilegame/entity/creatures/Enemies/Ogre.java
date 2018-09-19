@@ -14,14 +14,7 @@ import dev.codenmore.tilegame.gfx.Assets;
  */
 public class Ogre extends Enemy {
 
-    private Animation animDown;
-    private Animation animUp;
-    private Animation animLeft;
-    private Animation animRight;
-    private Animation animADown;
-    private Animation animAUp;
-    private Animation animALeft;
-    private Animation animARight;
+
 
     /**
      * Constructor
@@ -43,7 +36,9 @@ public class Ogre extends Enemy {
         bounds.y = 6 * 2;
         bounds.width = 48 * 2;
         bounds.height = 52 * 2;
+    }
 
+    protected void loadAnimations() {
         animDown = new Animation(500, Assets.ogre_down);
         animUp = new Animation(500, Assets.ogre_up);
         animLeft = new Animation(500, Assets.ogre_left);
@@ -53,6 +48,7 @@ public class Ogre extends Enemy {
         animADown = new Animation(400, Assets.oaDown);
         animALeft = new Animation(400, Assets.oaLeft);
         animARight = new Animation(400, Assets.oaRight);
+        idle = Assets.ogre;
     }
 
     /**
@@ -73,36 +69,6 @@ public class Ogre extends Enemy {
         //generate is in the checkKnockback method
         checkKnockback();
         move();
-    }
-
-
-    /**
-     * TODO: move this to Enemy top class
-     *
-     * @return
-     */
-    private BufferedImage getCurrentAnimationFrame() {
-        if (xMove < 0)
-            return animLeft.getCurrentFrame();
-        if (xMove > 0)
-            return animRight.getCurrentFrame();
-        if (yMove < 0)
-            return animUp.getCurrentFrame();
-        if (yMove > 0)
-            return animDown.getCurrentFrame();
-
-
-        if (xAttack < 0)
-            return animALeft.getCurrentFrame();
-        if (xAttack > 0)
-            return animARight.getCurrentFrame();
-        if (yAttack < 0)
-            return animAUp.getCurrentFrame();
-        if (yAttack > 0)
-            return animADown.getCurrentFrame();
-
-
-        else return Assets.ogre;
     }
 
     /**

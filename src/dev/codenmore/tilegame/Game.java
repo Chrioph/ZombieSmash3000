@@ -3,9 +3,7 @@ package dev.codenmore.tilegame;
 //Test
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.Properties;
 
 
@@ -265,6 +263,34 @@ public class Game implements Runnable{
 		restartRender = true;
 		restartTick = true;
 	}
+
+	public void save()
+	{
+		try {
+			FileOutputStream fileOut = new FileOutputStream("save.state");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(handler);
+			out.close();
+			fileOut.close();
+		}catch(Exception e) {
+            System.out.println(e.getMessage());
+		}
+
+	}
+
+	public void load()
+    {
+        try{
+            FileInputStream fileOut = new FileInputStream("save.state");
+            ObjectInputStream out = new ObjectInputStream(fileOut);
+            handler = (Handler) out.readObject();
+            out.close();
+            fileOut.close();
+            handler.setGame(this);
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
 	
 

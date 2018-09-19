@@ -9,6 +9,7 @@ import dev.codenmore.tilegame.utils.Utils;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -305,6 +306,38 @@ public abstract class Enemy extends Creature {
 
         if (arr[5] == 3 )
             handler.getWorld().getItemManager().addItem(Item.bowItem.createNew(1), (int) x, (int) y, true);
+    }
+
+
+    /**
+     *
+     * @return
+     */
+    protected BufferedImage getCurrentAnimationFrame() {
+
+        if (distToPlayer <= aggroRange) {
+            if (xMove < 0)
+                return animALeft.getCurrentFrame();
+            if (xMove > 0)
+                return animARight.getCurrentFrame();
+            if (yMove < 0)
+                return animUp.getCurrentFrame();
+            if (yMove > 0)
+                return animADown.getCurrentFrame();
+        }
+
+
+        if (xMove < 0)
+            return animLeft.getCurrentFrame();
+        if (xMove > 0)
+            return animRight.getCurrentFrame();
+        if (yMove < 0)
+            return animUp.getCurrentFrame();
+        if (yMove > 0)
+            return animDown.getCurrentFrame();
+
+
+        else return idle;
     }
 
 

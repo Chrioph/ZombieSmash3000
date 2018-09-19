@@ -2,7 +2,7 @@ package dev.codenmore.tilegame.gfx;
 
 import java.awt.image.BufferedImage;
 
-public class Animation {
+public class Animation  {
 	
 	private int speed, index;
 	private BufferedImage[] frames;

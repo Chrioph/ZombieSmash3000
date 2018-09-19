@@ -21,14 +21,7 @@ public class Zombie extends Enemy {
 
 
     // TODO: Maybe move these in enemy top class
-    private Animation animDown;
-    private Animation animUp;
-    private Animation animLeft;
-    private Animation animRight;
-    private Animation animADown;
-    private Animation animAUp;
-    private Animation animALeft;
-    private Animation animARight;
+
     private Rectangle headBounds = new Rectangle();
 
     /**
@@ -55,7 +48,9 @@ public class Zombie extends Enemy {
         headBounds.width = 46;
         headBounds.height = 24;
 
+    }
 
+    protected void loadAnimations() {
         animDown = new Animation(500, Assets.zombie_down);
         animUp = new Animation(500, Assets.zombie_up);
         animLeft = new Animation(500, Assets.zombie_left);
@@ -65,6 +60,7 @@ public class Zombie extends Enemy {
         animADown = new Animation(400, Assets.zaDown);
         animALeft = new Animation(400, Assets.zaLeft);
         animARight = new Animation(400, Assets.zaRight);
+        idle = Assets.zombie;
     }
 
     /**
@@ -101,36 +97,6 @@ public class Zombie extends Enemy {
         }
     }
 
-    /**
-     * TODO: Maybe move to enemy top class
-     *
-     * @return
-     */
-    private BufferedImage getCurrentAnimationFrame() {
 
-        if (distToPlayer <= aggroRange) {
-            if (xMove < 0)
-                return animALeft.getCurrentFrame();
-            if (xMove > 0)
-                return animARight.getCurrentFrame();
-            if (yMove < 0)
-                return animUp.getCurrentFrame();
-            if (yMove > 0)
-                return animADown.getCurrentFrame();
-        }
-
-
-        if (xMove < 0)
-            return animLeft.getCurrentFrame();
-        if (xMove > 0)
-            return animRight.getCurrentFrame();
-        if (yMove < 0)
-            return animUp.getCurrentFrame();
-        if (yMove > 0)
-            return animDown.getCurrentFrame();
-
-
-        else return Assets.zombie;
-    }
 
 }

@@ -12,10 +12,11 @@ import org.w3c.dom.NodeList;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ChestInventory{
+public class ChestInventory implements Serializable{
 
     private Handler handler;
     private boolean active=false;

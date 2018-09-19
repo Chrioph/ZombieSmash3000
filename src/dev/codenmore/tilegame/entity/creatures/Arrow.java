@@ -37,7 +37,16 @@ public class Arrow extends Creature {
         bounds.y = 26;
         bounds.width = 56;
         bounds.height = 14;
-        // TODO: move this in function
+        calcBoundsByDirection(direction);
+
+    }
+
+    /**
+     * Changes bounds depending on direction of arrow
+     * @param direction identifier for the direction
+     */
+    private void calcBoundsByDirection(int direction)
+    {
         if (direction == 1) {
             bounds.x = 24;
             bounds.y = 4;
@@ -74,6 +83,13 @@ public class Arrow extends Creature {
             bounds1.width = 14;
             bounds1.height = 56;
         }
+    }
+
+    /**
+     * Arrow is exception, it has no animation
+     */
+    protected void loadAnimations() {
+
     }
 
 

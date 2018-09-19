@@ -1,6 +1,7 @@
 package dev.codenmore.tilegame.entity;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -8,7 +9,7 @@ import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.Settings;
 
-public abstract class Entity {
+public abstract class Entity implements Serializable {
 	
 	protected float x,y;
 	protected int width, height;
@@ -30,6 +31,12 @@ public abstract class Entity {
 		this.handler=handler;
 		health =DEFAULT_HEALTH;
 		bounds = new Rectangle(0,0, width , height);
+	}
+
+	/**
+	 * No args constructor for serialization
+	 */
+	public Entity() {
 	}
 
 	public String dump() {
