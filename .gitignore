@@ -3,3 +3,4 @@ bin/*
 .settings/*
 JAVA 2D Game.iml
 settings.xml
+/bin/

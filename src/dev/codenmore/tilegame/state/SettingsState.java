@@ -127,6 +127,10 @@ public class SettingsState extends State{
 
 		displayUiManager.addObject(new UIList(530, 250, 590, 100,"Resolution", new ArrayList<UIListElement>() {{
 			//@TODO: get list of available resolutions from some api, for now static values
+			add(new UIListElement(0, 0, 570, 80, "2570x1458", Assets.dropDownElement, () -> {
+				// Change resolution to 3840x2160
+				handler.getGame().resizeDisplay(2570, 1458);
+			}));
 			add(new UIListElement(0, 0, 570, 80, "1920x1080", Assets.dropDownElement, () -> {
 				// Change resolution to 1920x1080
 				handler.getGame().resizeDisplay(1920, 1080);
@@ -139,6 +143,7 @@ public class SettingsState extends State{
 				// Change resolution to 1680x1050
 				handler.getGame().resizeDisplay(1680, 1050);
 			}));
+			
 		}}, false, Assets.dropDown, true));
 
 		Page displaySettingsPage = new Page("Display", 2);
