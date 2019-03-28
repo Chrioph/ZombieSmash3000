@@ -4,7 +4,7 @@
 Startet das Spiel im Debug Modus (momentan werden alle Hitboxen von Entities rot eingefärbt)
 
 
-# DISCLAIMER: Alles was hier steht ist eine Mischung aus dem momentanen Stand und meiner Interpretation der Zielsetzung. Sollte etwas missfallen, inkorrekt sein oder noch zu konkretisieren sein ergänzt entsprechend dieses README um Ideen festhalten zu können.
+# DISCLAIMER: Alles was hier steht ist eine Mischung aus dem momentanen Stand und meiner Interpretation der Zielsetzung. Sollte etwas missfallen, inkorrekt sein oder noch zu konkretisieren sein ergänzt entsprechend dieses README.
 
 # Allgemein
 
