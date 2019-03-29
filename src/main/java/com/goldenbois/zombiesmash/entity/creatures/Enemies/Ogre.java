@@ -80,7 +80,7 @@ public class Ogre extends Enemy {
         renderHealthbar(g);
         if (renderHurtAnimation())
             handler.getWorld().getEntityManager().getPlayer().hurtAnimation(g);
-        g.drawImage(getCurrentAnimationFrame(), (x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()));
+        getCurrentAnimationFrame().draw((x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()), width, height);
 
     }
 

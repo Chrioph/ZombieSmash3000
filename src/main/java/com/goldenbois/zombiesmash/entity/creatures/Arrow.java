@@ -109,13 +109,13 @@ public class Arrow extends Creature {
     public void render(Graphics g) {
         super.render(g);
         if (direction == 0)
-            g.drawImage(Assets.arrowRight, (x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()));
+            Assets.arrowRight.draw((x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()), width, height);
         if (direction == 1)
-            g.drawImage(Assets.arrowDown, (x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()));
+            Assets.arrowDown.draw((x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()), width, height);
         if (direction == 2)
-            g.drawImage(Assets.arrowLeft, (x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()));
+            Assets.arrowLeft.draw((x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()), width, height);
         if (direction == 3)
-            g.drawImage(Assets.arrowUp, (x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()));
+            Assets.arrowUp.draw((x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()), width, height);
         if (Settings.getDebug()) {
             g.setColor(Color.pink);
             g.fillRect((int) (bounds1.getX() - handler.getGameCamera().getxOffset() + x), (int) (bounds1.getY() - handler.getGameCamera().getyOffset() + y), bounds1.getWidth(), bounds1.getHeight());

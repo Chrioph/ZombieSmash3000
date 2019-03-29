@@ -34,6 +34,6 @@ public class WoodBlock extends StaticEntity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(Assets.wood, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()));
+        Assets.wood.draw((x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()), width, height);
     }
 }

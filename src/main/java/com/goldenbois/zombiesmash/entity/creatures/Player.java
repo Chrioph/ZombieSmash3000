@@ -295,7 +295,7 @@ public class Player extends Creature {
     public void render(Graphics g) {
         super.render(g);
         int arSize = 50;
-        g.drawImage(getCurrentAnimationFrame(), (x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()));
+        getCurrentAnimationFrame().draw((x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()), width, height);
 
         renderPlacingItem(g);
 
@@ -317,6 +317,7 @@ public class Player extends Creature {
 
     }
 
+    // TODO fix rendering for slick
     private void renderPlacingItem(Graphics g) {
         if (placingItem > 0) {
             g.setColor(Color.pink);

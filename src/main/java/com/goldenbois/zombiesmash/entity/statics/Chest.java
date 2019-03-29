@@ -37,7 +37,7 @@ public class Chest extends StaticEntity {
         handler.getWorld().getItemManager().addItem(CraftableItem.chestItem.createNew(1),(int) x,(int)  y, true );
     }
     public void render(Graphics g) {
-        g.drawImage(Assets.chest, (x-handler.getGameCamera().getxOffset()) ,(y-handler.getGameCamera().getyOffset()));
+        Assets.chest.draw((x-handler.getGameCamera().getxOffset()) ,(y-handler.getGameCamera().getyOffset()), width, height);
         if(Settings.getDebug()){
             g.setColor(Color.white);
             g.fillRect((int)(x+bounds.getX()-handler.getGameCamera().getxOffset()), (int)(y+bounds.getY()-handler.getGameCamera().getyOffset() + 30),bounds.getWidth(),bounds.getHeight());

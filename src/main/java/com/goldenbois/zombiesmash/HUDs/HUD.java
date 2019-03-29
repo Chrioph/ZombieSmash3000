@@ -11,7 +11,8 @@ public class HUD {
 	public HUD(Handler handler) {
 		this.handler=handler;
 	}
-	
+
+	// TODO fix rendering for slick
 	public void render(Graphics g) {
 		if (!handler.getWorld().getEntityManager().getPlayer().getInventory().isActive()&&!handler.getWorld().getEntityManager().getPlayer().getCraftingScreen().isActive()) {
 			g.drawImage(Assets.HUDWindow, 5, 5);

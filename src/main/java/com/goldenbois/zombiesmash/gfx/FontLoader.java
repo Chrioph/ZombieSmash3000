@@ -2,6 +2,8 @@ package com.goldenbois.zombiesmash.gfx;
 
 import org.newdawn.slick.Font;
 import org.newdawn.slick.SlickException;
+
+import java.awt.*;
 import java.io.IOException;
 
 public class FontLoader {
@@ -13,6 +15,9 @@ public class FontLoader {
 					createFont(java.awt.Font.TRUETYPE_FONT,FontLoader.class.getResource(path).openStream()).deriveFont(java.awt.Font.PLAIN, size);
 			org.newdawn.slick.UnicodeFont uniFont = new org.newdawn.slick.UnicodeFont(awtFont);
 			uniFont.addAsciiGlyphs();
+			org.newdawn.slick.font.effects.ColorEffect colorEffect = new org.newdawn.slick.font.effects.ColorEffect();
+			colorEffect.setColor(Color.white);
+			uniFont.getEffects().add(colorEffect);
 			uniFont.loadGlyphs();
 			return uniFont;
 		} catch (java.awt.FontFormatException  | IOException | SlickException e) {

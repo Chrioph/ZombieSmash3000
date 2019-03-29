@@ -34,19 +34,19 @@ public class UIManager {
 			o.render(g);
 	}
 	
-	public void onMouseMove(MouseEvent e) {
+	public void onMouseMove(int oldx, int oldy, int newx, int newy) {
 		for(UIObject o: objects)
-			o.onMouseMove(e);
+			o.onMouseMove(oldx, oldy, newx, newy);
 		for(UIObject o: tmpObjects)
-			o.onMouseMove(e);
+			o.onMouseMove(oldx, oldy, newx, newy);
 	}
 	
-	public void onMouseRelease(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON1) {
+	public void onMouseRelease(int button, int x, int y) {
+		if(button == 0) {
 			for(UIObject o: objects)
-				o.onMouseRelease(e);
+				o.onMouseRelease(button, x, y);
 			for(UIObject o: tmpObjects)
-				o.onMouseRelease(e);
+				o.onMouseRelease(button, x, y);
 		}
 	}
 

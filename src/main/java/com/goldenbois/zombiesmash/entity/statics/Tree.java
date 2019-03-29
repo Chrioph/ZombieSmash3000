@@ -42,7 +42,7 @@ public class Tree extends StaticEntity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(Assets.tree, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()));
+        Assets.tree.draw((x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()), width, height);
     }
 
 }

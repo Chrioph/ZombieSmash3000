@@ -87,7 +87,7 @@ public class Zombie extends Enemy {
         renderHealthbar(g);
         if (renderHurtAnimation())
             handler.getWorld().getEntityManager().getPlayer().hurtAnimation(g);
-        g.drawImage(getCurrentAnimationFrame(), (x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()));
+        getCurrentAnimationFrame().draw((x - handler.getGameCamera().getxOffset()), (y - handler.getGameCamera().getyOffset()), width, height);
         if (Settings.getDebug()) {
             g.fillRect((int) (x + headBounds.getX() - handler.getGameCamera().getxOffset()), (int) (y + headBounds.getY() - handler.getGameCamera().getyOffset()), headBounds.getWidth(), headBounds.getHeight());
         }

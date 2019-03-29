@@ -1,12 +1,11 @@
 package com.goldenbois.zombiesmash.input;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import com.goldenbois.zombiesmash.ui.UIManager;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.MouseListener;
 
-public class MouseManager implements MouseListener, MouseMotionListener{
+public class MouseManager implements MouseListener {
 
 	private boolean leftPressed , rightPressed;
 	private int mouseX, mouseY;
@@ -15,7 +14,23 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 	public MouseManager() {
 		
 	}
-	
+
+
+	public void setInput(Input var1) {
+
+	}
+
+	public boolean isAcceptingInput() {
+		return true;
+	}
+
+	public void inputEnded() {
+
+	}
+
+	public void inputStarted() {
+
+	}
 	//Getters and Setters
 	
 	public void setUIManager(UIManager uiManager) {
@@ -44,58 +59,48 @@ public class MouseManager implements MouseListener, MouseMotionListener{
 	//Override
 	
 	@Override
-	public void mouseDragged(MouseEvent arg0) {
+	public void mouseDragged(int var1, int var2, int var3, int var4) {
 
 		
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();	
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		mouseX = newx;
+		mouseY = newy;
 		
 		if(uiManager != null)
-			uiManager.onMouseMove(e);
+			uiManager.onMouseMove(oldx, oldy, newx, newy);
 		
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (e.getButton()==MouseEvent.BUTTON1)
+	public void mousePressed(int button, int x, int y) {
+		if (button == 0)
 			leftPressed=true;
-		else if (e.getButton()== MouseEvent.BUTTON3)
+		else if (button == 1)
 			rightPressed=true;
-		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		if (e.getButton()==MouseEvent.BUTTON1)
+	public void mouseClicked(int button, int x, int y, int clickCount) {
+	}
+
+	@Override
+	public void mouseReleased(int button, int x, int y) {
+		if (button == 0)
 			leftPressed=false;
-		else if (e.getButton()== MouseEvent.BUTTON3)
+		else if (button == 1)
 			rightPressed=false;
 		
 		if(uiManager != null)
-			uiManager.onMouseRelease(e);
+			uiManager.onMouseRelease(button, x, y);
 		
+	}
+
+	@Override
+	public void mouseWheelMoved(int value) {
+
 	}
 	
 

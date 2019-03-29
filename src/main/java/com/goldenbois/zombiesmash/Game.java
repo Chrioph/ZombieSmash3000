@@ -69,34 +69,24 @@ public class Game extends BasicGame {
 	}
 
 	@Override
-	public void init(GameContainer gc) throws SlickException {}
+	public void init(GameContainer gc) throws SlickException {
+		System.out.println("initializing");
+        Assets.init();
+        initGameComponents();
+
+        State.setState(new MenuState(handler));
+    }
 
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {}
 
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
-		if(restartRender) {
-			restartRender = false;
-			return;
-		}
-		if(newDisplaySize != null) {
-			changeDisplaySize();
-		}
-		if(bs == null || afterScale) {
-			afterScale = false;
-			return;
-		}
 		g.clear();
 		//draw here
 		if (State.getState() != null)
 			State.getState().render(g);
 
-
-
-
-		//End here
-		bs.show();
 		// fixes some stuttering issues on mac/linux (https://stackoverflow.com/questions/19480076/java-animation-stutters-when-not-moving-mouse-cursor)
 		Toolkit.getDefaultToolkit().sync();
 	}
@@ -110,7 +100,7 @@ public class Game extends BasicGame {
 			Settings.init();
 			parseArgs(args);
 			AppGameContainer appgc;
-			appgc = new AppGameContainer(new Game("Simple Slick Game"));
+			appgc = new AppGameContainer(new Game("ZombieSmash3000"));
 			appgc.setDisplayMode(Settings.getResolutionX(), Settings.getResolutionY(), false);
 			appgc.start();
 		}
@@ -119,25 +109,27 @@ public class Game extends BasicGame {
 			Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
-	
-	public void init() {
-		// load properties
-		display=new Display(title,width, height);
-		display.getFrame().addKeyListener(keyManager);
-		display.getFrame().addMouseListener(mouseManager);
-		display.getFrame().addMouseMotionListener(mouseManager);
-		display.getCanvas().addMouseListener(mouseManager);
-		display.getCanvas().addMouseMotionListener(mouseManager);
-		Assets.init();
+    @Override
+    public void keyPressed(int key, char c) {
+        keyManager.keyPressed(key, c);
+    }
 
-		initGameComponents();
+    @Override
+    public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+        mouseManager.mouseMoved(oldx, oldy, newx, newy);
+    }
 
-		State.setState(new MenuState(handler));
+    @Override
+	public void mousePressed(int button, int x, int y) {
+		mouseManager.mousePressed(button, x, y);
 	}
 
+	@Override
+	public void mouseReleased(int button, int x, int y) {
+		mouseManager.mouseReleased(button, x, y);
+	}
 
-
-	private static void parseArgs(String[] args)
+    private static void parseArgs(String[] args)
 	{
 		for(String arg : args)
 		{
@@ -152,7 +144,7 @@ public class Game extends BasicGame {
 	private void initGameComponents()
 	{
 		handler = new Handler(this);
-		camera= new GameCamera(handler, 0, 0);
+		camera = new GameCamera(handler, 0, 0);
 		worldGen = new WorldGenerator(handler, new Player(handler,0,0));
 	}
 
@@ -213,11 +205,6 @@ public class Game extends BasicGame {
 		Settings.save();
 		handler.getGame().getMouseManager().getUIManager().updateAllBounds();
 		display.resize(width, height);
-		display.getFrame().addKeyListener(keyManager);
-		display.getFrame().addMouseListener(mouseManager);
-		display.getFrame().addMouseMotionListener(mouseManager);
-		display.getCanvas().addMouseListener(mouseManager);
-		display.getCanvas().addMouseMotionListener(mouseManager);
 		afterScale = true;
 		newDisplaySize = null;
 	}

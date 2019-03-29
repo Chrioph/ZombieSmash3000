@@ -34,28 +34,28 @@ public class Assets {
 	
 	public static void init() {
 		try {
-			font56 = FontLoader.loadFont("/fonts/slkscr.ttf", 56);
-			font28 = FontLoader.loadFont("/fonts/slkscr.ttf", 28);
-			font40 = FontLoader.loadFont("/fonts/slkscr.ttf", 40);
-			font100 = FontLoader.loadFont("/fonts/slkscr.ttf", 100);
+//			font56 = FontLoader.loadFont("res/fonts/slkscr.ttf", 56);
+//			font28 = FontLoader.loadFont("res/fonts/slkscr.ttf", 28);
+//			font40 = FontLoader.loadFont("res/fonts/slkscr.ttf", 40);
+//			font100 = FontLoader.loadFont("res/fonts/slkscr.ttf", 100);
 
-			org.newdawn.slick.SpriteSheet sheet = new org.newdawn.slick.SpriteSheet(new Image("/textures/Sheet2.png"), width, height);
-			org.newdawn.slick.SpriteSheet dungeonWallsSheet = new org.newdawn.slick.SpriteSheet(new Image("/textures/dungeonWallsSheet.png"), width, height);
-			org.newdawn.slick.SpriteSheet ogreSheet = new org.newdawn.slick.SpriteSheet(new Image("/textures/OgreSpreadsheet.png"), width, height);
+			org.newdawn.slick.SpriteSheet sheet = new org.newdawn.slick.SpriteSheet(new Image("res/textures/Sheet2.png", false, Image.FILTER_NEAREST), width, height);
+			org.newdawn.slick.SpriteSheet dungeonWallsSheet = new org.newdawn.slick.SpriteSheet(new Image("res/textures/dungeonWallsSheet.png", false, Image.FILTER_NEAREST), width, height);
+			org.newdawn.slick.SpriteSheet ogreSheet = new org.newdawn.slick.SpriteSheet(new Image("res/textures/OgreSpreadsheet.png", false, Image.FILTER_NEAREST), width, height);
 
-			HUDWindow = new Image("/textures/HUDWindow.png");
-			settingsBackground = new Image("/textures/Settings_Screen2.png");
-			settingsBodyElement = new Image("/textures/SettingsBodyElement.png");
-			dropDown = new Image("/textures/UIDropdown.png");
-			dropDownElement = new Image("/textures/UIDropdownOption.png");
-			nextLevelSelectionOption = new Image("/textures/NextLevelSelectionOption.png");
-			settingsHeader = new Image("/textures/SettingsSubPageHead.png");
+			HUDWindow = new Image("res/textures/HUDWindow.png");
+			settingsBackground = new Image("res/textures/Settings_Screen2.png");
+			settingsBodyElement = new Image("res/textures/SettingsBodyElement.png");
+			dropDown = new Image("res/textures/UIDropdown.png");
+			dropDownElement = new Image("res/textures/UIDropdownOption.png");
+			nextLevelSelectionOption = new Image("res/textures/NextLevelSelectionOption.png");
+			settingsHeader = new Image("res/textures/SettingsSubPageHead.png");
 			settingsMenuButton = new Image[2];
-			settingsMenuButton[0] = new Image("/textures/SettingsChoiceButton.png");
-			settingsMenuButton[1] = new Image("/textures/SettingsButtonPressed.png");
-			inventoryScreen = new Image("/textures/inventoryScreen.png");
+			settingsMenuButton[0] = new Image("res/textures/SettingsChoiceButton.png");
+			settingsMenuButton[1] = new Image("res/textures/SettingsButtonPressed.png");
+			inventoryScreen = new Image("res/textures/inventoryScreen.png");
 			deathScreen = sheet.getSprite(10, 0);
-			craftingScreen = new Image("/textures/CraftingScreen.png");
+			craftingScreen = new Image("res/textures/CraftingScreen.png");
 
 
 			wood = sheet.getSprite(10, 1);
@@ -77,14 +77,14 @@ public class Assets {
 			dungeonWallStraightUp = dungeonWallsSheet.getSprite(1, 0);
 			dungeonWallMiddle = dungeonWallsSheet.getSprite(1, 1);
 
-			dungeonWallSingleBlock = new Image("/textures/DungeonTileWallSingleBlock.png");
-			dungeonWallSingleMiddle = new Image("/textures/dungeonTileWalLSingleMiddle.png");
-			dungeonWallSingleLeft = new Image("/textures/dungeonTileWallSingleLeft.png");
-			dungeonWallSingleRight = new Image("/textures/dungeonTileWallSingleRight.png");
-			dungeonWallSingleMiddleUpwards = new Image("/textures/dungeonTileWallSingleMiddleUpwards.png");
-			dungeonWallSingleUp = new Image("/textures/dungeonTileWallSingleUp.png");
-			dungeonWallSingleDown = new Image("/textures/dungeonTileWallSingleDown.png");
-			dungeonFloor = new Image("/textures/dungeonTileFloor.png");
+			dungeonWallSingleBlock = new Image("res/textures/DungeonTileWallSingleBlock.png");
+			dungeonWallSingleMiddle = new Image("res/textures/dungeonTileWalLSingleMiddle.png");
+			dungeonWallSingleLeft = new Image("res/textures/dungeonTileWallSingleLeft.png");
+			dungeonWallSingleRight = new Image("res/textures/dungeonTileWallSingleRight.png");
+			dungeonWallSingleMiddleUpwards = new Image("res/textures/dungeonTileWallSingleMiddleUpwards.png");
+			dungeonWallSingleUp = new Image("res/textures/dungeonTileWallSingleUp.png");
+			dungeonWallSingleDown = new Image("res/textures/dungeonTileWallSingleDown.png");
+			dungeonFloor = new Image("res/textures/dungeonTileFloor.png");
 
 
 			tree = sheet.getSprite(1, 1);
@@ -171,8 +171,8 @@ public class Assets {
 
 			//Start
 			buttonStart = new Image[2];
-			buttonStart[0] = sheet.getSprite(4, 0);
-			buttonStart[1] = sheet.getSprite(6, 0);
+			buttonStart[0] = sheet.getSubImage(4*width, 0, 2*width, height);
+			buttonStart[1] = sheet.getSubImage(6*width, 0, 2*width, height);
 
 			//Settings
 

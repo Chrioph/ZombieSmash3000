@@ -115,20 +115,20 @@ public class UIList extends UIObject{
 
     // CUSTOM Mouse Events for List Elements
     @Override
-    public void onMouseMove(MouseEvent e)
+    public void onMouseMove(int oldx, int oldy, int newx, int newy)
     {
-        super.onMouseMove(e);
+        super.onMouseMove(oldx, oldy, newx, newy);
         for(UIListElement element : elements){
-            element.onMouseMove(e);
+            element.onMouseMove(oldx, oldy, newx, newy);
         }
     }
 
     @Override
-    public void onMouseRelease(MouseEvent e)
+    public void onMouseRelease(int button, int x, int y)
     {
-        super.onMouseRelease(e);
+        super.onMouseRelease(button, x, y);
         for(UIListElement element : elements){
-            element.onMouseRelease(e);
+            element.onMouseRelease(button, x, y);
         }
     }
 

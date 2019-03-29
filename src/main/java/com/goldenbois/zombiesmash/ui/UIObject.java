@@ -40,14 +40,14 @@ public abstract class UIObject {
 	
 	public abstract void onClick();
 	
-	public void onMouseMove(MouseEvent e) {
-		if (bounds.contains(e.getX(), e.getY()))
+	public void onMouseMove(int oldx, int oldy, int newx, int newy) {
+		if (bounds.contains(newx, newy))
 			hovering=true;
 		else
 			hovering=false;
 	}
 	
-	public void onMouseRelease(MouseEvent e) {
+	public void onMouseRelease(int button, int x, int y) {
 		if (hovering)
 			onClick();
 	}

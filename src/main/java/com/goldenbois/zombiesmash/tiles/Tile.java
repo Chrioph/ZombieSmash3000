@@ -34,8 +34,8 @@ public class Tile {
 	}
 	
 	public void render(Graphics g,int x, int y) {
-		
-		g.drawImage(texture, x, y);
+
+		texture.draw(x, y, TILEWIDTH, TILEHEIGHT);
 		
 	}
 	

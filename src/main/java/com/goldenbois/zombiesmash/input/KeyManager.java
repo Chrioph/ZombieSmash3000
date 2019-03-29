@@ -3,7 +3,7 @@ package com.goldenbois.zombiesmash.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyManager implements KeyListener{
+public class KeyManager{
 
 	private boolean[] keys, justPressed, cantPress;
 	public boolean up, down, left, right, aUp,aDown,aLeft,aRight;
@@ -29,22 +29,22 @@ public class KeyManager implements KeyListener{
 		}
 		
 		
-		up = keys [KeyEvent.VK_W];
-		down = keys [KeyEvent.VK_S];
-		left = keys [KeyEvent.VK_A];
-		right = keys [KeyEvent.VK_D];
+		up = keys [17];
+		down = keys [31];
+		left = keys [30];
+		right = keys [32];
 		
-		aUp = keys [KeyEvent.VK_UP];
-		aDown = keys [KeyEvent.VK_DOWN];
-		aLeft = keys [KeyEvent.VK_LEFT];
-		aRight = keys [KeyEvent.VK_RIGHT];
+		aUp = keys [200];
+		aDown = keys [208];
+		aLeft = keys [203];
+		aRight = keys [205];
 		
 		
 	}
-	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()<0 || e.getKeyCode()>= keys.length)
+	public void keyPressed(int key, char c) {
+		if(key<0 || key>= keys.length)
 			return;
-		keys[e.getKeyCode()]=true;
+		keys[key]=true;
 	}
 	
 	public boolean keyJustPressed(int keyCode){
@@ -54,14 +54,8 @@ public class KeyManager implements KeyListener{
 	}
 
 	
-	public void keyReleased(KeyEvent e) {
-		keys[e.getKeyCode()]=false;
-		
-	}
-
-	
-	public void keyTyped(KeyEvent e) {
-		
+	public void keyReleased(int key) {
+		keys[key]=false;
 		
 	}
 
