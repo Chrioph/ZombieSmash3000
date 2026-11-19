@@ -9,6 +9,10 @@ Die Skripte kompilieren `src/` nach `bin/` und starten das Spiel mit `res/` im C
 
 Steuerung: `WASD` laufen, Pfeiltasten angreifen, `Esc` öffnet einen Bestätigungsdialog (im Spiel: zurück ins Hauptmenü, im Hauptmenü: Spiel beenden). Im Dialog wählen `←`/`→` bzw. `A`/`D`, `Enter` bestätigt, `Esc` oder `N` bricht ab, `Y`/`J` bestätigt direkt; die Buttons sind auch mit der Maus klickbar.
 
+# Texturen
+
+Die Welt-Texturen (Gras, Erde, Stein, Zielfeld, Felsen, Baum, Holzblöcke) werden von `tools/generate_textures.py` erzeugt (benötigt Python 3 mit Pillow). Nach Änderungen am Skript mit `python3 tools/generate_textures.py` neu erzeugen; `--preview vorschau.png` rendert stattdessen eine Beispielszene.
+
 # Start Optionen
 
 ## --debug

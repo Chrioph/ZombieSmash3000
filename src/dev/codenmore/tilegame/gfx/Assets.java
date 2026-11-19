@@ -24,6 +24,7 @@ public class Assets {
 
 	
 	private static final int width = 32,height =32;
+	public static BufferedImage[] grassVariants, dirtVariants;
 	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right, aDown, aLeft, aRight, aUp;;
 	public static BufferedImage player1LookingDown , player1LookingUp, player1LookingLeft, player1LookingRight;
 	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right, zaDown, zaLeft, zaRight, zaUp;
@@ -63,6 +64,11 @@ public class Assets {
 		solidWood= sheet.crop(width*11, 0, width, height);
 		dirt =     sheet.crop(width*2, 0, width, height);
 		grass =    sheet.crop(width*3, 0, width, height);
+		// variants are picked per tile position so the ground does not look repetitive
+		grassVariants = new BufferedImage[] { grass,
+				sheet.crop(width*12, 0, width, height), sheet.crop(width*13, 0, width, height), sheet.crop(width*14, 0, width, height) };
+		dirtVariants = new BufferedImage[] { dirt,
+				sheet.crop(width*12, height, width, height), sheet.crop(width*13, height, width, height) };
 		stone =    sheet.crop(0, height, width, height);
 		finish=    sheet.crop(width*8, height, width, height);
 		chest=     sheet.crop(width*9,height*2,width*2,height*2);
@@ -88,7 +94,8 @@ public class Assets {
 		dungeonFloor = ImageLoader.loadImage("/textures/dungeonTileFloor.png");
 
 
-		tree =     sheet.crop(width,height,width,height);
+		// the tree is drawn two tiles high, so it has its own 32x64 texture
+		tree =     ImageLoader.loadImage("/textures/Tree.png");
 		log =     sheet.crop(width, 0, width, height);
 		rock =     sheet.crop(0, 0, width, height);
 		sword=     sheet.crop(width*3, height*3, width, height);

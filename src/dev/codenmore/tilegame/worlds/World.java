@@ -1,6 +1,10 @@
 package dev.codenmore.tilegame.worlds;
 
+import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -101,11 +105,12 @@ public class World implements Serializable{
 					dungeonWallTile tmpTile2 = (dungeonWallTile) tmpTile;
 					tmpTile2.render(g,(int) (x*Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),(int) (y*Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()), surrTiles);
 				}else {
-					tmpTile.render(g,(int) (x*Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),(int) (y*Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()));
+					tmpTile.render(g,(int) (x*Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),(int) (y*Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()), x, y);
 				}
 
 			}
 		}
+		renderWallShadows(g, xStart, xEnd, yStart, yEnd);
 		//items
 		itemManager.render(g);
 		
@@ -115,6 +120,36 @@ public class World implements Serializable{
 	}
 	
 	
+	private static final int SHADOW_SIZE = 28;
+	private static final Color SHADOW = new Color(0, 0, 0, 120);
+	private static final Color NO_SHADOW = new Color(0, 0, 0, 0);
+
+	/**
+	 * Walls (solid tiles) cast a soft shadow onto the walkable tile below and to the right of
+	 * them, light comes from the top left. Makes the walls look raised above the ground.
+	 */
+	private void renderWallShadows(Graphics g, int xStart, int xEnd, int yStart, int yEnd) {
+		Graphics2D g2d = (Graphics2D) g;
+		Paint oldPaint = g2d.getPaint();
+		for (int y = yStart; y < yEnd; y++) {
+			for (int x = xStart; x < xEnd; x++) {
+				if (getTile(x, y).isSolid())
+					continue;
+				int sx = (int) (x * Tile.TILEWIDTH - handler.getGameCamera().getxOffset());
+				int sy = (int) (y * Tile.TILEHEIGHT - handler.getGameCamera().getyOffset());
+				if (y > 0 && getTile(x, y - 1).isSolid()) {
+					g2d.setPaint(new GradientPaint(0, sy, SHADOW, 0, sy + SHADOW_SIZE, NO_SHADOW));
+					g2d.fillRect(sx, sy, Tile.TILEWIDTH, SHADOW_SIZE);
+				}
+				if (x > 0 && getTile(x - 1, y).isSolid()) {
+					g2d.setPaint(new GradientPaint(sx, 0, SHADOW, sx + SHADOW_SIZE, 0, NO_SHADOW));
+					g2d.fillRect(sx, sy, SHADOW_SIZE, Tile.TILEHEIGHT);
+				}
+			}
+		}
+		g2d.setPaint(oldPaint);
+	}
+
 	public Tile getTile(int x, int y) {
 		if (x<0 || y<0 || x>= width || y >= height )
 			return Tile.grassTile;

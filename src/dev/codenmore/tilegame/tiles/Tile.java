@@ -39,6 +39,23 @@ public class Tile {
 		g.drawImage(texture, x, y,TILEWIDTH,TILEHEIGHT,null );
 		
 	}
+
+	/**
+	 * Renders the tile at screen position (x, y). tileX and tileY are the tile's position in
+	 * the world, tiles with several texture variants use them to pick one.
+	 */
+	public void render(Graphics g, int x, int y, int tileX, int tileY) {
+		render(g, x, y);
+	}
+
+	/** Picks one of the variants, always the same one for the same tile position. */
+	protected static BufferedImage variant(BufferedImage[] variants, int tileX, int tileY) {
+		int h = tileX * 73856093 ^ tileY * 19349663;
+		h ^= h >>> 13;
+		h *= 0x5bd1e995;
+		h ^= h >>> 15;
+		return variants[Math.floorMod(h, variants.length)];
+	}
 	
 	public boolean isSolid() {
 		return false;
