@@ -24,6 +24,9 @@ Startet das Spiel im Debug Modus: Hitboxen von Entities werden rot eingefärbt, 
 # Levelauswahl
 Am Ziel eines Levels öffnet sich die Levelauswahl: nächstes Level (mit Levelnummer), Heimatwelt, Spiel beenden oder `CLOSE`. Bedienung mit `W`/`S` oder den Pfeiltasten, `Enter`/`Leertaste` bestätigt, die Auswahl ist gold umrandet und mit einem Pfeil markiert. Mit der Maus wählt man durch Darüberfahren und Klicken. `Esc` oder `CLOSE` schließen die Auswahl, man spielt im Level weiter; sie öffnet sich erst wieder, wenn man das Ziel verlassen und erneut betreten hat. Am Ausgang der Heimatwelt fehlt der Punkt Heimatwelt.
 
+# Aufsammeln
+Beim Aufsammeln erscheint kurz über dem Kopf, was man bekommen hat, mit Symbol, z.B. `+1 LOG`, `+1 ARMOR` oder `+1 SWORD DAMAGE`. Gleiche Items kurz hintereinander werden zusammengezählt (`+3 LOGS`), verschiedene stapeln sich übereinander, wie der Hinweis beim Waffenwechsel.
+
 # Zufällige Level
 Level 1 ist handgebaut, ab Level 2 wird jedes Level zufällig als Dungeon erzeugt, endlos (`worlds/DungeonGenerator.java`): Räume, die über Gänge verbunden sind, das Ziel liegt im vom Start am weitesten entfernten Raum. Mit jedem Level werden die Karten größer und es gibt mehr Gegner, ab Level 3 auch Oger. Oben in der Mitte steht, in welchem Level man ist, beim Betreten eines Levels wird die Nummer kurz groß eingeblendet. Felsen und Bäume werden so platziert, dass sie nie einen Weg versperren.
 

@@ -18,6 +18,7 @@ import dev.codenmore.tilegame.entity.statics.Tree;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.BowShot;
+import dev.codenmore.tilegame.gfx.Popups;
 import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.gfx.WeaponDrawing;
 import dev.codenmore.tilegame.gfx.SwordSwing;
@@ -62,10 +63,8 @@ public class Player extends Creature {
     private transient SwordSwing swordSwing;
     /** currently playing bow shot, null when not shooting */
     private transient BowShot bowShot;
-    /** short text shown above the player, e.g. after switching weapons */
-    private transient String popupText;
-    private transient long popupStart;
-    private static final long POPUP_DURATION = 900;
+    /** short texts shown above the player, e.g. after switching weapons or picking up items */
+    private transient Popups popups;
 
     private Inventory inventory;
     /** the chest whose screen is open, null if none */
@@ -528,30 +527,30 @@ public class Player extends Creature {
             WeaponDrawing.drawSword(g, handX, handY, angle, 40);
     }
 
+    private Popups popups() {
+        // transient, so it is missing after loading a save game
+        if (popups == null)
+            popups = new Popups();
+        return popups;
+    }
+
     private void showPopup(String text) {
-        popupText = text;
-        popupStart = System.currentTimeMillis();
+        popups().showText("weapon", text, Color.WHITE);
+    }
+
+    /**
+     * Shows a short "+1 LOG" style note above the player after picking something up.
+     *
+     * @param plural whether an "S" is added for more than one
+     */
+    public void showPickup(String label, BufferedImage icon, boolean plural) {
+        popups().showPickup("item:" + label, label, icon, 1, plural);
     }
 
     private void renderPopup(Graphics g) {
-        if (popupText == null)
-            return;
-        long t = System.currentTimeMillis() - popupStart;
-        if (t >= POPUP_DURATION) {
-            popupText = null;
-            return;
-        }
-        double p = t / (double) POPUP_DURATION;
-        Graphics2D g2d = (Graphics2D) g;
-        java.awt.Composite old = g2d.getComposite();
-        // rise and fade out during the last third
-        float alpha = (float) Math.min(1, (1 - p) * 3);
-        g2d.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, alpha));
         int cx = (int) (x - handler.getGameCamera().getxOffset()) + width / 2;
-        int cy = (int) (y - handler.getGameCamera().getyOffset()) - 14 - (int) (20 * p);
-        Text.drawString(g, popupText, cx + 2, cy + 2, true, Color.BLACK, Assets.font28);
-        Text.drawString(g, popupText, cx, cy, true, Color.WHITE, Assets.font28);
-        g2d.setComposite(old);
+        int cy = (int) (y - handler.getGameCamera().getyOffset()) - 14;
+        popups().render(g, cx, cy);
     }
 
     public void knockback(int direction) {

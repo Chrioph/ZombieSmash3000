@@ -87,10 +87,28 @@ public class Item implements Serializable {
 				player.setMaxHealth(player.getMaxHealth()+1);
 			if(this.getId()==bowItem.getId() )
 				player.setRangedDamage(player.getRangedDamage()+1);
+			if(pickedUp)
+				showPickup(player);
 		}
 		
 	}
 	
+	/** Shows what the pickup gave the player above their head, e.g. "+1 LOG" or "+1 ARMOR". */
+	private void showPickup(Player player) {
+		if(id==swordItem.getId())
+			player.showPickup("SWORD DAMAGE", texture, false);
+		else if(id==bowItem.getId())
+			player.showPickup("BOW DAMAGE", texture, false);
+		else if(id==heartItem.getId())
+			player.showPickup("HEALTH", texture, false);
+		else if(id==healthPlusItem.getId())
+			player.showPickup("MAX HEALTH", texture, false);
+		else if(id==armorItem.getId())
+			player.showPickup("ARMOR", texture, false);
+		else
+			player.showPickup(name.toUpperCase(), texture, true);
+	}
+
 	public void render(Graphics g ) {
 		if(handler==null)
 			return;
