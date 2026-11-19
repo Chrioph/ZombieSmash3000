@@ -1,7 +1,9 @@
 package dev.codenmore.tilegame.ui;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -47,7 +49,8 @@ public class ConfirmDialog {
     private final Rectangle yesButton = new Rectangle(1920 / 2 - BUTTON_WIDTH - 30, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
     private final Rectangle noButton = new Rectangle(1920 / 2 + 30, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
 
-    private boolean open = false;
+    // volatile: open() may be called from a UI click handler on the AWT event thread
+    private volatile boolean open = false;
     private boolean yesSelected = false;
     private boolean mouseWasPressed = false;
     private UIManager detachedUIManager;
@@ -147,6 +150,8 @@ public class ConfirmDialog {
 
         Graphics2D g2d = (Graphics2D) g;
         Stroke oldStroke = g2d.getStroke();
+        Composite oldComposite = g2d.getComposite();
+        g2d.setComposite(AlphaComposite.SrcOver);
 
         g.setColor(OVERLAY);
         g.fillRect(0, 0, 1920, 1080);
@@ -164,6 +169,7 @@ public class ConfirmDialog {
         renderButton(g2d, noButton, "No", !yesSelected);
 
         g2d.setStroke(oldStroke);
+        g2d.setComposite(oldComposite);
     }
 
     private void renderButton(Graphics2D g, Rectangle r, String label, boolean selected) {

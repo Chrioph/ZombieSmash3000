@@ -2,6 +2,7 @@ package dev.codenmore.tilegame.state;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -43,6 +44,7 @@ public class GameState extends State {
     private HUD hud;
     private UIManager uiManager;
     private ConfirmDialog exitDialog;
+    private ConfirmDialog quitDialog;
 
 
     public GameState(Handler handler) {
@@ -61,7 +63,10 @@ public class GameState extends State {
 
         uiManager.addObject(new UIImage(635, 165, 650, 750, Assets.settingsBodyElement));
         UIList myList = new UIList(635, 165, 650, 750, "nextlevel", new ArrayList<UIListElement>() {{
+            // the list stays registered for mouse input while hidden, so ignore clicks unless it is shown
             add(new UIListElement(10, 10, 610, 230, "Next Level", Assets.nextLevelSelectionOption, () -> {
+                if (!isLevelSelectionClickable())
+                    return;
 
                 handler.setWorld(handler.getNextWorld());
                 handler.getWorld().start();
@@ -69,13 +74,17 @@ public class GameState extends State {
                 isPaused = false;
             }));
             add(new UIListElement(10, 10, 610, 230, "Homeworld", Assets.nextLevelSelectionOption, () -> {
+                if (!isLevelSelectionClickable())
+                    return;
                 handler.setWorld(handler.getHomeWorld());
                 handler.getHomeWorld().start();
                 nextLevelSelection = false;
                 isPaused = false;
             }));
             add(new UIListElement(10, 10, 610, 230, "Quit", Assets.nextLevelSelectionOption, () -> {
-                handler.getGame().close();
+                if (!isLevelSelectionClickable())
+                    return;
+                quitDialog.open();
             }));
 
         }}, true, Assets.settingsBodyElement, false);
@@ -89,21 +98,29 @@ public class GameState extends State {
 
         exitDialog = new ConfirmDialog(handler, "Back to main menu?",
                 "Unsaved progress will be lost.", () -> handler.getGame().restart());
+        quitDialog = new ConfirmDialog(handler, "Quit game?",
+                "Unsaved progress will be lost.", () -> handler.getGame().close());
 
 
     }
 
     @Override
     public void tick() {
-        // the world is frozen while the exit confirmation is open
+        // the world is frozen while a confirmation dialog is open
         if (exitDialog.isOpen()) {
             exitDialog.tick();
             return;
         }
+        if (quitDialog.isOpen()) {
+            quitDialog.tick();
+            return;
+        }
         uiManager.tick();
+        // Escape works everywhere in the game: while playing, after dying and in the level selection
+        if (listenExit())
+            return;
         if (!handler.getWorld().getEntityManager().getPlayer().isDead() && !isPaused) {
             handler.getWorld().tick();
-            listenExit();
             listenSave();
             listenLoad();
             if (handler.getWorld().getEntityManager().getPlayer().collisionWithFinish(
@@ -146,22 +163,27 @@ public class GameState extends State {
         }
         checkPlayerDie(g);
         exitDialog.render(g);
+        quitDialog.render(g);
 
     }
 
     private void checkPlayerDie(Graphics g) {
         if (handler.getWorld().getEntityManager().getPlayer().isDead()) {
+            // paintComponent changes the alpha of g, restore it so later drawing is not translucent
+            Composite oldComposite = ((Graphics2D) g).getComposite();
             if (!b) {
                 timeUntilNextRender = System.currentTimeMillis() + 10;
                 b = true;
             }
             paintComponent(Assets.deathScreen, g, v);
             Text.drawString(g, "YOU DIED", 1920 / 2, 1080 / 2 + 200, true, Color.RED, Assets.font100);
+            Text.drawString(g, "Press ESC to return to the main menu", 1920 / 2, 1080 / 2 + 300, true, Color.WHITE, Assets.font28);
             if (System.currentTimeMillis() > timeUntilNextRender && v < 0.99) {
                 v += 0.01;
                 b = false;
             }
             handler.getWorld().getEntityManager().getPlayer().render(g);
+            ((Graphics2D) g).setComposite(oldComposite);
         }
     }
 
@@ -172,10 +194,21 @@ public class GameState extends State {
         g2d.drawImage(i, 0, 0, 1920, 1080, null);
     }
 
-    private void listenExit() {
+    /**
+     * Opens the "back to main menu" confirmation when Escape is pressed.
+     *
+     * @return true if the dialog was opened
+     */
+    private boolean listenExit() {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
             exitDialog.open();
+            return true;
         }
+        return false;
+    }
+
+    private boolean isLevelSelectionClickable() {
+        return nextLevelSelection && !exitDialog.isOpen() && !quitDialog.isOpen();
     }
 
     private void listenSave() {
