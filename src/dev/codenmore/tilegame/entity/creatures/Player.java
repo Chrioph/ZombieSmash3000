@@ -3,6 +3,7 @@ package dev.codenmore.tilegame.entity.creatures;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -18,6 +19,7 @@ import dev.codenmore.tilegame.entity.statics.Tree;
 import dev.codenmore.tilegame.entity.statics.WoodBlock;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
+import dev.codenmore.tilegame.gfx.SwordSwing;
 import dev.codenmore.tilegame.inventory.ChestInventory;
 import dev.codenmore.tilegame.inventory.Inventory;
 import dev.codenmore.tilegame.items.CraftableItem;
@@ -53,6 +55,8 @@ public class Player extends Creature {
 
     private long lastAttackTimer, attackCooldown = 800, attackTimer = attackCooldown;
     private Arrow arrow;
+    /** currently playing melee swing, null when not attacking */
+    private transient SwordSwing swordSwing;
 
     private Inventory inventory;
     private transient CraftingScreen craftingScreen;
@@ -122,6 +126,8 @@ public class Player extends Creature {
         animALeft.tick();
         animARight.tick();
         checkAlive();
+        if (swordSwing != null && swordSwing.isFinished())
+            swordSwing = null;
         if (!(knockbackCounter > 0))
             getInput();
 
@@ -167,6 +173,7 @@ public class Player extends Creature {
         if(inputDisabled)
             return;
         Rectangle ar = new Rectangle();
+        int meleeDirection;
         if (rangedToggled == false) {
             Rectangle cb = getCollisionBounds(0, 0);
 
@@ -178,18 +185,25 @@ public class Player extends Creature {
             if (handler.getKeyManager().aUp) {
                 ar.x = cb.x + cb.width / 2 - arSize / 2;
                 ar.y = cb.y - arSize;
+                meleeDirection = SwordSwing.UP;
             } else if (handler.getKeyManager().aDown) {
                 ar.x = cb.x + cb.width / 2 - arSize / 2;
                 ar.y = cb.y + cb.height;
+                meleeDirection = SwordSwing.DOWN;
             } else if (handler.getKeyManager().aLeft) {
                 ar.x = cb.x - arSize;
                 ar.y = cb.y + cb.height / 2 - arSize / 2;
+                meleeDirection = SwordSwing.LEFT;
             } else if (handler.getKeyManager().aRight) {
                 ar.x = cb.x + cb.width;
                 ar.y = cb.y + cb.height / 2 - arSize / 2;
+                meleeDirection = SwordSwing.RIGHT;
             } else {
                 return;
             }
+            // play the swing for every melee attack, also when it misses
+            swordSwing = new SwordSwing(meleeDirection);
+            playerDirection = meleeDirection;
 
         } else if (ammunition > 0) {
             if (handler.getKeyManager().aRight) {
@@ -299,7 +313,12 @@ public class Player extends Creature {
     public void render(Graphics g) {
         super.render(g);
         int arSize = 50;
+        boolean swinging = swordSwing != null && !isDead;
+        if (swinging && swordSwing.isBehindPlayer())
+            renderSwordSwing(g);
         g.drawImage(getCurrentAnimationFrame(), (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        if (swinging && !swordSwing.isBehindPlayer())
+            renderSwordSwing(g);
 
         renderPlacingItem(g);
 
@@ -319,6 +338,20 @@ public class Player extends Creature {
             g.fillRect((int) (bounds.x + x - handler.getGameCamera().getxOffset()), (int) (bounds.y + y - handler.getGameCamera().getyOffset()), (int) bounds.width, (int) bounds.height);
         }
 
+    }
+
+    private void renderSwordSwing(Graphics g) {
+        int sx = (int) (x - handler.getGameCamera().getxOffset());
+        int sy = (int) (y - handler.getGameCamera().getyOffset());
+        // hand position of the attack pose sprite (64x64) for each direction
+        int handX, handY;
+        switch (swordSwing.getDirection()) {
+            case SwordSwing.RIGHT: handX = sx + 46; handY = sy + 38; break;
+            case SwordSwing.LEFT:  handX = sx + 18; handY = sy + 38; break;
+            case SwordSwing.DOWN:  handX = sx + 32; handY = sy + 42; break;
+            default:               handX = sx + 32; handY = sy + 30; break;
+        }
+        swordSwing.render((Graphics2D) g, handX, handY);
     }
 
     private void renderPlacingItem(Graphics g) {
@@ -407,6 +440,16 @@ public class Player extends Creature {
     private BufferedImage getCurrentAnimationFrame() {
         if (isDead)
             return Assets.gravestone;
+
+        // attack pose with outstretched arm while the sword swing plays
+        if (swordSwing != null) {
+            switch (swordSwing.getDirection()) {
+                case SwordSwing.RIGHT: return Assets.aRight[0];
+                case SwordSwing.DOWN:  return Assets.aDown[0];
+                case SwordSwing.LEFT:  return Assets.aLeft[0];
+                default:               return Assets.aUp[0];
+            }
+        }
 
         if (xMove < 0)
             return animLeft.getCurrentFrame();
