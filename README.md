@@ -1,3 +1,14 @@
+# Starten
+
+Voraussetzung: ein JDK (Java 8 oder neuer, getestet mit Java 21).
+
+* Linux/macOS: `./run.sh`
+* Windows: `run.bat`
+
+Die Skripte kompilieren `src/` nach `bin/` und starten das Spiel mit `res/` im Classpath. Startoptionen (siehe unten) können einfach angehängt werden, z.B. `./run.sh --debug`.
+
+Steuerung: `WASD` laufen, Pfeiltasten angreifen.
+
 # Start Optionen
 
 ## --debug

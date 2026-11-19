@@ -79,7 +79,7 @@ public class Assets {
 		dungeonWallMiddle = dungeonWallsSheet.crop(width, height, width, height);
 
 		dungeonWallSingleBlock = ImageLoader.loadImage("/textures/DungeonTileWallSingleBlock.png");
-		dungeonWallSingleMiddle = ImageLoader.loadImage("/textures/dungeonTileWalLSingleMiddle.png");
+		dungeonWallSingleMiddle = ImageLoader.loadImage("/textures/dungeonTileWallSingleMiddle.png");
 		dungeonWallSingleLeft = ImageLoader.loadImage("/textures/dungeonTileWallSingleLeft.png");
 		dungeonWallSingleRight = ImageLoader.loadImage("/textures/dungeonTileWallSingleRight.png");
 		dungeonWallSingleMiddleUpwards = ImageLoader.loadImage("/textures/dungeonTileWallSingleMiddleUpwards.png");
