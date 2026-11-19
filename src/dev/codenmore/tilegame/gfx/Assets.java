@@ -224,6 +224,10 @@ public class Assets {
 		zaLeft = new BufferedImage[2];
 		zaLeft[0]=sheet.crop(width*9, height*5, width, height);
 		zaLeft[1]=sheet.crop(width*10, height*5, width, height);
+		// attacking upwards, was never loaded before
+		zaUp = new BufferedImage[2];
+		zaUp[0]=sheet.crop(width*8, height*7, width, height);
+		zaUp[1]=sheet.crop(width*9, height*7, width, height);
 
 
 		//Ogre Attack

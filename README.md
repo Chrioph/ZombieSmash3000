@@ -11,7 +11,7 @@ Steuerung: `WASD` laufen, Pfeiltasten angreifen, `Esc` öffnet einen Bestätigun
 
 # Texturen
 
-Die Welt-Texturen (Gras, Erde, Stein, Zielfeld, Felsen, Baum, Holzblöcke) werden von `tools/generate_textures.py` erzeugt (benötigt Python 3 mit Pillow). Nach Änderungen am Skript mit `python3 tools/generate_textures.py` neu erzeugen; `--preview vorschau.png` rendert stattdessen eine Beispielszene.
+Die Welt-Texturen (Gras, Erde, Stein, Zielfeld, Felsen, Baum, Holzblöcke) werden von `tools/generate_textures.py` erzeugt, Spielfigur, Zombie, Items und Truhe von `tools/generate_sprites.py` (der Oger ist handgezeichnet). Beide Skripte benötigen Python 3 mit Pillow. Nach Änderungen das jeweilige Skript ausführen, z.B. `python3 tools/generate_sprites.py`; `--preview vorschau.png` rendert stattdessen eine Beispielszene.
 
 # Start Optionen
 
