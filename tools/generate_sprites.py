@@ -343,44 +343,54 @@ def render_materials(layers, palettes):
     return s.render()
 
 
-def heart_shape(cx, cy, r):
-    pts = set()
-    for x in range(T):
-        for y in range(T):
-            px, py = (x + 0.5 - cx) / r, -(y + 0.5 - cy) / r
-            # classic implicit heart curve
-            if (px * px + py * py - 1) ** 3 - px * px * py ** 3 <= 0:
-                pts.add((x, y))
-    return pts
+HEART_SHAPE = [
+    "..###...###..",
+    ".#####.#####.",
+    "#############",
+    "#############",
+    "#############",
+    ".###########.",
+    "..#########..",
+    "...#######...",
+    "....#####....",
+    ".....###.....",
+    "......#......",
+]
 
 
-HEART = pal("#4a0b14", "#b51f33", "#e0384b", "#ff8f9a")
+def heart_pixels(ox, oy):
+    return {(ox + x, oy + y) for y, row in enumerate(HEART_SHAPE) for x, c in enumerate(row) if c == "#"}
+
+
+HEART = pal("#7a1020", "#d42c40", "#f2475b", "#ff8796")
 GOLD = pal("#5a3e08", "#c9961e", "#f0c43a", "#fff09a")
 STEEL = pal("#23262e", "#7d8494", "#a9b0bf", "#e4e8f0")
 LEATHER = pal("#2a170c", "#6a3d1f", "#8c5529", "#b07035")
 WOODP = pal("#2a170c", "#6a3d1f", "#8c5529", "#b8783c")
-STONE = pal("#22242e", "#5f6475", "#7d8396", "#a3a9bb")
-GREEN = pal("#173a19", "#2f7a35", "#46a04b", "#6cc46a")
+STONE = pal("#3d4150", "#7d8396", "#9aa0b2", "#c0c5d2")
+GREEN = pal("#2a5a26", "#46a043", "#62bd52", "#86d468")
 WHITE = pal("#555555", "#cfcfcf", "#ececec", "#ffffff")
 RED = pal("#3a0606", "#a8302a", "#cc4a3d", "#ee7a6a")
 SEED = pal("#3a240f", "#8a5a2a", "#b07a3c", "#d8a868")
 
 
-def heart():
-    h = heart_shape(16, 15.5, 11.5)
-    img = render_materials([(h, "h")], {"h": HEART})
-    # glossy highlight
-    for p in ((10, 9), (11, 9), (9, 10), (9, 11), (10, 10)):
-        img.putpixel(p, HEART[3])
+def heart_icon(ox, oy):
+    """Small classic pixel heart (13x11) with a glossy highlight."""
+    img = render_materials([(heart_pixels(ox, oy), "h")], {"h": HEART})
+    for dx, dy in ((2, 1), (1, 2), (2, 2), (3, 1)):
+        img.putpixel((ox + dx, oy + dy), HEART[3])
+    img.putpixel((ox + 2, oy + 1), (255, 255, 255, 255))
     return img
 
 
+def heart():
+    return heart_icon(9, 10)
+
+
 def health_plus():
-    h = heart_shape(14.5, 15.5, 10)
-    plus = rect(21, 18, 23, 28) | rect(17, 22, 27, 24)
-    img = render_materials([(h, "h"), (plus, "p")], {"h": HEART, "p": GOLD})
-    for p in ((9, 10), (10, 9), (9, 11)):
-        img.putpixel(p, HEART[3])
+    img = heart_icon(7, 9)
+    plus = rect(20, 17, 22, 25) | rect(17, 20, 25, 22)
+    img.alpha_composite(render_materials([(plus, "p")], {"p": GOLD}))
     return img
 
 

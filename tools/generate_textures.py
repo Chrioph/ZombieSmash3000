@@ -32,15 +32,15 @@ def hexc(h, a=255):
     return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16), a)
 
 
-GRASS = [hexc(c) for c in ("#2d6b2b", "#3c8633", "#4f9e3b", "#64b445", "#86cc58")]
-DIRT = [hexc(c) for c in ("#4a2f1e", "#654026", "#7e5231", "#98663d", "#b5824f")]
-STONE = [hexc(c) for c in ("#22242e", "#3d4150", "#525767", "#6a7082", "#8a90a3")]
-ROCK = [hexc(c) for c in ("#2a2622", "#4d4740", "#6b645a", "#8a8275", "#aba291", "#c8c0ad")]
-LEAF = [hexc(c) for c in ("#173d1d", "#225329", "#2f6d32", "#3f8a3c", "#57a64a", "#7cc35f")]
-BARK = [hexc(c) for c in ("#2a170c", "#4a2a15", "#6a3d1f", "#86512a", "#a66a39")]
+GRASS = [hexc(c) for c in ("#3f8a35", "#58ab45", "#6fc451", "#89d662", "#ace67f")]
+DIRT = [hexc(c) for c in ("#6e4c2f", "#8e653b", "#a87a48", "#c19058", "#dbac70")]
+STONE = [hexc(c) for c in ("#4f5464", "#737a8b", "#8e95a7", "#a8afc0", "#c6ccd9")]
+ROCK = [hexc(c) for c in ("#4a443c", "#7a7266", "#9a9182", "#b5ac9a", "#cfc6b2", "#e6dfcd")]
+LEAF = [hexc(c) for c in ("#245a2a", "#317a35", "#43973f", "#5ab34d", "#7dcb60", "#a5e27e")]
+BARK = [hexc(c) for c in ("#3d2414", "#61391f", "#82522c", "#a06838", "#bf8248")]
 WOOD = [hexc(c) for c in ("#3a2211", "#62391b", "#865027", "#a96733", "#c98546", "#e0a560")]
 GOLD = [hexc(c) for c in ("#6b4a0c", "#a87a14", "#d9a922", "#f5d45a")]
-SHADOW = (0, 0, 0, 70)
+SHADOW = (0, 0, 0, 50)
 CLEAR = (0, 0, 0, 0)
 
 # 4x4 Bayer matrix for ordered dithering, values in [0, 1)

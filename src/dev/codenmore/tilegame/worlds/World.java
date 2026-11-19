@@ -141,7 +141,7 @@ public class World implements Serializable{
 	
 	
 	private static final int SHADOW_SIZE = 28;
-	private static final Color SHADOW = new Color(0, 0, 0, 120);
+	private static final Color SHADOW = new Color(0, 0, 0, 70);
 	private static final Color NO_SHADOW = new Color(0, 0, 0, 0);
 
 	/**
