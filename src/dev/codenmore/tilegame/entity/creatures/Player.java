@@ -41,6 +41,7 @@ public class Player extends Creature {
     private int knockbackCounter;
     private int ammunition = 5;
     private int armor = 4;
+    private boolean godMode = false;
     private int maxArmor = 5;
     private int rangedDamage = 2;
     private boolean isDead = false;
@@ -603,6 +604,27 @@ public class Player extends Creature {
         return true;
     }
 
+    public boolean isGodMode() {
+        return godMode;
+    }
+
+    /** God mode of the test mode: no damage, armor is not worn down, walks through walls. */
+    public void setGodMode(boolean godMode) {
+        this.godMode = godMode;
+    }
+
+    @Override
+    protected boolean isGhost() {
+        return godMode;
+    }
+
+    @Override
+    public void hurt(int amt) {
+        if (godMode)
+            return;
+        super.hurt(amt);
+    }
+
     public boolean collisionWithFinish(int x, int y) {
         return handler.getWorld().getTile(x, y).isFinish();
     }
@@ -719,6 +741,8 @@ public class Player extends Creature {
     }
 
     public void setArmor(int armor) {
+        if (godMode && armor < this.armor)
+            return;
         this.armor = armor;
     }
 

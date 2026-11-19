@@ -110,6 +110,14 @@ public abstract class Creature extends Entity {
      * general movement function for creatures
      */
     public void move() {
+        if (isGhost()) {
+            // walks through walls and obstacles but stays inside the map
+            int maxX = handler.getWorld().getWidth() * Tile.TILEWIDTH - bounds.x - bounds.width - 1;
+            int maxY = handler.getWorld().getHEight() * Tile.TILEHEIGHT - bounds.y - bounds.height - 1;
+            x = Math.max(-bounds.x, Math.min(x + xMove, maxX));
+            y = Math.max(-bounds.y, Math.min(y + yMove, maxY));
+            return;
+        }
         if (!checkEntityCollision(xMove, 0f))
             moveX();
         if (!checkEntityCollision(0f, yMove))
@@ -179,6 +187,11 @@ public abstract class Creature extends Entity {
      * @return
      */
     public boolean isPlayer() {
+        return false;
+    }
+
+    /** Ghosts move through walls and other entities, used for the god mode of the test mode. */
+    protected boolean isGhost() {
         return false;
     }
 

@@ -13,6 +13,7 @@ import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.HUDs.HUD;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
+import dev.codenmore.tilegame.entity.creatures.Player;
 import dev.codenmore.tilegame.saves.SaveManager;
 import dev.codenmore.tilegame.ui.ConfirmDialog;
 import dev.codenmore.tilegame.ui.UIImage;
@@ -72,6 +73,8 @@ public class GameState extends State {
             world.start();
             handler.setWorld(world);
         }
+        // the player object is shared between games, every game starts without god mode
+        handler.getWorld().getEntityManager().getPlayer().setGodMode(false);
 
         saveManager = new SaveManager(handler, saveFilePath, worldGen);
 
@@ -137,6 +140,7 @@ public class GameState extends State {
         if (listenExit())
             return;
         if (!handler.getWorld().getEntityManager().getPlayer().isDead() && !isPaused) {
+            listenGodMode();
             handler.getWorld().tick();
             listenSave();
             listenLoad();
@@ -186,8 +190,11 @@ public class GameState extends State {
         if (testMode) {
             // badge so the label stays readable on any ground
             g.setColor(new Color(16, 22, 34, 220));
-            g.fillRoundRect(1920 - 220, 42, 200, 44, 14, 14);
-            Text.drawString(g, "TEST MODE", 1920 - 120, 64, true, new Color(255, 204, 0), Assets.font28);
+            boolean god = handler.getWorld().getEntityManager().getPlayer().isGodMode();
+            g.fillRoundRect(1920 - 300, 42, 280, 84, 14, 14);
+            Text.drawString(g, "TEST MODE", 1920 - 160, 64, true, new Color(255, 204, 0), Assets.font28);
+            Text.drawString(g, "GOD MODE " + (god ? "ON" : "OFF") + " [G]", 1920 - 160, 102, true,
+                    god ? new Color(110, 220, 110) : new Color(170, 176, 190), Assets.font28);
         }
         checkPlayerDie(g);
         exitDialog.render(g);
@@ -238,8 +245,16 @@ public class GameState extends State {
         return false;
     }
 
+    /** G toggles the god mode, only in the test mode. */
+    private void listenGodMode() {
+        if (!testMode || !handler.getKeyManager().keyJustPressed(KeyEvent.VK_G))
+            return;
+        Player player = handler.getWorld().getEntityManager().getPlayer();
+        player.setGodMode(!player.isGodMode());
+    }
+
     private void giveTestMaterials() {
-        dev.codenmore.tilegame.entity.creatures.Player player = homeWorld.getEntityManager().getPlayer();
+        Player player = homeWorld.getEntityManager().getPlayer();
         dev.codenmore.tilegame.inventory.Inventory inventory = player.getInventory();
         inventory.addItem(dev.codenmore.tilegame.items.Item.logItem.createNew(30));
         inventory.addItem(dev.codenmore.tilegame.items.Item.rockItem.createNew(30));
