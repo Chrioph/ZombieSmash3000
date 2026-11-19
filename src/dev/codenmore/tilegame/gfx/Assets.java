@@ -160,23 +160,11 @@ public class Assets {
 		
 		ogre =  ogreSheet.crop(width*4, 0, width*2, height*2);
 				
-		ogre_right = new BufferedImage[2];
-		ogre_right[0]=ogreSheet.crop( 0 , 0, width*2, height*2);
-		ogre_right[1]=ogreSheet.crop( 0 , 0, width*2, height*2);
-				
-		ogre_left = new BufferedImage[2];
-		ogre_left[0]=ogreSheet.crop( width *2, 0, width*2, height*2);
-		ogre_left[1]=ogreSheet.crop( width*2 , 0, width*2, height*2);
-			
-		ogre_down = new BufferedImage[2];
-		ogre_down[0]=ogreSheet.crop( width*4 , 0,width*2, height*2);
-		ogre_down[1]=ogreSheet.crop( width*4 , 0, width*2, height*2);
-				
-				
-		ogre_up = new BufferedImage[2];
-		ogre_up[0]=ogreSheet.crop( width*6 , 0, width*2, height*2);
-		ogre_up[1]=ogreSheet.crop( width*6 , 0, width*2, height*2);
-		
+		// row 0 holds the hand drawn frames, rows 1 and 2 the walking frames (tools/generate_ogre.py)
+		ogre_right = ogreFrames(ogreSheet, 0, 1, 2);
+		ogre_left = ogreFrames(ogreSheet, 1, 1, 2);
+		ogre_down = ogreFrames(ogreSheet, 2, 1, 2);
+		ogre_up = ogreFrames(ogreSheet, 3, 1, 2);
 		//Start
 		buttonStart = new BufferedImage[2];
 		buttonStart[0]=sheet.crop(width*4, 0, width*2, height);
@@ -232,24 +220,11 @@ public class Assets {
 
 		//Ogre Attack
 
-		oaRight = new BufferedImage[2];
-		oaRight[0]=ogreSheet.crop( 0 , 0, width*2, height*2);
-		oaRight[1]=ogreSheet.crop( 0 , 0, width*2, height*2);
-
-		oaLeft = new BufferedImage[2];
-		oaLeft[0]=ogreSheet.crop( width *2, 0, width*2, height*2);
-		oaLeft[1]=ogreSheet.crop( width*2 , 0, width*2, height*2);
-
-		oaDown = new BufferedImage[2];
-		oaDown[0]=ogreSheet.crop( width*4 , 0,width*2, height*2);
-		oaDown[1]=ogreSheet.crop( width*4 , 0, width*2, height*2);
-
-
-		oaUp = new BufferedImage[2];
-		oaUp[0]=ogreSheet.crop( width*6 , 0, width*2, height*2);
-		oaUp[1]=ogreSheet.crop( width*6 , 0, width*2, height*2);
-
-
+		// rows 3 and 4: attack wind-up and hit
+		oaRight = ogreFrames(ogreSheet, 0, 3, 4);
+		oaLeft = ogreFrames(ogreSheet, 1, 3, 4);
+		oaDown = ogreFrames(ogreSheet, 2, 3, 4);
+		oaUp = ogreFrames(ogreSheet, 3, 3, 4);
 		//Item Placing Animation
 
 	}
@@ -257,4 +232,11 @@ public class Assets {
 		
 
 		
+
+	/** Two 64x64 frames of the ogre sheet: column, row of the first and of the second frame. */
+	private static BufferedImage[] ogreFrames(SpriteSheet ogreSheet, int col, int row1, int row2) {
+		return new BufferedImage[] {
+			ogreSheet.crop(col * width * 2, row1 * height * 2, width * 2, height * 2),
+			ogreSheet.crop(col * width * 2, row2 * height * 2, width * 2, height * 2) };
+	}
 }

@@ -321,7 +321,7 @@ public abstract class Enemy extends Creature {
             if (xMove > 0)
                 return animARight.getCurrentFrame();
             if (yMove < 0)
-                return animUp.getCurrentFrame();
+                return animAUp.getCurrentFrame();
             if (yMove > 0)
                 return animADown.getCurrentFrame();
         }
