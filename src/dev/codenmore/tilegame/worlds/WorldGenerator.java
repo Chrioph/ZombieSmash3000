@@ -14,7 +14,11 @@ import dev.codenmore.tilegame.entity.statics.Chest;
 import dev.codenmore.tilegame.entity.statics.Rock;
 import dev.codenmore.tilegame.entity.statics.Tree;
 
+import dev.codenmore.tilegame.worlds.util.MapImage;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Freddy on 22.02.2018.
@@ -33,6 +37,12 @@ public class WorldGenerator {
 
     private World currentWorld;
     private World homeWorld;
+
+    /** Ids of generated levels start here, the handmade worlds use small ids and the homeworld 99999. */
+    private static final int FIRST_GENERATED_ID = 1000;
+    /** Seed of the current run, every generated level is derived from it. */
+    private long runSeed;
+    private int generatedLevels;
 
     private enum Difficulty {
         EASY, NORMAL, HARD;
@@ -68,6 +78,8 @@ public class WorldGenerator {
 
     private void initializeWorlds()
     {
+        runSeed = new Random().nextLong();
+        generatedLevels = 0;
         world1();
         world2();
         homeworld();
@@ -124,23 +136,39 @@ public class WorldGenerator {
         return worlds.get(0);
     }
 
+    /**
+     * Returns the level after the current one. After the handmade levels the game continues
+     * with randomly generated dungeon levels that get bigger and harder, so there is always a
+     * next level. The homeworld is not a level, it is reached from the level selection.
+     */
     public World getNextWorld()
     {
-        boolean next = false;
-        for(int i = 0; i<worlds.size(); i++) {
-            if(worlds.get(i).getId() == currentWorld.getId()) {
-                if(i<worlds.size()-1) {
-                    currentWorld = worlds.get(i+1);
-                    next = true;
-                    break;
-                }
+        int index = worlds.indexOf(currentWorld);
+        for(int i = index + 1; i < worlds.size(); i++) {
+            if(worlds.get(i) != homeWorld) {
+                currentWorld = worlds.get(i);
+                return currentWorld;
             }
         }
-        if(next) {
-            return currentWorld;
-        }else {
-            return null;
+        currentWorld = generateLevel();
+        return currentWorld;
+    }
+
+    /**
+     * Generates the next random dungeon level and adds it to the worlds.
+     */
+    private World generateLevel()
+    {
+        generatedLevels++;
+        DungeonGenerator generator = new DungeonGenerator(handler, player, runSeed, generatedLevels);
+        World world = generator.generate(FIRST_GENERATED_ID + generatedLevels);
+        world.getEntityManager().applyMods(difficultyMods);
+        worlds.add(world);
+        if(Settings.getDebug()) {
+            // overview of the generated level for debugging
+            MapImage.write(world.getTiles(), new File("map.png"));
         }
+        return world;
     }
 
     private World world2()

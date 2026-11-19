@@ -16,7 +16,10 @@ Die Welt-Texturen (Gras, Erde, Stein, Zielfeld, Felsen, Baum, Holzblöcke) werde
 # Start Optionen
 
 ## --debug
-Startet das Spiel im Debug Modus (momentan werden alle Hitboxen von Entities rot eingefärbt)
+Startet das Spiel im Debug Modus: Hitboxen von Entities werden rot eingefärbt, der Spieler kann durch Wände laufen und von jedem zufällig erzeugten Level wird eine Übersichtskarte als `map.png` gespeichert.
+
+# Zufällige Level
+Nach den beiden handgebauten Leveln geht es endlos mit zufällig erzeugten Dungeons weiter (`worlds/DungeonGenerator.java`): Räume, die über Gänge verbunden sind, das Ziel liegt im vom Start am weitesten entfernten Raum. Mit jedem Level werden die Karten größer und es gibt mehr Gegner, ab Level 3 auch Oger. Felsen und Bäume werden so platziert, dass sie nie einen Weg versperren.
 
 
 # DISCLAIMER: Alles was hier steht ist eine Mischung aus dem momentanen Stand und meiner Interpretation der Zielsetzung. Sollte etwas missfallen, inkorrekt sein oder noch zu konkretisieren sein ergänzt entsprechend dieses README.

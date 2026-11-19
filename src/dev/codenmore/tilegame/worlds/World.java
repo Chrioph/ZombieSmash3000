@@ -54,6 +54,26 @@ public class World implements Serializable{
 	}
 
 	/**
+	 * Constructor for generated worlds that are not loaded from a file.
+	 *
+	 * @param tiles tile ids, indexed [x][y]
+	 */
+	public World(int id, Handler handler, int[][] tiles, int spawnX, int spawnY) {
+		this.id = id;
+		this.handler = handler;
+		this.tiles = tiles;
+		this.width = tiles.length;
+		this.height = tiles[0].length;
+		this.spawnX = spawnX;
+		this.spawnY = spawnY;
+		itemManager = new ItemManager(handler);
+	}
+
+	public int[][] getTiles() {
+		return tiles;
+	}
+
+	/**
 	 * No args constructor for serialization
 	 */
 	public World() {

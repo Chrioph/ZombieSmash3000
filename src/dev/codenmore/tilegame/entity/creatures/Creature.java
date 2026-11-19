@@ -7,6 +7,7 @@ import dev.codenmore.tilegame.Modifiers.HPMod;
 import dev.codenmore.tilegame.Modifiers.Mod;
 import dev.codenmore.tilegame.Modifiers.SpeedMod;
 import dev.codenmore.tilegame.Modifiers.itemspawnMod;
+import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.entity.Entity;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.tiles.Tile;
@@ -183,6 +184,9 @@ public abstract class Creature extends Entity {
 
     protected boolean collisionWithTile(int x, int y) {
 
+        // in debug mode the player can walk through walls, e.g. to look at generated levels
+        if (Settings.getDebug() && isPlayer())
+            return false;
         return handler.getWorld().getTile(x, y).isSolid();
 
     }
