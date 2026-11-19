@@ -23,6 +23,7 @@ import dev.codenmore.tilegame.gfx.BowShot;
 import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.gfx.WeaponDrawing;
 import dev.codenmore.tilegame.gfx.SwordSwing;
+import dev.codenmore.tilegame.entity.statics.Chest;
 import dev.codenmore.tilegame.inventory.ChestInventory;
 import dev.codenmore.tilegame.inventory.Inventory;
 import dev.codenmore.tilegame.items.CraftableItem;
@@ -68,6 +69,8 @@ public class Player extends Creature {
     private static final long POPUP_DURATION = 900;
 
     private Inventory inventory;
+    /** the chest whose screen is open, null if none */
+    private transient Chest openChest;
     private transient CraftingScreen craftingScreen;
 
     /**
@@ -149,9 +152,61 @@ public class Player extends Creature {
 
         checkAttacks();
 
-
+        listenScreenKey();
+        if (openChest != null) {
+            // the chest was destroyed while it was open
+            if (!openChest.isActive())
+                closeChest();
+            else
+                openChest.getInventory().tick();
+            return;
+        }
         inventory.tick();
         craftingScreen.tick();
+    }
+
+    /**
+     * E opens the chest next to the player, or the inventory if there is none, and closes
+     * whatever is open.
+     */
+    private void listenScreenKey() {
+        if (inputDisabled || isDead || !handler.getKeyManager().keyJustPressed(KeyEvent.VK_E))
+            return;
+        if (openChest != null) {
+            closeChest();
+        } else if (inventory.isActive()) {
+            inventory.setActive(false);
+        } else if (!craftingScreen.isActive()) {
+            Chest chest = findChestInReach();
+            if (chest != null) {
+                openChest = chest;
+                chest.getInventory().open();
+            } else {
+                inventory.setActive(true);
+            }
+        }
+    }
+
+    private Chest findChestInReach() {
+        // chests from the level are entities, chests the player placed are kept with the projectiles
+        for (java.util.List<dev.codenmore.tilegame.entity.Entity> list : java.util.Arrays.asList(
+                handler.getWorld().getEntityManager().getEntities(), handler.getWorld().getEntityManager().getProjectiles())) {
+            for (dev.codenmore.tilegame.entity.Entity e : list) {
+                if (e instanceof Chest && e.isActive() && ((Chest) e).isInReach(this))
+                    return (Chest) e;
+            }
+        }
+        return null;
+    }
+
+    public boolean isChestOpen() {
+        return openChest != null;
+    }
+
+    public void closeChest() {
+        if (openChest != null)
+            openChest.getInventory().close();
+        openChest = null;
     }
 
     private void checkAlive() {
@@ -180,7 +235,7 @@ public class Player extends Creature {
             attackTimer = 0;
             return;
         }
-        if (inventory.isActive() || craftingScreen.isActive())
+        if (inventory.isActive() || craftingScreen.isActive() || openChest != null)
             return;
         if(inputDisabled)
             return;
@@ -300,7 +355,7 @@ public class Player extends Creature {
         xMove = 0;
         yMove = 0;
 
-        if (inventory.isActive() || craftingScreen.isActive())
+        if (inventory.isActive() || craftingScreen.isActive() || openChest != null)
             return;
         xAttack = 0;
         yAttack = 0;
@@ -531,6 +586,8 @@ public class Player extends Creature {
         inventory.render(g);
         if (!inputDisabled)
             craftingScreen.render(g);
+        if (openChest != null)
+            openChest.getInventory().render(g);
     }
 
     public boolean isPlayer() {

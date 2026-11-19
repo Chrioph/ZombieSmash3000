@@ -30,6 +30,9 @@ In diesem Spiel bewegt man sich durch Level, besiegt Gegner und sammelt Gegenst�
 
 Dabei stehen einem grundsätzlich ein Schwert und ein Bogen zur Verfügung.
 
+# Kisten
+Steht man neben einer Kiste, öffnet `E` sie (sonst öffnet `E` das Inventar). Links steht das eigene Inventar, rechts der Inhalt der Kiste: `W`/`S` wählt einen Eintrag, `A`/`D` wechselt die Seite, `Enter` legt ein Stück auf die andere Seite, `Shift+Enter` den ganzen Stapel, ein Mausklick ebenfalls ein Stück. `E` oder `Esc` schließt die Kiste. Jede Kiste hat ihren eigenen Inhalt; wird sie zerstört, fällt alles heraus.
+
 # Crafting
 Aus gesammelten Gegenständen und Materialien können andere Gegenstände, wie bspw. Wände, Kisten etc. hergestellt werden, die dann in der Heimatwelt platziert werden können.
 

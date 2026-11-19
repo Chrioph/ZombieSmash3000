@@ -47,6 +47,13 @@ public class KeyManager implements KeyListener{
 		keys[e.getKeyCode()]=true;
 	}
 	
+	/** Whether the key is currently held down. */
+	public boolean isKeyDown(int keyCode){
+		if(keyCode < 0 || keyCode >= keys.length)
+			return false;
+		return keys[keyCode];
+	}
+
 	public boolean keyJustPressed(int keyCode){
 		if(keyCode < 0 || keyCode >= keys.length)
 			return false;

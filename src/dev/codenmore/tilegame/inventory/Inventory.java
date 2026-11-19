@@ -68,8 +68,7 @@ public class Inventory implements Serializable{
 			if (i.getCount()<=0)
 				it.remove();
 		}
-		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_E))
-			active=!active;
+		// opening and closing with E is handled by the player, who also opens chests with it
 		if(!active)
 			return;
 		 if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_W))

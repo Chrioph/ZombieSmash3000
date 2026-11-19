@@ -201,6 +201,11 @@ public class GameState extends State {
      */
     private boolean listenExit() {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
+            // Escape first closes an open chest
+            if (handler.getWorld().getEntityManager().getPlayer().isChestOpen()) {
+                handler.getWorld().getEntityManager().getPlayer().closeChest();
+                return false;
+            }
             exitDialog.open();
             return true;
         }
