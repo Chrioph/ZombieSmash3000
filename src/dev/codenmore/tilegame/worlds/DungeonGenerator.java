@@ -58,7 +58,8 @@ public class DungeonGenerator {
     private Point finishTile;
 
     /**
-     * @param level 1 for the first generated level, higher levels are bigger and harder
+     * @param level 1 for the first generated level (level 2 of the game), higher levels are
+     *              bigger and harder
      */
     public DungeonGenerator(Handler handler, Player player, long seed, int level) {
         this.handler = handler;
@@ -281,7 +282,8 @@ public class DungeonGenerator {
                 Point p = randomTile(room, 0, used);
                 if (p == null)
                     break;
-                boolean ogre = level >= 3 && rand.nextInt(100) < Math.min(10 + level * 4, 40);
+                // ogres from level 3 of the game on
+                boolean ogre = level >= 2 && rand.nextInt(100) < Math.min(10 + level * 4, 40);
                 Entity enemy = ogre ? new Ogre(handler, 0, 0) : new Zombie(handler, 0, 0);
                 centerOnTile(enemy, p.x, p.y);
                 entities.addEntity(enemy);

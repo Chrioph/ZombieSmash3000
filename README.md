@@ -22,7 +22,7 @@ Im Hauptmenü startet `TEST MODE` direkt in der Heimatwelt, mit 30 Holzstämmen,
 Startet das Spiel im Debug Modus: Hitboxen von Entities werden rot eingefärbt, der Spieler kann durch Wände laufen und von jedem zufällig erzeugten Level wird eine Übersichtskarte als `map.png` gespeichert.
 
 # Zufällige Level
-Nach den beiden handgebauten Leveln geht es endlos mit zufällig erzeugten Dungeons weiter (`worlds/DungeonGenerator.java`): Räume, die über Gänge verbunden sind, das Ziel liegt im vom Start am weitesten entfernten Raum. Mit jedem Level werden die Karten größer und es gibt mehr Gegner, ab Level 3 auch Oger. Felsen und Bäume werden so platziert, dass sie nie einen Weg versperren.
+Level 1 ist handgebaut, ab Level 2 wird jedes Level zufällig als Dungeon erzeugt, endlos (`worlds/DungeonGenerator.java`): Räume, die über Gänge verbunden sind, das Ziel liegt im vom Start am weitesten entfernten Raum. Mit jedem Level werden die Karten größer und es gibt mehr Gegner, ab Level 3 auch Oger. Oben in der Mitte steht, in welchem Level man ist, beim Betreten eines Levels wird die Nummer kurz groß eingeblendet. Felsen und Bäume werden so platziert, dass sie nie einen Weg versperren.
 
 
 # DISCLAIMER: Alles was hier steht ist eine Mischung aus dem momentanen Stand und meiner Interpretation der Zielsetzung. Sollte etwas missfallen, inkorrekt sein oder noch zu konkretisieren sein ergänzt entsprechend dieses README.

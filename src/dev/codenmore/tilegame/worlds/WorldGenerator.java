@@ -39,8 +39,9 @@ public class WorldGenerator {
     private World currentWorld;
     private World homeWorld;
 
-    /** Ids of generated levels start here, the handmade worlds use small ids and the homeworld 99999. */
+    /** Generated level n has the id 1000+n, the handmade first level use small ids and the homeworld 99999. */
     private static final int FIRST_GENERATED_ID = 1000;
+    private static final int HOMEWORLD_ID = 99999;
     /** Seed of the current run, every generated level is derived from it. */
     private long runSeed;
     private int generatedLevels;
@@ -82,7 +83,6 @@ public class WorldGenerator {
         runSeed = new Random().nextLong();
         generatedLevels = 0;
         world1();
-        world2();
         homeworld();
     }
 
@@ -142,9 +142,9 @@ public class WorldGenerator {
     }
 
     /**
-     * Returns the level after the current one. After the handmade levels the game continues
-     * with randomly generated dungeon levels that get bigger and harder, so there is always a
-     * next level. The homeworld is not a level, it is reached from the level selection.
+     * Returns the level after the current one. Level 1 is handmade, from level 2 on every level
+     * is a randomly generated dungeon that gets bigger and harder, so there is always a next
+     * level. The homeworld is not a level, it is reached from the level selection.
      */
     public World getNextWorld()
     {
@@ -176,24 +176,9 @@ public class WorldGenerator {
         return world;
     }
 
-    private World world2()
-    {
-        World world2 = new World(2, handler,"/worlds/world1.txt");
-        EntityManager world2EnManager = new EntityManager(handler, player);
-
-        //Add Entities here
-
-        world2.setEntityManager(world2EnManager);
-
-        worlds.add(world2);
-        applyMods();
-
-        return world2;
-    }
-
     private World homeworld()
     {
-        World homeworld = new World(99999, handler, "/worlds/homeworld.txt");
+        World homeworld = new World(HOMEWORLD_ID, handler, "/worlds/homeworld.txt");
         EntityManager homeWorldEnManager = new EntityManager(handler, player);
 
         homeworld.setEntityManager(homeWorldEnManager);
@@ -215,6 +200,19 @@ public class WorldGenerator {
                 break;
             }
         }
+    }
+
+    /**
+     * Number of the level as shown to the player: 1 for the handmade first level, 2 for the
+     * first generated level and so on, 0 for the homeworld.
+     */
+    public static int getLevelNumber(World world)
+    {
+        if(world == null || world.getId() == HOMEWORLD_ID)
+            return 0;
+        if(world.getId() > FIRST_GENERATED_ID)
+            return world.getId() - FIRST_GENERATED_ID + 1;
+        return world.getId();
     }
 
     public World getHomeWorld()
