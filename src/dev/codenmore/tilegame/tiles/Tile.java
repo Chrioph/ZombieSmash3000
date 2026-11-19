@@ -1,5 +1,6 @@
 package dev.codenmore.tilegame.tiles;
 
+import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.tiles.dungeon.dungeonFloorTile;
 import dev.codenmore.tilegame.tiles.dungeon.dungeonWallTile;
 
@@ -16,6 +17,11 @@ public class Tile {
 	public static Tile finishTile=new FinishTile(3);
 	public static Tile dungeonFloor = new dungeonFloorTile(6);
 	public static Tile dungeonWallTile = new dungeonWallTile(7);
+	// built by the player in the homeworld
+	public static Tile woodFloorTile = new BuildTile(Assets.woodFloor, 8, false);
+	public static Tile woodWallTile = new BuildTile(Assets.woodWall, 9, true);
+	public static Tile stoneFloorTile = new BuildTile(Assets.stoneFloor, 10, false);
+	public static Tile stoneWallTile = new BuildTile(Assets.stoneWall, 11, true);
 	
 	//CLASS
 
@@ -64,6 +70,11 @@ public class Tile {
 	public int getId() {
 		return id;
 	}
+	/** Whether the player built this tile (and can take it down again). */
+	public boolean isBuilt() {
+		return false;
+	}
+
 	public boolean isFinish() {
 		 return false;
 	 }

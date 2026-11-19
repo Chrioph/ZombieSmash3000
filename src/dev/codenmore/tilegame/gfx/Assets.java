@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Assets {
 	
-	public static BufferedImage dirt,grass,stone,finish,solidWood,wood,chest;
+	public static BufferedImage dirt,grass,stone,finish,woodWall, stoneFloor, stoneWall,woodFloor,chest;
 
 	// Dungeon
 	public static BufferedImage dungeonWallStraightDown, dungeonWallStraightUp, dungeonWallLeftCorner;
@@ -26,7 +26,7 @@ public class Assets {
 
 	
 	private static final int width = 32,height =32;
-	public static BufferedImage[] grassVariants, dirtVariants;
+	public static BufferedImage[] grassVariants, dirtVariants, treeStages;
 	/** armor icon per condition: 0 intact, 1 worn, 2 broken */
 	public static BufferedImage[] armorStates;
 	/** armor layer drawn over each player frame, per condition (see PlayerArmor.png) */
@@ -69,8 +69,11 @@ public class Assets {
 		
 
 		
-		wood=      sheet.crop(width*10, height, width, height);
-		solidWood= sheet.crop(width*11, 0, width, height);
+		// building materials (tiles and item icons)
+		woodFloor = sheet.crop(0, height*8, width, height);
+		woodWall  = sheet.crop(width, height*8, width, height);
+		stoneFloor= sheet.crop(width*2, height*8, width, height);
+		stoneWall = sheet.crop(width*3, height*8, width, height);
 		dirt =     sheet.crop(width*2, 0, width, height);
 		grass =    sheet.crop(width*3, 0, width, height);
 		// variants are picked per tile position so the ground does not look repetitive
@@ -105,6 +108,11 @@ public class Assets {
 
 		// the tree is drawn two tiles high, so it has its own 32x64 texture
 		tree =     ImageLoader.loadImage("/textures/Tree.png");
+		// growth stages of a planted seed, the last one is the full tree
+		SpriteSheet stages = new SpriteSheet(ImageLoader.loadImage("/textures/TreeStages.png"));
+		treeStages = new BufferedImage[5];
+		for (int i = 0; i < treeStages.length; i++)
+			treeStages[i] = stages.crop(i * width, 0, width, height * 2);
 		log =     sheet.crop(width, 0, width, height);
 		rock =     sheet.crop(0, 0, width, height);
 		sword=     sheet.crop(width*3, height*3, width, height);

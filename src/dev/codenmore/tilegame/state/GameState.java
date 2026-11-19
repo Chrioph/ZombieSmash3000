@@ -126,7 +126,12 @@ public class GameState extends State {
             if (handler.getWorld().getEntityManager().getPlayer().collisionWithFinish(
                     (int) (handler.getWorld().getEntityManager().getPlayer().getX() / 128),
                     (int) (handler.getWorld().getEntityManager().getPlayer().getY() / 128))) {
-                World nextWorld = this.worldGen.getNextWorld();
+                // completing a level lets everything planted in the homeworld grow
+                if (handler.getWorld() != homeWorld)
+                    growPlants();
+                // the exit of the homeworld continues with the level the player went home from
+                World nextWorld = handler.getWorld() == homeWorld && handler.getNextWorld() != null
+                        ? handler.getNextWorld() : this.worldGen.getNextWorld();
                 if (nextWorld != null) {
                     handler.setNextWorld(nextWorld);
                     isPaused = true;
@@ -201,15 +206,23 @@ public class GameState extends State {
      */
     private boolean listenExit() {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
-            // Escape first closes an open chest
-            if (handler.getWorld().getEntityManager().getPlayer().isChestOpen()) {
-                handler.getWorld().getEntityManager().getPlayer().closeChest();
+            // Escape first closes an open chest, the crafting screen, the inventory or building
+            if (handler.getWorld().getEntityManager().getPlayer().closeScreens())
                 return false;
-            }
             exitDialog.open();
             return true;
         }
         return false;
+    }
+
+    private void growPlants() {
+        for (java.util.List<dev.codenmore.tilegame.entity.Entity> list : java.util.Arrays.asList(
+                homeWorld.getEntityManager().getEntities(), homeWorld.getEntityManager().getProjectiles())) {
+            for (dev.codenmore.tilegame.entity.Entity e : list) {
+                if (e instanceof dev.codenmore.tilegame.entity.statics.Plant)
+                    ((dev.codenmore.tilegame.entity.statics.Plant) e).grow();
+            }
+        }
     }
 
     private boolean isLevelSelectionClickable() {

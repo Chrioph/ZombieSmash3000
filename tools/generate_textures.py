@@ -10,7 +10,8 @@ The generator is deterministic, so running it again produces the same images.
 
 Written cells in res/textures/Sheet2.png (column, row of the 32px grid):
     rock (0,0), log (1,0), dirt (2,0), grass (3,0), stone (0,1), finish (8,1),
-    solid wood (11,0), wood (10,1), grass variants (12..14,0), dirt variants (12..13,1)
+    grass variants (12..14,0), dirt variants (12..13,1),
+    wood floor (0,8), wood wall (1,8), stone floor (2,8), stone (brick) wall (3,8)
 Separate file: res/textures/Tree.png (32x64)
 
 Requires Pillow.
@@ -271,21 +272,31 @@ def rock(seed=11):
     return img
 
 
-def tree(seed=21):
+def tree(seed=21, scale=1.0):
+    """Tree standing on (16, 61) in a 32x64 image; smaller scales give the growth stages."""
     rng = random.Random(seed)
     img = new(T, 64)
-    ground_shadow(img, 16.5, 61, 12, 3)
+    base_y = 61
+
+    def sy(y):  # scale a y coordinate towards the ground
+        return base_y - (base_y - y) * scale
+
+    def sx(x):
+        return 16 + (x - 16) * scale
+
+    ground_shadow(img, 16.5, base_y, max(3.0, 12 * scale), max(1.5, 3 * scale))
     # trunk with roots
-    for y in range(30, 62):
-        flare = 2 if y > 58 else (1 if y > 55 else 0)
-        x0, x1 = 13 - flare, 19 + flare
+    half = max(1, round(3 * scale))
+    for y in range(int(sy(30)), base_y + 1):
+        flare = (2 if y > base_y - 3 else 1 if y > base_y - 6 else 0) if scale > 0.7 else 0
+        x0, x1 = 16 - half - flare, 16 + half + flare
         for x in range(x0, x1 + 1):
-            if x == x0 or x == x1:
+            if (x == x0 or x == x1) and x1 - x0 > 1:
                 c = BARK[0]
             else:
                 rel = (x - x0) / max(1, x1 - x0)
                 c = BARK[3] if rel < 0.35 else BARK[2] if rel < 0.7 else BARK[1]
-                if (y * 3 + x) % 7 == 0:
+                if (y * 3 + x) % 7 == 0 and x1 - x0 > 2:
                     c = BARK[1]
             img.putpixel((x, y), c)
     # canopy from several shaded clusters, back to front
@@ -294,7 +305,8 @@ def tree(seed=21):
     covered = set()
     for cx, cy, rx, ry in clusters:
         layer = new(T, 64)
-        pts = shaded_blob(layer, cx, cy, rx, ry, LEAF, rng, wobble=0.15, outline=False)
+        pts = shaded_blob(layer, sx(cx), sy(cy), max(1.6, rx * scale), max(1.6, ry * scale), LEAF, rng,
+                          wobble=0.15, outline=False)
         for p in pts:
             canopy.putpixel(p, layer.getpixel(p))
         covered |= pts
@@ -315,6 +327,30 @@ def tree(seed=21):
                 break
     img.alpha_composite(canopy)
     return img
+
+
+def sprout():
+    """First growth stage: a small mound of earth with two leaves."""
+    img = new(T, 64)
+    ground_shadow(img, 16.5, 61, 6, 2)
+    for x in range(12, 21):
+        for y in range(59, 62):
+            if abs(x + 0.5 - 16.5) <= 4.5 - (61 - y) * 1.2:
+                img.putpixel((x, y), DIRT[3] if y == 59 else DIRT[2] if y == 60 else DIRT[1])
+    for y in range(54, 60):
+        img.putpixel((16, y), LEAF[3])
+    for p, c in (((14, 54), LEAF[4]), ((15, 55), LEAF[3]), ((13, 55), LEAF[2]), ((14, 56), LEAF[2]),
+                 ((18, 53), LEAF[4]), ((17, 54), LEAF[3]), ((19, 54), LEAF[3]), ((18, 55), LEAF[2])):
+        img.putpixel(p, c)
+    for p in ((12, 54), (13, 54), (15, 53), (19, 52), (20, 53), (17, 53)):
+        if img.getpixel(p)[3] == 0:
+            img.putpixel(p, LEAF[0])
+    return img
+
+
+def tree_stages():
+    """The five growth stages of a planted seed, the last one is the full tree."""
+    return [sprout(), tree(21, 0.3), tree(21, 0.5), tree(21, 0.75), tree(21, 1.0)]
 
 
 def log():
@@ -397,6 +433,113 @@ def planks(seed, dark=False):
     return img
 
 
+# ---------------------------------------------------------------- building
+
+def wood_floor(seed=501):
+    """Floor boards running left to right, four boards per tile, staggered joints."""
+    rng = random.Random(seed)
+    pal = [hexc(c) for c in ("#6b4523", "#9a6a3a", "#b98450", "#d09d63", "#e6b87d")]
+    img = new()
+    n = tileable_noise(rng, octaves=((4, 1.0), (32, 0.6)))
+    joints = [5, 21, 13, 29]
+    for y in range(T):
+        board, row = y // 8, y % 8
+        for x in range(T):
+            if row == 7:
+                c = pal[0]
+            elif x == joints[board]:
+                c = pal[0]
+            else:
+                grain = n[(y * 7) % T][x]
+                base = 3 if row == 0 else 1 if row == 6 else 2
+                if grain > 0.72 and base < 4:
+                    base += 1
+                elif grain < 0.25 and base > 1:
+                    base -= 1
+                c = pal[base]
+            img.putpixel((x, y), c)
+        for jx in (joints[board] - 2, joints[board] + 2):
+            if row == 3:
+                put(img, jx, y, pal[0])
+    return img
+
+
+def wood_wall(seed=502):
+    """Palisade of upright logs with a dark gap between them and an iron band."""
+    pal = [hexc(c) for c in ("#3a2412", "#6b4524", "#8a5b30", "#a8733f", "#c48f55")]
+    iron = [hexc(c) for c in ("#2b2e36", "#5f6573", "#8a90a0", "#b8bfcc")]
+    img = new()
+    for x in range(T):
+        col = x % 8
+        for y in range(T):
+            if col == 7:
+                c = pal[0]
+            else:
+                c = pal[4] if col == 1 else pal[3] if col in (0, 2) else pal[2] if col in (3, 4) else pal[1]
+                if (x * 3 + y * 5) % 11 == 0:
+                    c = pal[1]
+            img.putpixel((x, y), c)
+    for y, c in ((11, iron[3]), (12, iron[2]), (13, iron[2]), (14, iron[1]), (15, iron[0])):
+        for x in range(T):
+            img.putpixel((x, y), c)
+    for x in range(3, T, 8):
+        put(img, x, 13, iron[3])
+    return img
+
+
+def stone_floor(seed=503):
+    """Light paving slabs, two per row, every other row shifted by half a slab."""
+    rng = random.Random(seed)
+    pal = [hexc(c) for c in ("#6e6c66", "#a3a199", "#b9b6ad", "#cdcac1", "#e0ddd4")]
+    img = new()
+    n = tileable_noise(rng, octaves=((16, 1.0),))
+    for y in range(T):
+        row, ry = y // 16, y % 16
+        for x in range(T):
+            rx = (x + (8 if row % 2 else 0)) % 16
+            if ry == 15 or rx == 15:
+                c = pal[0]
+            elif ry == 0 or rx == 0:
+                c = pal[4]
+            elif ry == 14 or rx == 14:
+                c = pal[1]
+            else:
+                c = pal[3] if n[y][x] > 0.66 else pal[1] if n[y][x] < 0.3 else pal[2]
+            img.putpixel((x, y), c)
+    return img
+
+
+def brick_wall(seed=504):
+    """Red brick wall, bricks of 16x8 pixels in a running bond."""
+    rng = random.Random(seed)
+    mortar, mortar_dark = hexc("#d6cec0"), hexc("#a39b8f")
+    reds = [[hexc(c) for c in cs] for cs in (("#6e2a1e", "#9c4330", "#b8553d", "#d47555"),
+                                               ("#66281c", "#913d2d", "#ad4e39", "#c8694c"))]
+    img = new()
+    n = tileable_noise(rng, octaves=((16, 1.0),))
+    for y in range(T):
+        row, ry = y // 8, y % 8
+        shift = 8 if row % 2 else 0
+        for x in range(T):
+            rx = (x + shift) % 16
+            if ry == 7:
+                c = mortar_dark if rx == 15 else mortar
+            elif rx == 15:
+                c = mortar
+            else:
+                pal = reds[((x + shift) // 16 + row) % 2]
+                if ry == 0 or rx == 0:
+                    c = pal[3]
+                elif ry == 6 or rx == 14:
+                    c = pal[1]
+                else:
+                    c = pal[2] if n[y][x] < 0.7 else pal[3]
+                    if n[y][x] < 0.22:
+                        c = pal[1]
+            img.putpixel((x, y), c)
+    return img
+
+
 # ---------------------------------------------------------------- output
 
 def build():
@@ -407,9 +550,12 @@ def build():
         "finish": finish(),
         "rock": rock(),
         "log": log(),
-        "wood": planks(401),
-        "solidWood": planks(402, dark=True),
+        "woodFloor": wood_floor(),
+        "woodWall": wood_wall(),
+        "stoneFloor": stone_floor(),
+        "stoneWall": brick_wall(),
         "tree": tree(),
+        "treeStages": tree_stages(),
     }
 
 
@@ -427,14 +573,21 @@ def write(tex):
     place(tex["grass"][0], 3, 0)
     place(tex["stone"], 0, 1)
     place(tex["finish"], 8, 1)
-    place(tex["solidWood"], 11, 0)
-    place(tex["wood"], 10, 1)
+    # building materials, used as tiles and as item icons
+    place(tex["woodFloor"], 0, 8)
+    place(tex["woodWall"], 1, 8)
+    place(tex["stoneFloor"], 2, 8)
+    place(tex["stoneWall"], 3, 8)
     for i, g in enumerate(tex["grass"][1:]):
         place(g, 12 + i, 0)
     for i, d in enumerate(tex["dirt"][1:]):
         place(d, 12 + i, 1)
     sheet.save(sheet_path)
     tex["tree"].save(os.path.join(TEXTURES, "Tree.png"))
+    stages = Image.new("RGBA", (5 * T, 64), CLEAR)
+    for i, img in enumerate(tex["treeStages"]):
+        stages.paste(img, (i * T, 0))
+    stages.save(os.path.join(TEXTURES, "TreeStages.png"))
 
 
 CLEAR_CELL = Image.new("RGBA", (T, T), CLEAR)
@@ -461,8 +614,10 @@ def preview(tex, path):
     scene.alpha_composite(tex["tree"], (1 * T + 8, 0))
     scene.alpha_composite(tex["rock"], (5 * T, 3 * T))
     scene.alpha_composite(tex["log"], (4 * T, 1 * T))
-    scene.alpha_composite(tex["wood"], (7 * T, 3 * T))
-    scene.alpha_composite(tex["solidWood"], (8 * T, 3 * T))
+    scene.paste(tex["woodFloor"], (6 * T, 3 * T))
+    scene.paste(tex["woodWall"], (7 * T, 3 * T))
+    scene.paste(tex["stoneFloor"], (6 * T, 4 * T))
+    scene.paste(tex["stoneWall"], (7 * T, 4 * T))
     scene = scene.resize((cols * T * s, rows * T * s), Image.NEAREST)
     scene.save(path)
 

@@ -49,8 +49,10 @@ public class Inventory implements Serializable{
 		inventoryItems = new ArrayList<Item>();
 		inventoryItems.add(Item.logItem);
 		inventoryItems.add(Item.rockItem);
-		inventoryItems.add(CraftableItem.woodItem);
-		inventoryItems.add(CraftableItem.solidWoodItem);
+		inventoryItems.add(CraftableItem.woodFloorItem);
+		inventoryItems.add(CraftableItem.woodWallItem);
+		inventoryItems.add(CraftableItem.stoneFloorItem);
+		inventoryItems.add(CraftableItem.stoneWallItem);
         inventoryItems.add(Item.seedItem);
 		inventoryItems.add(CraftableItem.chestItem);
 		displayInventoryItems = new ArrayList<Item>();

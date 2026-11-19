@@ -34,7 +34,23 @@ Dabei stehen einem grundsätzlich ein Schwert und ein Bogen zur Verfügung.
 Steht man neben einer Kiste, öffnet `E` sie (sonst öffnet `E` das Inventar). Links steht das eigene Inventar, rechts der Inhalt der Kiste: `W`/`S` wählt einen Eintrag, `A`/`D` wechselt die Seite, `Enter` legt ein Stück auf die andere Seite, `Shift+Enter` den ganzen Stapel, ein Mausklick ebenfalls ein Stück. `E` oder `Esc` schließt die Kiste. Jede Kiste hat ihren eigenen Inhalt; wird sie zerstört, fällt alles heraus.
 
 # Crafting
-Aus gesammelten Gegenständen und Materialien können andere Gegenstände, wie bspw. Wände, Kisten etc. hergestellt werden, die dann in der Heimatwelt platziert werden können.
+`C` öffnet das Crafting-Menü: links die Rezepte, rechts was man dafür braucht (grün = genug da, rot = fehlt). `W`/`S` wählt ein Rezept, `Enter` craftet einmal, `Shift+Enter` so oft wie möglich (oder per Maus auf CRAFT klicken). `C` oder `Esc` schließt das Menü.
+
+| Rezept | Ergebnis |
+|---|---|
+| 1 Log | 2 Wood Floor |
+| 2 Log | 1 Wood Wall |
+| 1 Rock | 2 Stone Floor |
+| 2 Rock | 1 Stone Wall |
+| 3 Log | 1 Chest |
+
+# Bauen in der Heimatwelt
+In der Heimatwelt kann gebaut werden: Inventar öffnen (`E`), einen Gegenstand wählen und `Q` drücken. Eine Vorschau zeigt, wo gebaut wird (grün = möglich, rot = nicht möglich, der Grund steht darunter): die Kachel unter der Maus, wenn sie in Reichweite ist, sonst die Kachel vor dem Spieler. Linksklick oder `R` baut, Rechtsklick oder `X` baut einen Boden oder eine Mauer wieder ab (das Material kommt zurück), `Q` oder `Esc` beendet das Bauen.
+
+* Böden sind begehbar, Mauern nicht. Mauern lassen sich nicht auf Figuren, Objekte oder herumliegende Items bauen.
+* Kisten werden genauso platziert.
+* Samen werden auf Gras oder Erde gepflanzt und wachsen nach jedem abgeschlossenen Level eine Stufe, insgesamt 5 Stufen bis zum ausgewachsenen Baum. Steht man daneben, wird die Stufe angezeigt. Ab Stufe 3 versperrt der Stamm den Weg. Ein ausgewachsener Baum gibt beim Fällen Holz und Samen, eine junge Pflanze ihren Samen zurück.
+* Das Zielfeld in der Heimatwelt führt zum nächsten Level weiter.
 
 # Heimatwelt
 Generell soll die Heimatwelt eine Anlaufstelle zwischen den Leveln bieten. Dabei übernimmt sie ähnliche Funktionen wie das Hub in Monster Hunter: durch regelmäßigen Ressourcenzuwachs, NPC Interaktionen und weitere Gimmicks hat der Spieler jedes Mal wenn er in die Heimatwelt zurückkehrt etwas zu tun.

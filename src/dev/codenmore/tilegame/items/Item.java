@@ -59,7 +59,9 @@ public class Item implements Serializable {
 		
 		bounds= new Rectangle((int)(x), (int)(y), ITEMWIDTH, ITEMHEIGHT);
 		
-		items[id]=this;
+		// only the static item of each kind is registered, copies (drops, stacks) must not replace it
+		if (items[id] == null)
+			items[id]=this;
 	}
 	
 	

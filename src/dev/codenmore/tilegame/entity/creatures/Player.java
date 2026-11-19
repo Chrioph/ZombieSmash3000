@@ -13,16 +13,15 @@ import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.Settings;
 import dev.codenmore.tilegame.crafting.CraftingScreen;
 import dev.codenmore.tilegame.entity.Entity;
-import dev.codenmore.tilegame.entity.statics.SolidWoodBlock;
 import dev.codenmore.tilegame.entity.statics.StaticEntity;
 import dev.codenmore.tilegame.entity.statics.Tree;
-import dev.codenmore.tilegame.entity.statics.WoodBlock;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.BowShot;
 import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.gfx.WeaponDrawing;
 import dev.codenmore.tilegame.gfx.SwordSwing;
+import dev.codenmore.tilegame.building.BuildMode;
 import dev.codenmore.tilegame.entity.statics.Chest;
 import dev.codenmore.tilegame.inventory.ChestInventory;
 import dev.codenmore.tilegame.inventory.Inventory;
@@ -53,7 +52,6 @@ public class Player extends Creature {
     private boolean inputDisabled;
 
 
-    private int placingItem = 0;
 
     private boolean rangedToggled = false;
 
@@ -71,6 +69,8 @@ public class Player extends Creature {
     private Inventory inventory;
     /** the chest whose screen is open, null if none */
     private transient Chest openChest;
+    /** placing items in the homeworld */
+    private transient BuildMode buildMode;
     private transient CraftingScreen craftingScreen;
 
     /**
@@ -161,16 +161,27 @@ public class Player extends Creature {
                 openChest.getInventory().tick();
             return;
         }
+        // ticked before the inventory, so the Q that starts building does not stop it again
+        if (!inventory.isActive() && !craftingScreen.isActive())
+            getBuildMode().tick();
         inventory.tick();
         craftingScreen.tick();
     }
 
     /**
      * E opens the chest next to the player, or the inventory if there is none, and closes
-     * whatever is open.
+     * whatever is open. C opens and closes the crafting screen.
      */
     private void listenScreenKey() {
-        if (inputDisabled || isDead || !handler.getKeyManager().keyJustPressed(KeyEvent.VK_E))
+        if (inputDisabled || isDead)
+            return;
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_C) && openChest == null) {
+            boolean open = !craftingScreen.isActive();
+            inventory.setActive(false);
+            craftingScreen.setActive(open);
+            return;
+        }
+        if (!handler.getKeyManager().keyJustPressed(KeyEvent.VK_E))
             return;
         if (openChest != null) {
             closeChest();
@@ -201,6 +212,36 @@ public class Player extends Creature {
 
     public boolean isChestOpen() {
         return openChest != null;
+    }
+
+    /**
+     * Closes whatever is open (chest, crafting, inventory, building), used by Escape.
+     *
+     * @return true if something was open
+     */
+    public boolean closeScreens() {
+        boolean wasOpen = openChest != null || craftingScreen.isActive() || inventory.isActive() || getBuildMode().isActive();
+        closeChest();
+        craftingScreen.setActive(false);
+        inventory.setActive(false);
+        getBuildMode().stop();
+        return wasOpen;
+    }
+
+    public BuildMode getBuildMode() {
+        if (buildMode == null)
+            buildMode = new BuildMode(handler, this);
+        return buildMode;
+    }
+
+    /** Starts placing the item with the given id (from the inventory). */
+    public void setPlacingItem(int id) {
+        getBuildMode().start(id);
+    }
+
+    /** Direction the player faces: 0 right, 1 down, 2 left, 3 up. */
+    public int getFacing() {
+        return playerDirection;
     }
 
     public void closeChest() {
@@ -412,7 +453,6 @@ public class Player extends Creature {
             renderWeapon(g, swinging, shooting);
         renderPopup(g);
 
-        renderPlacingItem(g);
 
         if (Settings.getDebug()) {
             Rectangle ar = new Rectangle();
@@ -513,39 +553,6 @@ public class Player extends Creature {
         g2d.setComposite(old);
     }
 
-    private void renderPlacingItem(Graphics g) {
-        if (placingItem > 0) {
-            g.setColor(Color.PINK);
-            if (playerDirection == 0) {
-                g.fillRect((int) (x - 2 + DEFAULT_CREATURE_WIDTH * 1.5 - handler.getGameCamera().getxOffset()), (int) (y - 2 + DEFAULT_CREATURE_HEIGHT / 2 - 64 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0, 0).getWidth() + 4, getCurrentPlacingEntity(0, 0).getHeight() + 4);
-                g.drawImage(getCurrentPlacementItem(), (int) (x + DEFAULT_CREATURE_WIDTH * 1.5 - handler.getGameCamera().getxOffset()), (int) (y + DEFAULT_CREATURE_HEIGHT / 2 - 64 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0, 0).getWidth(), getCurrentPlacingEntity(0, 0).getHeight(), null);
-            } else if (playerDirection == 1) {
-                g.fillRect((int) (x - 2 + DEFAULT_CREATURE_WIDTH / 2 - 64 - handler.getGameCamera().getxOffset()), (int) (y - 2 + DEFAULT_CREATURE_HEIGHT * 1.5 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0, 0).getWidth() + 4, getCurrentPlacingEntity(0, 0).getHeight() + 4);
-                g.drawImage(getCurrentPlacementItem(), (int) (x + DEFAULT_CREATURE_WIDTH / 2 - 64 - handler.getGameCamera().getxOffset()), (int) (y + DEFAULT_CREATURE_HEIGHT * 1.5 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0, 0).getWidth(), getCurrentPlacingEntity(0, 0).getHeight(), null);
-            } else if (playerDirection == 2) {
-                g.fillRect((int) (x - 2 - DEFAULT_CREATURE_WIDTH / 2 - 128 - handler.getGameCamera().getxOffset()), (int) (y - 2 + DEFAULT_CREATURE_HEIGHT / 2 - 64 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0, 0).getWidth() + 4, getCurrentPlacingEntity(0, 0).getHeight() + 4);
-                g.drawImage(getCurrentPlacementItem(), (int) (x - DEFAULT_CREATURE_WIDTH / 2 - 128 - handler.getGameCamera().getxOffset()), (int) (y + DEFAULT_CREATURE_HEIGHT / 2 - 64 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0, 0).getWidth(), getCurrentPlacingEntity(0, 0).getHeight(), null);
-            } else if (playerDirection == 3) {
-                g.fillRect((int) (x - 2 + DEFAULT_CREATURE_WIDTH / 2 - 64 - handler.getGameCamera().getxOffset()), (int) (y - 2 - DEFAULT_CREATURE_HEIGHT / 2 - 128 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0, 0).getWidth() + 4, getCurrentPlacingEntity(0, 0).getHeight() + 4);
-                g.drawImage(getCurrentPlacementItem(), (int) (x + DEFAULT_CREATURE_WIDTH / 2 - 64 - handler.getGameCamera().getxOffset()), (int) (y - DEFAULT_CREATURE_HEIGHT / 2 - 128 - handler.getGameCamera().getyOffset()), getCurrentPlacingEntity(0, 0).getWidth(), getCurrentPlacingEntity(0, 0).getHeight(), null);
-            }
-            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_R)) {
-                if (playerDirection == 0)
-                    handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x + DEFAULT_CREATURE_WIDTH * 1.5f), (y + DEFAULT_CREATURE_HEIGHT / 2 - 64)));
-                if (playerDirection == 1)
-                    handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x + DEFAULT_CREATURE_WIDTH / 2 - 64), (int) (y + DEFAULT_CREATURE_HEIGHT * 1.5f)));
-                if (playerDirection == 2)
-                    handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x - DEFAULT_CREATURE_WIDTH / 2 - 128), (int) (y + DEFAULT_CREATURE_HEIGHT / 2 - 64)));
-                if (playerDirection == 3)
-                    handler.getWorld().getEntityManager().getProjectiles().add(getCurrentPlacingEntity((x + DEFAULT_CREATURE_WIDTH / 2 - 64), (int) (y - DEFAULT_CREATURE_HEIGHT / 2 - 128)));
-                inventory.getInventoryItems().get(placingItem).setCount(inventory.getInventoryItems().get(placingItem).getCount() - 1);
-                placingItem = 0;
-
-            }
-        }
-    }
-
-
     public void knockback(int direction) {
         xMove = 0;
         yMove = 0;
@@ -583,6 +590,8 @@ public class Player extends Creature {
     }
 
     public void postRender(Graphics g) {
+        if (!inventory.isActive() && !craftingScreen.isActive() && openChest == null)
+            getBuildMode().render(g);
         inventory.render(g);
         if (!inputDisabled)
             craftingScreen.render(g);
@@ -642,29 +651,6 @@ public class Player extends Creature {
             return Assets.player1LookingLeft;
         else
             return Assets.player1LookingUp;
-    }
-
-    private BufferedImage getCurrentPlacementItem() {
-        if (placingItem == Item.seedItem.getId()) {
-            return Assets.tree;
-        }
-        if (placingItem == CraftableItem.woodItem.getId()) {
-            return Assets.wood;
-        }
-        if (placingItem == CraftableItem.solidWoodItem.getId()) {
-            return Assets.solidWood;
-        }
-        return null;
-    }
-
-    private StaticEntity getCurrentPlacingEntity(float x, float y) {
-        if (placingItem == Item.seedItem.getId())
-            return new Tree(handler, x, y);
-        if (placingItem == CraftableItem.woodItem.getId())
-            return new WoodBlock(handler, x, y);
-        if (placingItem == CraftableItem.solidWoodItem.getId())
-            return new SolidWoodBlock(handler, x, y);
-        else return null;
     }
 
     public Arrow getArrow() {
@@ -774,17 +760,6 @@ public class Player extends Creature {
 
     }
 
-    public int getPlacingItem() {
-        return placingItem;
-    }
-
-    public void setPlacingItem(int id) {
-        placingItem = id;
-    }
-
-    public void setPlacingitem(int id) {
-        placingItem = id;
-    }
     public boolean isInputDisabled() {
         return inputDisabled;
     }

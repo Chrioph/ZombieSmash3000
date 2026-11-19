@@ -28,6 +28,7 @@ public class World implements Serializable{
 	private Handler handler;
 	private int width, height;
 	private int [][] tiles;
+	private int [][] originalTiles;
 	private int spawnX, spawnY;
 	private int id;
 	private String path;
@@ -62,6 +63,7 @@ public class World implements Serializable{
 		this.id = id;
 		this.handler = handler;
 		this.tiles = tiles;
+		this.originalTiles = copy(tiles);
 		this.width = tiles.length;
 		this.height = tiles[0].length;
 		this.spawnX = spawnX;
@@ -71,6 +73,24 @@ public class World implements Serializable{
 
 	public int[][] getTiles() {
 		return tiles;
+	}
+
+	/** Changes a tile, used when the player builds. */
+	public void setTile(int x, int y, int id) {
+		if (x >= 0 && y >= 0 && x < width && y < height)
+			tiles[x][y] = id;
+	}
+
+	/** The tile the world started with, a removed floor or wall turns back into it. */
+	public int getOriginalTile(int x, int y) {
+		return originalTiles[x][y];
+	}
+
+	private static int[][] copy(int[][] tiles) {
+		int[][] c = new int[tiles.length][];
+		for (int i = 0; i < tiles.length; i++)
+			c[i] = tiles[i].clone();
+		return c;
 	}
 
 	/**
@@ -199,6 +219,7 @@ public class World implements Serializable{
 				tiles[x][y]= Utils.parseInt(tokens[(x+y*width) + 4]);
 			}
 		}
+		originalTiles = copy(tiles);
 		
 	}
 
@@ -234,10 +255,6 @@ public class World implements Serializable{
 	
 	public int getHEight() {
 		return height;
-	}
-
-	public void setTile(int x, int y, int id){
-		tiles[x/128][y/128]= id;
 	}
 
 	public String getPath()
