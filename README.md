@@ -7,7 +7,7 @@ Voraussetzung: ein JDK (Java 8 oder neuer, getestet mit Java 21).
 
 Die Skripte kompilieren `src/` nach `bin/` und starten das Spiel mit `res/` im Classpath. Startoptionen (siehe unten) können einfach angehängt werden, z.B. `./run.sh --debug`.
 
-Steuerung: `WASD` laufen, Pfeiltasten angreifen.
+Steuerung: `WASD` laufen, Pfeiltasten angreifen, `Esc` öffnet einen Bestätigungsdialog (im Spiel: zurück ins Hauptmenü, im Hauptmenü: Spiel beenden). Im Dialog wählen `←`/`→` bzw. `A`/`D`, `Enter` bestätigt, `Esc` oder `N` bricht ab, `Y`/`J` bestätigt direkt; die Buttons sind auch mit der Maus klickbar.
 
 # Start Optionen
 

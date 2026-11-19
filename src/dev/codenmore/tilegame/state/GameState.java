@@ -13,6 +13,7 @@ import dev.codenmore.tilegame.HUDs.HUD;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.saves.SaveManager;
+import dev.codenmore.tilegame.ui.ConfirmDialog;
 import dev.codenmore.tilegame.ui.UIImage;
 import dev.codenmore.tilegame.ui.UIList;
 import dev.codenmore.tilegame.ui.UIListElement;
@@ -41,6 +42,7 @@ public class GameState extends State {
 
     private HUD hud;
     private UIManager uiManager;
+    private ConfirmDialog exitDialog;
 
 
     public GameState(Handler handler) {
@@ -85,11 +87,19 @@ public class GameState extends State {
 
         hud = new HUD(handler);
 
+        exitDialog = new ConfirmDialog(handler, "Back to main menu?",
+                "Unsaved progress will be lost.", () -> handler.getGame().restart());
+
 
     }
 
     @Override
     public void tick() {
+        // the world is frozen while the exit confirmation is open
+        if (exitDialog.isOpen()) {
+            exitDialog.tick();
+            return;
+        }
         uiManager.tick();
         if (!handler.getWorld().getEntityManager().getPlayer().isDead() && !isPaused) {
             handler.getWorld().tick();
@@ -135,6 +145,7 @@ public class GameState extends State {
             uiManager.render(g);
         }
         checkPlayerDie(g);
+        exitDialog.render(g);
 
     }
 
@@ -163,8 +174,7 @@ public class GameState extends State {
 
     private void listenExit() {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
-
-            handler.getGame().restart();
+            exitDialog.open();
         }
     }
 
