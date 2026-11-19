@@ -10,7 +10,9 @@ import dev.codenmore.tilegame.Game;
 import dev.codenmore.tilegame.Handler;
 import dev.codenmore.tilegame.gfx.Assets;
 import dev.codenmore.tilegame.ui.ConfirmDialog;
+import dev.codenmore.tilegame.gfx.Text;
 import dev.codenmore.tilegame.ui.UIImageButton;
+import dev.codenmore.tilegame.ui.UITextButton;
 import dev.codenmore.tilegame.ui.UIManager;
 
 public class MenuState extends State {
@@ -25,7 +27,7 @@ public class MenuState extends State {
 		exitDialog = new ConfirmDialog(handler, "Quit game?", "Do you really want to exit?",
 				() -> handler.getGame().close());
 		
-		uiManager.addObject(new UIImageButton(  1920 / 2 - 256 ,  1080 / 2 - 128 ,  512 ,  256, Assets.buttonStart, new ClickListener() {
+		uiManager.addObject(new UIImageButton(  1920 / 2 - 256 ,  1080 / 2 - 128 - 90 ,  512 ,  256, Assets.buttonStart, new ClickListener() {
 			
 
 			@Override
@@ -33,6 +35,15 @@ public class MenuState extends State {
 				handler.getMouseManager().setUIManager(null);
 				State.setState(new GameState(handler));
 				
+			}
+		}));
+		// test mode: start in the homeworld with building materials
+		uiManager.addObject(new UITextButton(1920 / 2 - 256, 1080 / 2 + 128 - 90 + 40, 512, 130, "TEST MODE", Assets.font56, new ClickListener() {
+
+			@Override
+			public void onClick() {
+				handler.getMouseManager().setUIManager(null);
+				State.setState(new GameState(handler, true));
 			}
 		}));
 		uiManager.addObject(new UIImageButton   ( 1920-70 , 1080-100 , 64 , 64, Assets.buttonSettings, new ClickListener() {
@@ -60,6 +71,8 @@ public class MenuState extends State {
 	@Override
 	public void render(Graphics g) {
 		uiManager.render(g);
+		Text.drawString(g, "START IN THE HOMEWORLD WITH MATERIALS", 1920 / 2, 1080 / 2 + 128 - 90 + 40 + 130 + 40, true,
+				new Color(90, 90, 90), Assets.font28);
 		exitDialog.render(g);
 	}
 

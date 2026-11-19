@@ -13,6 +13,9 @@ Steuerung: `WASD` laufen, Pfeiltasten angreifen, `Esc` öffnet einen Bestätigun
 
 Die Welt-Texturen (Gras, Erde, Stein, Zielfeld, Felsen, Baum, Holzblöcke) werden von `tools/generate_textures.py` erzeugt, Spielfigur, Zombie, Items und Truhe von `tools/generate_sprites.py` (der Oger ist handgezeichnet). Beide Skripte benötigen Python 3 mit Pillow. Nach Änderungen das jeweilige Skript ausführen, z.B. `python3 tools/generate_sprites.py`; `--preview vorschau.png` rendert stattdessen eine Beispielszene.
 
+# Testmodus
+Im Hauptmenü startet `TEST MODE` direkt in der Heimatwelt, mit 30 Holzstämmen, 30 Steinen, 10 Samen, je 20 Holz-/Steinböden und -mauern, 3 Kisten und 30 Pfeilen, um Bauen und Crafting auszuprobieren. Oben rechts steht dann `TEST MODE`. Das Zielfeld der Heimatwelt führt ins erste Level; nach dem Zurückkehren ins Hauptmenü startet ein normales Spiel wieder mit leerem Inventar.
+
 # Start Optionen
 
 ## --debug

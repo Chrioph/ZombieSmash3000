@@ -45,16 +45,33 @@ public class GameState extends State {
     private UIManager uiManager;
     private ConfirmDialog exitDialog;
     private ConfirmDialog quitDialog;
+    private final boolean testMode;
 
 
     public GameState(Handler handler) {
+        this(handler, false);
+    }
+
+    /**
+     * @param testMode start in the homeworld with plenty of materials to try out building
+     */
+    public GameState(Handler handler, boolean testMode) {
         super(handler);
+        this.testMode = testMode;
         this.worldGen = handler.getGame().getWorldGenerator();
         homeWorld = worldGen.getHomeWorld();
         world = this.worldGen.getFirstWorld();
-        world.start();
-        handler.setWorld(world);
         handler.setHomeWorld(homeWorld);
+        if (testMode) {
+            // the exit of the homeworld leads to the first level
+            handler.setNextWorld(world);
+            homeWorld.start();
+            handler.setWorld(homeWorld);
+            giveTestMaterials();
+        } else {
+            world.start();
+            handler.setWorld(world);
+        }
 
         saveManager = new SaveManager(handler, saveFilePath, worldGen);
 
@@ -166,6 +183,12 @@ public class GameState extends State {
         if (nextLevelSelection) {
             uiManager.render(g);
         }
+        if (testMode) {
+            // badge so the label stays readable on any ground
+            g.setColor(new Color(16, 22, 34, 220));
+            g.fillRoundRect(1920 - 220, 42, 200, 44, 14, 14);
+            Text.drawString(g, "TEST MODE", 1920 - 120, 64, true, new Color(255, 204, 0), Assets.font28);
+        }
         checkPlayerDie(g);
         exitDialog.render(g);
         quitDialog.render(g);
@@ -213,6 +236,24 @@ public class GameState extends State {
             return true;
         }
         return false;
+    }
+
+    private void giveTestMaterials() {
+        dev.codenmore.tilegame.entity.creatures.Player player = homeWorld.getEntityManager().getPlayer();
+        dev.codenmore.tilegame.inventory.Inventory inventory = player.getInventory();
+        inventory.addItem(dev.codenmore.tilegame.items.Item.logItem.createNew(30));
+        inventory.addItem(dev.codenmore.tilegame.items.Item.rockItem.createNew(30));
+        inventory.addItem(dev.codenmore.tilegame.items.Item.seedItem.createNew(10));
+        inventory.addItem(dev.codenmore.tilegame.items.CraftableItem.woodFloorItem.createNew(20));
+        inventory.addItem(dev.codenmore.tilegame.items.CraftableItem.woodWallItem.createNew(20));
+        inventory.addItem(dev.codenmore.tilegame.items.CraftableItem.stoneFloorItem.createNew(20));
+        inventory.addItem(dev.codenmore.tilegame.items.CraftableItem.stoneWallItem.createNew(20));
+        inventory.addItem(dev.codenmore.tilegame.items.CraftableItem.chestItem.createNew(3));
+        player.setAmmunition(30);
+    }
+
+    public boolean isTestMode() {
+        return testMode;
     }
 
     private void growPlants() {
