@@ -19,6 +19,9 @@ import dev.codenmore.tilegame.entity.statics.Tree;
 import dev.codenmore.tilegame.entity.statics.WoodBlock;
 import dev.codenmore.tilegame.gfx.Animation;
 import dev.codenmore.tilegame.gfx.Assets;
+import dev.codenmore.tilegame.gfx.BowShot;
+import dev.codenmore.tilegame.gfx.Text;
+import dev.codenmore.tilegame.gfx.WeaponDrawing;
 import dev.codenmore.tilegame.gfx.SwordSwing;
 import dev.codenmore.tilegame.inventory.ChestInventory;
 import dev.codenmore.tilegame.inventory.Inventory;
@@ -57,6 +60,12 @@ public class Player extends Creature {
     private Arrow arrow;
     /** currently playing melee swing, null when not attacking */
     private transient SwordSwing swordSwing;
+    /** currently playing bow shot, null when not shooting */
+    private transient BowShot bowShot;
+    /** short text shown above the player, e.g. after switching weapons */
+    private transient String popupText;
+    private transient long popupStart;
+    private static final long POPUP_DURATION = 900;
 
     private Inventory inventory;
     private transient CraftingScreen craftingScreen;
@@ -128,6 +137,8 @@ public class Player extends Creature {
         checkAlive();
         if (swordSwing != null && swordSwing.isFinished())
             swordSwing = null;
+        if (bowShot != null && bowShot.isFinished())
+            bowShot = null;
         if (!(knockbackCounter > 0))
             getInput();
 
@@ -154,6 +165,7 @@ public class Player extends Creature {
     private void checkToggledRangeAttacks() {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)&&!inputDisabled) {
             rangedToggled = !rangedToggled;
+            showPopup(rangedToggled ? "BOW" : "SWORD");
         }
 
     }
@@ -206,22 +218,27 @@ public class Player extends Creature {
             playerDirection = meleeDirection;
 
         } else if (ammunition > 0) {
+            int shotDirection;
             if (handler.getKeyManager().aRight) {
+                shotDirection = BowShot.RIGHT;
                 arrow = new Arrow(handler, (int) x + 40, (int) (y), 0, rangedDamage);
                 handler.getWorld().getEntityManager().addProjectile(arrow);
                 ammunition -= 1;
                 ar = arrow.getBounds();
             } else if (handler.getKeyManager().aDown) {
+                shotDirection = BowShot.DOWN;
                 arrow = new Arrow(handler, (int) x, (int) (y + 64), 1, rangedDamage);
                 handler.getWorld().getEntityManager().addProjectile(arrow);
                 ammunition -= 1;
                 ar = arrow.getBounds();
             } else if (handler.getKeyManager().aLeft) {
+                shotDirection = BowShot.LEFT;
                 arrow = new Arrow(handler, (int) x - 40, (int) (y), 2, rangedDamage);
                 handler.getWorld().getEntityManager().addProjectile(arrow);
                 ammunition -= 1;
                 ar = arrow.getBounds();
             } else if (handler.getKeyManager().aUp) {
+                shotDirection = BowShot.UP;
                 arrow = new Arrow(handler, (int) x, (int) (y - 49), 3, rangedDamage);
                 handler.getWorld().getEntityManager().addProjectile(arrow);
                 ammunition -= 1;
@@ -229,8 +246,15 @@ public class Player extends Creature {
 
             } else
                 return;
+            bowShot = new BowShot(shotDirection);
+            playerDirection = shotDirection;
 
-
+        } else {
+            // bow equipped but the quiver is empty
+            if (!(handler.getKeyManager().aUp || handler.getKeyManager().aDown
+                    || handler.getKeyManager().aLeft || handler.getKeyManager().aRight))
+                return;
+            showPopup("NO ARROWS!");
         }
         attackTimer = 0;
 
@@ -314,11 +338,15 @@ public class Player extends Creature {
         super.render(g);
         int arSize = 50;
         boolean swinging = swordSwing != null && !isDead;
-        if (swinging && swordSwing.isBehindPlayer())
-            renderSwordSwing(g);
+        boolean shooting = bowShot != null && !isDead;
+        boolean weaponBehind = (swinging && swordSwing.isBehindPlayer()) || (shooting && bowShot.isBehindPlayer())
+                || (!swinging && !shooting && playerDirection == 3);
+        if (weaponBehind)
+            renderWeapon(g, swinging, shooting);
         g.drawImage(getCurrentAnimationFrame(), (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
-        if (swinging && !swordSwing.isBehindPlayer())
-            renderSwordSwing(g);
+        if (!weaponBehind)
+            renderWeapon(g, swinging, shooting);
+        renderPopup(g);
 
         renderPlacingItem(g);
 
@@ -340,18 +368,85 @@ public class Player extends Creature {
 
     }
 
-    private void renderSwordSwing(Graphics g) {
+    /**
+     * Draws the equipped weapon: the attack animation while attacking, otherwise the
+     * weapon held at the player's side so it is always visible which one is equipped.
+     */
+    private void renderWeapon(Graphics g, boolean swinging, boolean shooting) {
+        if (isDead)
+            return;
+        Graphics2D g2d = (Graphics2D) g;
         int sx = (int) (x - handler.getGameCamera().getxOffset());
         int sy = (int) (y - handler.getGameCamera().getyOffset());
-        // hand position of the attack pose sprite (64x64) for each direction
-        int handX, handY;
-        switch (swordSwing.getDirection()) {
-            case SwordSwing.RIGHT: handX = sx + 46; handY = sy + 38; break;
-            case SwordSwing.LEFT:  handX = sx + 18; handY = sy + 38; break;
-            case SwordSwing.DOWN:  handX = sx + 32; handY = sy + 42; break;
-            default:               handX = sx + 32; handY = sy + 30; break;
+        if (swinging) {
+            // hand position of the attack pose sprite (64x64) for each direction
+            int handX, handY;
+            switch (swordSwing.getDirection()) {
+                case SwordSwing.RIGHT: handX = sx + 46; handY = sy + 38; break;
+                case SwordSwing.LEFT:  handX = sx + 18; handY = sy + 38; break;
+                case SwordSwing.DOWN:  handX = sx + 32; handY = sy + 42; break;
+                default:               handX = sx + 32; handY = sy + 30; break;
+            }
+            swordSwing.render(g2d, handX, handY);
+            return;
         }
-        swordSwing.render((Graphics2D) g, handX, handY);
+        if (shooting) {
+            // the bow is held at the height of the arrow's shaft
+            int handX, handY;
+            switch (bowShot.getDirection()) {
+                case BowShot.RIGHT: handX = sx + 44; handY = sy + 32; break;
+                case BowShot.LEFT:  handX = sx + 20; handY = sy + 32; break;
+                case BowShot.DOWN:  handX = sx + 31; handY = sy + 42; break;
+                default:            handX = sx + 31; handY = sy + 4; break;
+            }
+            bowShot.render(g2d, handX, handY);
+            return;
+        }
+        if (inputDisabled)
+            return;
+        renderHeldWeapon(g2d, sx, sy);
+    }
+
+    /** Weapon resting in the player's hand while not attacking. */
+    private void renderHeldWeapon(Graphics2D g, int sx, int sy) {
+        // hand position and the angle the weapon points to, per facing direction
+        double handX, handY, angle;
+        switch (playerDirection) {
+            case 0:  handX = sx + 38; handY = sy + 44; angle = Math.toRadians(rangedToggled ? 0 : 60); break;
+            case 2:  handX = sx + 26; handY = sy + 44; angle = Math.toRadians(rangedToggled ? 180 : 120); break;
+            case 3:  handX = sx + 14; handY = sy + 42; angle = Math.toRadians(rangedToggled ? 180 : 100); break;
+            default: handX = sx + 52; handY = sy + 44; angle = Math.toRadians(rangedToggled ? 0 : 80); break;
+        }
+        if (rangedToggled)
+            WeaponDrawing.drawBow(g, handX, handY, angle, 36, 0);
+        else
+            WeaponDrawing.drawSword(g, handX, handY, angle, 40);
+    }
+
+    private void showPopup(String text) {
+        popupText = text;
+        popupStart = System.currentTimeMillis();
+    }
+
+    private void renderPopup(Graphics g) {
+        if (popupText == null)
+            return;
+        long t = System.currentTimeMillis() - popupStart;
+        if (t >= POPUP_DURATION) {
+            popupText = null;
+            return;
+        }
+        double p = t / (double) POPUP_DURATION;
+        Graphics2D g2d = (Graphics2D) g;
+        java.awt.Composite old = g2d.getComposite();
+        // rise and fade out during the last third
+        float alpha = (float) Math.min(1, (1 - p) * 3);
+        g2d.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, alpha));
+        int cx = (int) (x - handler.getGameCamera().getxOffset()) + width / 2;
+        int cy = (int) (y - handler.getGameCamera().getyOffset()) - 14 - (int) (20 * p);
+        Text.drawString(g, popupText, cx + 2, cy + 2, true, Color.BLACK, Assets.font28);
+        Text.drawString(g, popupText, cx, cy, true, Color.WHITE, Assets.font28);
+        g2d.setComposite(old);
     }
 
     private void renderPlacingItem(Graphics g) {
@@ -441,9 +536,11 @@ public class Player extends Creature {
         if (isDead)
             return Assets.gravestone;
 
-        // attack pose with outstretched arm while the sword swing plays
-        if (swordSwing != null) {
-            switch (swordSwing.getDirection()) {
+        // attack pose with outstretched arm while the sword swing or bow shot plays
+        int attackDirection = swordSwing != null ? swordSwing.getDirection()
+                : bowShot != null ? bowShot.getDirection() : -1;
+        if (attackDirection >= 0) {
+            switch (attackDirection) {
                 case SwordSwing.RIGHT: return Assets.aRight[0];
                 case SwordSwing.DOWN:  return Assets.aDown[0];
                 case SwordSwing.LEFT:  return Assets.aLeft[0];
