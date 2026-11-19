@@ -343,7 +343,16 @@ public class Player extends Creature {
                 || (!swinging && !shooting && playerDirection == 3);
         if (weaponBehind)
             renderWeapon(g, swinging, shooting);
-        g.drawImage(getCurrentAnimationFrame(), (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        BufferedImage frame = getCurrentAnimationFrame();
+        int screenX = (int) (x - handler.getGameCamera().getxOffset());
+        int screenY = (int) (y - handler.getGameCamera().getyOffset());
+        g.drawImage(frame, screenX, screenY, width, height, null);
+        // the armor is worn visibly, its look shows how much of it is left
+        if (!isDead && armor > 0) {
+            BufferedImage armorLayer = Assets.playerArmor(frame, getArmorCondition());
+            if (armorLayer != null)
+                g.drawImage(armorLayer, screenX, screenY, width, height, null);
+        }
         if (!weaponBehind)
             renderWeapon(g, swinging, shooting);
         renderPopup(g);
@@ -648,6 +657,18 @@ public class Player extends Creature {
 
     public void setRangedToggled(boolean rangedToggled) {
         this.rangedToggled = rangedToggled;
+    }
+
+    /**
+     * Condition of the armor for its look: 0 intact, 1 worn, 2 broken.
+     * Only meaningful while the player has armor left.
+     */
+    public int getArmorCondition() {
+        if (armor * 5 >= maxArmor * 4)
+            return 0;
+        if (armor * 5 >= maxArmor * 2)
+            return 1;
+        return 2;
     }
 
     public int getArmor() {

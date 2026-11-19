@@ -48,7 +48,14 @@ public class HUD {
 		Color ammoColor = player.getAmmunition() == 0 ? LOW : Color.WHITE;
 		renderWeapon(g, Assets.bow, player.getRangedDamage(), BOW_X, bowEquipped, Color.WHITE);
 
-		g.drawImage(Assets.armor, ARMOR_X - 32, ICON_Y, 64, 64, null);
+		// the armor icon shows the condition of the armor, without armor it is dimmed
+		Graphics2D g2 = (Graphics2D) g;
+		Composite before = g2.getComposite();
+		if (player.getArmor() == 0)
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
+		BufferedImage armorIcon = player.getArmor() == 0 ? Assets.armor : Assets.armorStates[player.getArmorCondition()];
+		g.drawImage(armorIcon, ARMOR_X - 32, ICON_Y, 64, 64, null);
+		g2.setComposite(before);
 		Text.drawString(g, "" + player.getArmor(), ARMOR_X, TEXT_Y, true, Color.WHITE, Assets.font40);
 		g.drawImage(Assets.arrow, AMMO_X - 24, ICON_Y, 48, 48, null);
 		Text.drawString(g, "" + player.getAmmunition(), AMMO_X, TEXT_Y, true, ammoColor, Assets.font40);

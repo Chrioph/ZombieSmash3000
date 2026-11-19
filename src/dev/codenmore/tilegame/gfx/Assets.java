@@ -2,6 +2,8 @@ package dev.codenmore.tilegame.gfx;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 public class Assets {
 	
@@ -25,6 +27,12 @@ public class Assets {
 	
 	private static final int width = 32,height =32;
 	public static BufferedImage[] grassVariants, dirtVariants;
+	/** armor icon per condition: 0 intact, 1 worn, 2 broken */
+	public static BufferedImage[] armorStates;
+	/** armor layer drawn over each player frame, per condition (see PlayerArmor.png) */
+	private static final Map<BufferedImage, BufferedImage[]> playerArmor = new IdentityHashMap<BufferedImage, BufferedImage[]>();
+	private static SpriteSheet playerArmorSheet;
+	private static final int ARMOR_ROWS = 6;
 	public static BufferedImage[] player1_down , player1_up, player1_left, player1_right, aDown, aLeft, aRight, aUp;;
 	public static BufferedImage player1LookingDown , player1LookingUp, player1LookingLeft, player1LookingRight;
 	public static BufferedImage[] zombie_down , zombie_up, zombie_left, zombie_right, zaDown, zaLeft, zaRight, zaUp;
@@ -41,6 +49,7 @@ public class Assets {
         font100 = FontLoader.loadFont("/fonts/slkscr.ttf",100);
 		
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet2.png"));
+		playerArmorSheet = new SpriteSheet(ImageLoader.loadImage("/textures/PlayerArmor.png"));
 		SpriteSheet dungeonWallsSheet = new SpriteSheet(ImageLoader.loadImage("/textures/dungeonWallsSheet.png"));
 		SpriteSheet ogreSheet = new SpriteSheet(ImageLoader.loadImage("/textures/OgreSpreadsheet.png"));
 		
@@ -102,6 +111,7 @@ public class Assets {
 		bow  =     sheet.crop(width*2, height*6, width, height);
 		heart=     sheet.crop(width*7, height*3, width, height);
 		armor=     sheet.crop(width*8, 0, width, height);
+		armorStates = new BufferedImage[] { armor, sheet.crop(width*10, height*7, width, height), sheet.crop(width*11, height*7, width, height) };
 		healthPlus=sheet.crop(width*9, 0, width, height);
 		seeds=     sheet.crop(width*8, height*2, width,height);
 		
@@ -112,28 +122,28 @@ public class Assets {
 		arrowUp   =   sheet.crop(width*7, height*6, width, height);
 		
 		//Player 1
-		player1LookingDown =sheet.crop(width*2, height, width, height);
-		player1LookingLeft =sheet.crop(width*2, height*5, width, height);
-		player1LookingUp   =sheet.crop(width*3, height*5, width, height);
-		player1LookingRight=sheet.crop(width*1, height*5, width, height);
+		player1LookingDown =playerFrame(sheet, 2, 1);
+		player1LookingLeft =playerFrame(sheet, 2, 5);
+		player1LookingUp   =playerFrame(sheet, 3, 5);
+		player1LookingRight=playerFrame(sheet, 1, 5);
 		gravestone         =sheet.crop(width*9, height, width, height);
 		
 		player1_down = new BufferedImage[2];
-		player1_down[0]=sheet.crop( width*3 , height, width, height);
-		player1_down[1]=sheet.crop( 0 , height*2, width, height);
+		player1_down[0]=playerFrame(sheet, 3, 1);
+		player1_down[1]=playerFrame(sheet, 0, 2);
 		
 		player1_up = new BufferedImage[2];
-		player1_up[0]=sheet.crop( width , height*2, width, height);
-		player1_up[1]=sheet.crop( width*2 , height*2, width, height);
+		player1_up[0]=playerFrame(sheet, 1, 2);
+		player1_up[1]=playerFrame(sheet, 2, 2);
 		
 		player1_left = new BufferedImage[2];
-		player1_left[0]=sheet.crop( width , height*3, width, height);
-		player1_left[1]=sheet.crop( width*2 , height*3, width, height);		
+		player1_left[0]=playerFrame(sheet, 1, 3);
+		player1_left[1]=playerFrame(sheet, 2, 3);		
 		
 		
 		player1_right = new BufferedImage[2];
-		player1_right[0]=sheet.crop( width*3 , height*2, width, height);
-		player1_right[1]=sheet.crop( 0 , height*3, width, height);
+		player1_right[0]=playerFrame(sheet, 3, 2);
+		player1_right[1]=playerFrame(sheet, 0, 3);
 		
 		//Zombie
 		
@@ -184,20 +194,20 @@ public class Assets {
 		
 		//PLayer1 Attack
 		aUp = new BufferedImage[2];
-		aUp[0]=sheet.crop(width*3, height*4, width, height);
-		aUp[1]=sheet.crop(width*3, height*5, width, height);
+		aUp[0]=playerFrame(sheet, 3, 4);
+		aUp[1]=playerFrame(sheet, 3, 5);
 		
 		aDown = new BufferedImage[2];
-		aDown[0]=sheet.crop(0, height*4, width, height);
-		aDown[1]=sheet.crop(0, height*5, width, height);
+		aDown[0]=playerFrame(sheet, 0, 4);
+		aDown[1]=playerFrame(sheet, 0, 5);
 		
 		aRight = new BufferedImage[2];
-		aRight[0]=sheet.crop(width, height*4, width, height);
-		aRight[1]=sheet.crop(width, height*5, width, height);
+		aRight[0]=playerFrame(sheet, 1, 4);
+		aRight[1]=playerFrame(sheet, 1, 5);
 		
 		aLeft = new BufferedImage[2];
-		aLeft[0]=sheet.crop(width*2, height*4, width, height);
-		aLeft[1]=sheet.crop(width*2, height*5, width, height);
+		aLeft[0]=playerFrame(sheet, 2, 4);
+		aLeft[1]=playerFrame(sheet, 2, 5);
 		
 		//Zombie Aggro
 		
@@ -238,5 +248,25 @@ public class Assets {
 		return new BufferedImage[] {
 			ogreSheet.crop(col * width * 2, row1 * height * 2, width * 2, height * 2),
 			ogreSheet.crop(col * width * 2, row2 * height * 2, width * 2, height * 2) };
+	}
+
+	/** Crops a player frame and remembers the matching armor layers for it. */
+	private static BufferedImage playerFrame(SpriteSheet sheet, int col, int row) {
+		BufferedImage frame = sheet.crop(col * width, row * height, width, height);
+		BufferedImage[] armorLayers = new BufferedImage[3];
+		for (int condition = 0; condition < 3; condition++)
+			armorLayers[condition] = playerArmorSheet.crop(col * width, (condition * ARMOR_ROWS + row) * height, width, height);
+		playerArmor.put(frame, armorLayers);
+		return frame;
+	}
+
+	/**
+	 * @param frame     a player frame from this class
+	 * @param condition 0 intact, 1 worn, 2 broken
+	 * @return the armor layer to draw over the frame, or null if there is none
+	 */
+	public static BufferedImage playerArmor(BufferedImage frame, int condition) {
+		BufferedImage[] layers = playerArmor.get(frame);
+		return layers == null ? null : layers[condition];
 	}
 }

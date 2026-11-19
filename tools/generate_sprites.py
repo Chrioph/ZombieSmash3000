@@ -48,6 +48,18 @@ PLAYER = {
     "mouth": pal("#7a3a2a", "#a8604a", "#a8604a", "#a8604a"),
 }
 
+# armor in three conditions: 0 intact, 1 worn, 2 broken
+ARMOR_PALETTES = {
+    "plate0": pal("#2b2f3a", "#8a91a1", "#b4bac8", "#e8ecf3"),
+    "plate1": pal("#2b2e36", "#6e7482", "#8b909c", "#a9aeb9"),
+    "plate2": pal("#2e221c", "#6f5a4b", "#8a7262", "#a68d79"),
+    "trim": pal("#5a3e08", "#c9961e", "#f0c43a", "#fff09a"),
+    "rivet": pal("#5a3e08", "#f0c43a", "#f0c43a", "#f0c43a"),
+    "dent": pal("#2b2e36", "#4d525e", "#4d525e", "#4d525e"),
+    "crack": pal("#1e1612", "#2e221c", "#2e221c", "#2e221c"),
+}
+PLAYER.update(ARMOR_PALETTES)
+
 ZOMBIE = {
     "skin": pal("#16240f", "#4c7342", "#6a9459", "#8ab874"),
     "hair": pal("#0c100a", "#1f261b", "#30392b", "#45503e"),
@@ -145,22 +157,52 @@ class Sprite:
 
 # ------------------------------------------------------------------ humanoids
 
-def humanoid(palette, view, pose, zombie=False):
+def humanoid(palette, view, pose, zombie=False, armor=None):
     """
     view: front, back or side (facing right)
     pose: idle, walk0, walk1, attack, aggro0, aggro1 (zombie only)
+    armor: None or the armor condition (0 intact, 1 worn, 2 broken)
     """
     s = Sprite(palette)
     walk = pose in ("walk0", "walk1")
     aggro = pose.startswith("aggro")
     if view == "side":
-        side(s, pose, walk, aggro, zombie)
+        side(s, pose, walk, aggro, zombie, armor)
     else:
-        front_back(s, view, pose, walk, aggro, zombie)
+        front_back(s, view, pose, walk, aggro, zombie, armor)
     return s.render()
 
 
-def front_back(s, view, pose, walk, aggro, zombie):
+def armor_plate(s, x0, x1, view, cond, notch):
+    """Breastplate over the torso (rows 16..21), drawn before the arms."""
+    plate = rect(x0, 16, x1, 21) - notch
+    if cond == 2:
+        # a crack through the plate shows the shirt, the lower corner broke off
+        crack = {(x0 + 2 + i, 16 + i) for i in range(6)}
+        plate -= crack | {(x0 + 1, 20), (x0 + 1, 21), (x0 + 2, 21)}
+        s.fill(plate, "plate2")
+        s.fill({(x + 1, y) for x, y in crack if (x + 1, y) in plate}, "crack", flat=True)
+        return
+    s.fill(plate, "plate%d" % cond)
+    if cond == 0:
+        s.fill({(x, 16) for x in range(x0, x1 + 1)} - notch, "trim")
+        s.fill({(x0 + 1, 19), (x1 - 1, 19)} & plate, "rivet", flat=True)
+    else:
+        s.fill({(x0 + 2, 18), (x1 - 2, 20), ((x0 + x1) // 2, 19)} & plate, "dent", flat=True)
+
+
+def armor_pads(s, pads, cond):
+    """Shoulder guards, drawn after the arms. pads: list of (x0, x1)."""
+    for i, (x0, x1) in enumerate(pads):
+        if cond == 2 and i == 0:
+            continue  # broken off
+        pad = rect(x0, 15, x1, 17) - {(x0, 15), (x1, 15)}
+        s.fill(pad, "plate%d" % cond)
+        if cond >= 1:
+            s.fill({(x0 + 1, 16)}, "dent", flat=True)
+
+
+def front_back(s, view, pose, walk, aggro, zombie, armor=None):
     # legs and shoes, lifting one leg while walking
     lift_left = pose == "walk0"
     lift_right = pose == "walk1"
@@ -185,6 +227,8 @@ def front_back(s, view, pose, walk, aggro, zombie):
         s.fill(rect(11, 22, 20, 22), "belt")
         if view == "front":
             s.fill(rect(15, 22, 16, 22), "buckle")
+    if armor is not None:
+        armor_plate(s, 11, 20, view, armor, {(15, 16), (16, 16)} if view == "front" else set())
 
     # arms
     if zombie and view == "front" and not aggro:
@@ -209,6 +253,8 @@ def front_back(s, view, pose, walk, aggro, zombie):
         s.fill(rect(9, 20 + swing_l, 10, 21 + swing_l), "skin")
         s.fill(rect(21, 17, 22, 19 + swing_r), "shirt")
         s.fill(rect(21, 20 + swing_r, 22, 21 + swing_r), "skin")
+    if armor is not None:
+        armor_pads(s, [(8, 11), (20, 23)], armor)
 
     # head
     cx, cy, rx, ry = 15.5 + (0.5 if zombie and walk and pose == "walk1" else 0), 9.2, 7.3, 6.8
@@ -255,7 +301,7 @@ def face(s, cx, aggro, zombie):
         s.fill({(mx - 2, 12), (mx + 3, 12)}, "mouth", flat=True)
 
 
-def side(s, pose, walk, aggro, zombie):
+def side(s, pose, walk, aggro, zombie, armor=None):
     # legs: the back leg is drawn darker behind the front leg
     if pose == "walk0":
         s.fill(rect(12, 23, 14, 28), "pants_back")
@@ -276,6 +322,8 @@ def side(s, pose, walk, aggro, zombie):
         s.fill({(18, 19), (17, 20)}, "wound", flat=True)
     else:
         s.fill(rect(13, 22, 19, 22), "belt")
+    if armor is not None:
+        armor_plate(s, 13, 19, "side", armor, set())
 
     # near arm
     if pose == "attack" or (zombie and not aggro):
@@ -290,6 +338,8 @@ def side(s, pose, walk, aggro, zombie):
         dx = 1 if pose == "walk0" else -1 if pose == "walk1" else 0
         s.fill(rect(15, 17, 17, 19), "shirt")
         s.fill(rect(15 + dx + (1 if dx > 0 else 0), 20, 16 + dx + (1 if dx > 0 else 0), 21), "skin")
+    if armor is not None:
+        armor_pads(s, [(14, 18)], armor)
 
     # head facing right
     cx, cy, rx, ry = 16.2, 9.2, 7.0, 6.8
@@ -394,8 +444,8 @@ def health_plus():
     return img
 
 
-def armor():
-    """Steel breastplate with shoulder guards and a gold trim."""
+def armor(cond=0):
+    """Breastplate with shoulder guards: 0 intact (gold trim), 1 worn (dented), 2 broken (rusty, cracked)."""
     plate = set()
     for y in range(9, 27):
         # widest at the chest, rounded towards the bottom
@@ -411,10 +461,24 @@ def armor():
                       if abs(x + 0.5 - (x0 + x1 + 1) / 2) <= 3.5 - max(0, y - 11)}
     trim = {p for p in plate if (p[0], p[1] - 1) in neck or p[1] == 9 and p not in neck}
     ridge = {(15, y) for y in range(12, 25)} | {(16, y) for y in range(12, 25)}
+    steel = [STEEL, ARMOR_PALETTES["plate1"], ARMOR_PALETTES["plate2"]][cond]
+    if cond == 2:
+        crack = {(x, y) for x in range(T) for y in range(T) if abs((x - 9) - (y - 11) * 0.8) < 0.6 and 11 <= y <= 24}
+        plate -= crack
+        shoulders = {p for p in shoulders if p[0] < 16}  # right guard broke off
+        trim = set()
+    elif cond == 1:
+        trim = set()
     layers = [(plate, "s"), (shoulders, "s"), (trim, "g"), (ridge, "r", True)]
-    img = render_materials(layers, {"s": STEEL, "g": GOLD, "r": pal("#23262e", "#8a91a1", "#8a91a1", "#8a91a1")})
-    for p in ((11, 14), (20, 14), (11, 19), (20, 19), (6, 10), (25, 10)):
-        img.putpixel(p, GOLD[2])
+    ridge_pal = [steel[0], steel[1], steel[1], steel[1]]
+    img = render_materials(layers, {"s": steel, "g": GOLD, "r": ridge_pal})
+    if cond == 0:
+        for p in ((11, 14), (20, 14), (11, 19), (20, 19), (6, 10), (25, 10)):
+            img.putpixel(p, GOLD[2])
+    else:
+        for p in ((12, 15), (19, 21), (18, 13), (6, 10)):
+            if img.getpixel(p)[3]:
+                img.putpixel(p, steel[0])
     return img
 
 
@@ -556,6 +620,41 @@ def chest():
 
 # ------------------------------------------------------------------ output
 
+# player frames: cell in Sheet2.png -> (view, pose, mirrored)
+PLAYER_CELLS = {
+    (2, 1): ("front", "idle", False), (0, 5): ("front", "idle", False),
+    (3, 1): ("front", "walk0", False), (0, 2): ("front", "walk1", False), (0, 4): ("front", "attack", False),
+    (3, 5): ("back", "idle", False), (1, 2): ("back", "walk0", False), (2, 2): ("back", "walk1", False),
+    (3, 4): ("back", "attack", False),
+    (1, 5): ("side", "idle", False), (3, 2): ("side", "walk0", False), (0, 3): ("side", "walk1", False),
+    (1, 4): ("side", "attack", False),
+    (2, 5): ("side", "idle", True), (1, 3): ("side", "walk0", True), (2, 3): ("side", "walk1", True),
+    (2, 4): ("side", "attack", True),
+}
+ARMOR_ROWS = 6  # rows of cells per condition in PlayerArmor.png
+ARMOR_ICON_CELLS = {0: (8, 0), 1: (10, 7), 2: (11, 7)}
+
+
+def armor_overlay(view, pose, flip, cond):
+    """Only the armor pixels: the difference between the player with and without armor."""
+    base = humanoid(PLAYER, view, pose)
+    full = humanoid(PLAYER, view, pose, armor=cond)
+    out = Image.new("RGBA", (T, T), CLEAR)
+    for x in range(T):
+        for y in range(T):
+            if full.getpixel((x, y)) != base.getpixel((x, y)):
+                out.putpixel((x, y), full.getpixel((x, y)))
+    return mirror(out) if flip else out
+
+
+def build_armor_sheet():
+    sheet = Image.new("RGBA", (16 * T, 3 * ARMOR_ROWS * T), CLEAR)
+    for cond in range(3):
+        for (cx, cy), (view, pose, flip) in PLAYER_CELLS.items():
+            sheet.paste(armor_overlay(view, pose, flip, cond), (cx * T, (cond * ARMOR_ROWS + cy) * T))
+    return sheet
+
+
 def build():
     p, z = PLAYER, ZOMBIE
     f = {pose: humanoid(p, "front", pose) for pose in ("idle", "walk0", "walk1", "attack")}
@@ -582,10 +681,12 @@ def build():
         (9, 5): mirror(zr["aggro0"]), (10, 5): mirror(zr["aggro1"]),
         (8, 7): zb["aggro0"], (9, 7): zb["aggro1"],
         # items
-        (3, 3): sword(), (2, 6): bow(), (7, 3): heart(), (8, 0): armor(), (9, 0): health_plus(),
+        (3, 3): sword(), (2, 6): bow(), (7, 3): heart(), (9, 0): health_plus(),
         (8, 2): seeds(), (9, 1): gravestone(),
         (3, 6): arrow_icon(), (4, 6): ar, (5, 6): ar.rotate(-90), (6, 6): mirror(ar), (7, 6): ar.rotate(90),
     }
+    for cond, cell in ARMOR_ICON_CELLS.items():
+        cells[cell] = armor(cond)
     return cells, chest()
 
 
@@ -599,6 +700,7 @@ def write(cells, chest_img):
     sheet.paste(Image.new("RGBA", (64, 64), CLEAR), (9 * T, 2 * T))
     sheet.paste(chest_img, (9 * T, 2 * T))
     sheet.save(path)
+    build_armor_sheet().save(os.path.join(TEXTURES, "PlayerArmor.png"))
 
 
 def preview(cells, chest_img, path):
